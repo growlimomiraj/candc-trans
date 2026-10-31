@@ -11,19 +11,19 @@ export const Testimonials: React.FC<TestimonialsProps> = ({ onViewAllReviewsClic
       name: 'James Carter',
       avatar: '/assets/hd_avatar_james_perfect.png',
       quote:
-        'Amazing service! The car was clean and the booking process was super easy. Highly recommended!',
+        'C&C Transportation handled our corporate VIP travel flawlessly. The black 2026 Kia EV9 was whisper quiet, pristine, and ultra-luxurious!',
     },
     {
       name: 'Sarah Khan',
       avatar: '/assets/hd_avatar_sarah_perfect.png',
       quote:
-        'Excellent experience with AnticorCar. Professional and very friendly staff.',
+        'Used AeroRide for my airport transfer—fixed cheap price with zero surge, and the driver arrived 10 minutes early. Fantastic service!',
     },
     {
       name: 'Ahmed Rafi',
       avatar: '/assets/hd_avatar_ahmed_perfect.png',
       quote:
-        'Best car rental experience so far. Smooth process and great support!',
+        'Best chauffeur service so far. Seamless booking, immaculate black luxury cars, and top-tier professionalism from C&C.',
     },
   ];
 
@@ -35,7 +35,7 @@ export const Testimonials: React.FC<TestimonialsProps> = ({ onViewAllReviewsClic
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-9 gap-3">
           <div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-[#092D5C] tracking-tight">
-              What Our Customers Say
+              What Our Clients Say
             </h2>
           </div>
 

@@ -1,14 +1,59 @@
 import React from 'react';
 
-// Toyota Emblem
-export const ToyotaLogo: React.FC<{ className?: string }> = ({ className = "w-10 h-7" }) => (
-  <svg viewBox="0 0 100 70" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    {/* Outer ellipse */}
-    <ellipse cx="50" cy="35" rx="46" ry="31" stroke="#092D5C" strokeWidth="6" />
-    {/* Vertical inner ellipse */}
-    <ellipse cx="50" cy="35" rx="14" ry="24" stroke="#092D5C" strokeWidth="5.5" />
-    {/* Horizontal top inner ellipse */}
-    <ellipse cx="50" cy="27" rx="30" ry="11" stroke="#092D5C" strokeWidth="5" />
+// Kia Emblem (Modern Connected Luxury Emblem)
+export const KiaLogo: React.FC<{ className?: string }> = ({ className = "w-10 h-6" }) => (
+  <svg viewBox="0 0 100 40" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <text
+      x="50"
+      y="28"
+      fill="#092D5C"
+      fontSize="24"
+      fontWeight="900"
+      textAnchor="middle"
+      fontFamily="sans-serif"
+      letterSpacing="2"
+    >
+      KIA
+    </text>
+  </svg>
+);
+
+// Cadillac Crest
+export const CadillacLogo: React.FC<{ className?: string }> = ({ className = "w-9 h-7" }) => (
+  <svg viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    {/* Geometric Cadillac Crest */}
+    <path
+      d="M 50 6 L 85 24 L 75 62 L 50 76 L 25 62 L 15 24 Z"
+      stroke="#092D5C"
+      strokeWidth="4.5"
+      fill="none"
+    />
+    <path
+      d="M 50 14 L 76 28 L 68 56 L 50 66 L 32 56 L 24 28 Z"
+      stroke="#FF7100"
+      strokeWidth="2"
+      fill="none"
+    />
+    <line x1="28" y1="38" x2="72" y2="38" stroke="#092D5C" strokeWidth="2.5" />
+    <line x1="33" y1="48" x2="67" y2="48" stroke="#092D5C" strokeWidth="2.5" />
+  </svg>
+);
+
+// Lucid Motors Luxury Emblem
+export const LucidLogo: React.FC<{ className?: string }> = ({ className = "w-11 h-5" }) => (
+  <svg viewBox="0 0 120 30" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <text
+      x="60"
+      y="22"
+      fill="#092D5C"
+      fontSize="15"
+      fontWeight="800"
+      textAnchor="middle"
+      fontFamily="sans-serif"
+      letterSpacing="4"
+    >
+      LUCID
+    </text>
   </svg>
 );
 
@@ -16,17 +61,13 @@ export const ToyotaLogo: React.FC<{ className?: string }> = ({ className = "w-10
 export const BmwLogo: React.FC<{ className?: string }> = ({ className = "w-8 h-8" }) => (
   <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
     <circle cx="50" cy="50" r="48" fill="#FFFFFF" stroke="#092D5C" strokeWidth="4" />
-    {/* Outer ring */}
     <circle cx="50" cy="50" r="46" fill="#092D5C" />
-    {/* Inner ring */}
     <circle cx="50" cy="50" r="30" fill="#FFFFFF" stroke="#FFFFFF" strokeWidth="1" />
-    {/* BMW quadrants */}
     <path d="M 50 20 A 30 30 0 0 1 80 50 L 50 50 Z" fill="#0066B1" />
     <path d="M 50 20 A 30 30 0 0 0 20 50 L 50 50 Z" fill="#FFFFFF" />
     <path d="M 50 80 A 30 30 0 0 1 20 50 L 50 50 Z" fill="#0066B1" />
     <path d="M 50 80 A 30 30 0 0 0 80 50 L 50 50 Z" fill="#FFFFFF" />
     <circle cx="50" cy="50" r="30" fill="none" stroke="#D1D5DB" strokeWidth="1.5" />
-    {/* Letters B M W */}
     <text x="31" y="16" fill="#FFFFFF" fontSize="9" fontWeight="bold" fontFamily="sans-serif">B</text>
     <text x="47" y="13" fill="#FFFFFF" fontSize="9" fontWeight="bold" fontFamily="sans-serif">M</text>
     <text x="64" y="16" fill="#FFFFFF" fontSize="9" fontWeight="bold" fontFamily="sans-serif">W</text>
@@ -37,7 +78,6 @@ export const BmwLogo: React.FC<{ className?: string }> = ({ className = "w-8 h-8
 export const MercedesLogo: React.FC<{ className?: string }> = ({ className = "w-8 h-8" }) => (
   <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
     <circle cx="50" cy="50" r="46" stroke="#092D5C" strokeWidth="5" />
-    {/* Three-pointed star */}
     <polygon points="50,10 54,46 50,50 46,46" fill="#092D5C" />
     <polygon points="85,70 54,54 50,50 52,47" fill="#092D5C" />
     <polygon points="15,70 48,47 50,50 46,54" fill="#092D5C" />
@@ -56,24 +96,6 @@ export const LandRoverLogo: React.FC<{ className?: string }> = ({ className = "w
   </svg>
 );
 
-// Honda Shield Emblem
-export const HondaLogo: React.FC<{ className?: string }> = ({ className = "w-8 h-7" }) => (
-  <svg viewBox="0 0 100 80" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path
-      d="M 12 12 C 12 8, 18 6, 50 6 C 82 6, 88 8, 88 12 L 80 68 C 80 74, 74 76, 50 76 C 26 76, 20 74, 20 68 Z"
-      stroke="#092D5C"
-      strokeWidth="5"
-      fill="none"
-    />
-    <path
-      d="M 33 18 L 33 64 M 67 18 L 67 64 M 33 42 L 67 42 M 25 18 L 35 18 M 65 18 L 75 18"
-      stroke="#092D5C"
-      strokeWidth="6"
-      strokeLinecap="round"
-    />
-  </svg>
-);
-
 // Audi 4 Rings
 export const AudiLogo: React.FC<{ className?: string }> = ({ className = "w-11 h-6" }) => (
   <svg viewBox="0 0 120 50" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
@@ -81,27 +103,5 @@ export const AudiLogo: React.FC<{ className?: string }> = ({ className = "w-11 h
     <circle cx="48" cy="25" r="18" stroke="#092D5C" strokeWidth="4" />
     <circle cx="72" cy="25" r="18" stroke="#092D5C" strokeWidth="4" />
     <circle cx="96" cy="25" r="18" stroke="#092D5C" strokeWidth="4" />
-  </svg>
-);
-
-// Hyundai Slanted Oval Emblem
-export const HyundaiLogo: React.FC<{ className?: string }> = ({ className = "w-10 h-7" }) => (
-  <svg viewBox="0 0 100 70" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <ellipse
-      cx="50"
-      cy="35"
-      rx="44"
-      ry="28"
-      transform="rotate(-10 50 35)"
-      stroke="#092D5C"
-      strokeWidth="5.5"
-    />
-    <path
-      d="M 36 22 C 37 34, 38 48, 38 52 C 45 42, 55 42, 62 50 C 62 46, 63 32, 64 20"
-      stroke="#092D5C"
-      strokeWidth="6"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
   </svg>
 );

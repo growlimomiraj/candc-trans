@@ -26,13 +26,13 @@ export const SpecialOffer: React.FC<SpecialOfferProps> = ({ onBookNowClick }) =>
 
               {/* Large Heading */}
               <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-[#092D5C] tracking-tight leading-[1.12] mb-3">
-                <span className="block">Drive More</span>
+                <span className="block">Ride Executive</span>
                 <span className="block">Pay Less</span>
               </h2>
 
               {/* Supporting Text */}
               <p className="text-[#64748B] text-sm sm:text-base font-medium max-w-sm mb-6 leading-relaxed">
-                Get up to 20% OFF on select rentals for a limited time only.
+                Book your first AeroRide fixed-price transfer or C&C executive chauffeur booking and get up to 20% OFF.
               </p>
 
               {/* Orange Button */}
@@ -46,22 +46,16 @@ export const SpecialOffer: React.FC<SpecialOfferProps> = ({ onBookNowClick }) =>
 
             </div>
 
-            {/* Right Column: Slanted Image with BMW Sports Car & Discount Badge (7 cols) */}
+            {/* Right Column: Slanted Image with Jet Black BMW Luxury Sedan & Discount Badge (7 cols) */}
             <div className="lg:col-span-7 relative h-64 sm:h-80 lg:h-96 w-full overflow-hidden">
               <div className="slant-left-edge w-full h-full relative">
                 <img
-                  src="/assets/ai/ai_special_offer_blue_bmw.png"
-                  onError={(e) => {
-                    const target = e.currentTarget;
-                    if (target.src !== window.location.origin + '/assets/hd_clean_special_offer.png') {
-                      target.src = '/assets/hd_clean_special_offer.png';
-                    }
-                  }}
-                  alt="Blue luxury sports sedan with Up to 20% OFF discount badge"
+                  src="/assets/ai/ai_car_black_bmw.png"
+                  alt="Glossy Jet Black BMW Executive Luxury Sedan with Up to 20% OFF discount badge"
                   className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700 ease-out"
                 />
 
-                {/* Floating Circular Orange Discount Badge matching reference */}
+                {/* Floating Circular Orange Discount Badge */}
                 <div className="absolute top-4 right-6 sm:top-6 sm:right-10 z-20">
                   <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-22 md:h-22 rounded-full bg-[#FF7100] shadow-[0_6px_20px_rgba(255,113,0,0.45)] border-2 border-white flex flex-col items-center justify-center text-white text-center select-none transform hover:scale-105 transition-transform duration-200">
                     <span className="text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider leading-none">

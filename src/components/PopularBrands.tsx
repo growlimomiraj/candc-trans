@@ -1,13 +1,13 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import {
-  ToyotaLogo,
+  KiaLogo,
+  CadillacLogo,
   BmwLogo,
   MercedesLogo,
+  LucidLogo,
   LandRoverLogo,
-  HondaLogo,
   AudiLogo,
-  HyundaiLogo,
 } from './BrandLogos.tsx';
 
 interface PopularBrandsProps {
@@ -20,13 +20,13 @@ export const PopularBrands: React.FC<PopularBrandsProps> = ({
   onViewAllBrandsClick,
 }) => {
   const brands = [
-    { name: 'Toyota', logo: <ToyotaLogo className="w-10 h-7" /> },
+    { name: 'Kia', logo: <KiaLogo className="w-10 h-6" /> },
+    { name: 'Cadillac', logo: <CadillacLogo className="w-9 h-7" /> },
     { name: 'BMW', logo: <BmwLogo className="w-8 h-8" /> },
     { name: 'Mercedes-Benz', logo: <MercedesLogo className="w-8 h-8" /> },
+    { name: 'Lucid', logo: <LucidLogo className="w-11 h-5" /> },
     { name: 'Land Rover', logo: <LandRoverLogo className="w-12 h-6" /> },
-    { name: 'Honda', logo: <HondaLogo className="w-8 h-7" /> },
     { name: 'Audi', logo: <AudiLogo className="w-11 h-6" /> },
-    { name: 'Hyundai', logo: <HyundaiLogo className="w-10 h-7" /> },
   ];
 
   return (
@@ -37,10 +37,10 @@ export const PopularBrands: React.FC<PopularBrandsProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-3">
           <div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-[#092D5C] tracking-tight">
-              Popular Brands
+              Executive Fleet Brands
             </h2>
             <p className="text-[13.5px] text-[#64748B] font-medium mt-1">
-              Choose from the world's most trusted brands.
+              Featuring our all-electric flagship and premier executive manufacturers.
             </p>
           </div>
 

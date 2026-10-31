@@ -1,5 +1,5 @@
 import React from 'react';
-import { Car, Award, ShieldCheck, Headphones } from 'lucide-react';
+import { Car, Award, ShieldCheck, Zap } from 'lucide-react';
 
 export const Hero: React.FC = () => {
   return (
@@ -16,7 +16,7 @@ export const Hero: React.FC = () => {
             {/* Small outlined orange badge */}
             <div className="inline-flex items-center gap-2 self-start px-3.5 py-1 rounded-full border border-[#FF7100]/50 bg-[#FFF7ED] text-[#FF7100] text-xs font-semibold tracking-wide shadow-2xs">
               <Car className="w-3.5 h-3.5 stroke-[2.5]" />
-              <span>Premium Car Rental</span>
+              <span>C&C Executive & AeroRide</span>
             </div>
 
             {/* Main Headline */}
@@ -27,7 +27,7 @@ export const Hero: React.FC = () => {
 
             {/* Supporting Paragraph */}
             <p className="text-[#64748B] text-base sm:text-[16px] leading-relaxed max-w-lg">
-              Rent out your dream car with AnticorCar.com – Premium vehicles, flexible plans, and unbeatable service.
+              Experience premier executive travel with C&C Transportation Service. From high-value corporate travel to AeroRide fixed-price airport transfers, travel in all-black luxury with peace of mind.
             </p>
 
             {/* Three Service Benefits with Orange Icons */}
@@ -39,8 +39,8 @@ export const Hero: React.FC = () => {
                   <Award className="w-5 h-5 stroke-[2]" />
                 </div>
                 <div>
-                  <h4 className="text-[13.5px] font-bold text-[#092D5C] leading-tight">Best Selection</h4>
-                  <p className="text-[11.5px] text-[#64748B] leading-tight mt-0.5">Premium Cars</p>
+                  <h4 className="text-[13.5px] font-bold text-[#092D5C] leading-tight">C&C Executive</h4>
+                  <p className="text-[11.5px] text-[#64748B] leading-tight mt-0.5">High-Value Luxury</p>
                 </div>
               </div>
 
@@ -50,19 +50,19 @@ export const Hero: React.FC = () => {
                   <ShieldCheck className="w-5 h-5 stroke-[2]" />
                 </div>
                 <div>
-                  <h4 className="text-[13.5px] font-bold text-[#092D5C] leading-tight">Car Reliable</h4>
-                  <p className="text-[11.5px] text-[#64748B] leading-tight mt-0.5">Safe & Secure</p>
+                  <h4 className="text-[13.5px] font-bold text-[#092D5C] leading-tight">AeroRide</h4>
+                  <p className="text-[11.5px] text-[#64748B] leading-tight mt-0.5">Fixed Cheap Rates</p>
                 </div>
               </div>
 
               {/* Benefit 3 */}
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-[#FFF4EA] border border-[#FFE2CC] flex items-center justify-center flex-shrink-0 text-[#FF7100]">
-                  <Headphones className="w-5 h-5 stroke-[2]" />
+                  <Zap className="w-5 h-5 stroke-[2]" />
                 </div>
                 <div>
-                  <h4 className="text-[13.5px] font-bold text-[#092D5C] leading-tight">24/7 Support</h4>
-                  <p className="text-[11.5px] text-[#64748B] leading-tight mt-0.5">Always Here</p>
+                  <h4 className="text-[13.5px] font-bold text-[#092D5C] leading-tight">Black EV9 2026</h4>
+                  <p className="text-[11.5px] text-[#64748B] leading-tight mt-0.5">All-Electric Quiet</p>
                 </div>
               </div>
 
@@ -70,7 +70,7 @@ export const Hero: React.FC = () => {
 
           </div>
 
-          {/* Right Column: Hero Range Rover in curved flowing container */}
+          {/* Right Column: Hero Jet Black Luxury SUV in curved flowing container */}
           <div className="lg:col-span-6 relative flex justify-center lg:justify-end">
             <div className="relative w-full max-w-lg lg:max-w-none">
               
@@ -78,14 +78,8 @@ export const Hero: React.FC = () => {
               <div className="relative overflow-hidden rounded-[42px] md:rounded-[56px] shadow-2xl bg-gradient-to-tr from-[#092D5C]/10 to-transparent">
                 <div className="relative rounded-[40px] md:rounded-[54px] overflow-hidden aspect-[1.22/1]">
                   <img
-                    src="/assets/ai/ai_hero_rangerover.png"
-                    onError={(e) => {
-                      const target = e.currentTarget;
-                      if (target.src !== window.location.origin + '/assets/hd_clean_hero_car.png') {
-                        target.src = '/assets/hd_clean_hero_car.png';
-                      }
-                    }}
-                    alt="Premium White Range Rover in Dubai with Burj Khalifa skyline"
+                    src="/assets/ai/ai_hero_black_suv.png"
+                    alt="C&C Transportation Executive Jet Black Luxury Fleet"
                     className="w-full h-full object-cover object-center transform hover:scale-[1.02] transition-transform duration-700 ease-out"
                   />
                   

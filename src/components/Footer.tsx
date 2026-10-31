@@ -38,11 +38,11 @@ export const Footer: React.FC<FooterProps> = ({ onBookNowClick }) => {
               {/* Content on Left */}
               <div className="relative z-10 max-w-md">
                 <h2 className="text-2xl sm:text-3xl lg:text-[38px] font-extrabold text-white tracking-tight leading-tight mb-3">
-                  Ready for Your Next Adventure?
+                  Ready for Your Next Journey?
                 </h2>
                 
                 <p className="text-slate-200 text-sm sm:text-[15px] font-normal mb-7 leading-relaxed">
-                  Book your dream car today and hit the road with confidence.
+                  Book your C&C executive chauffeur or AeroRide fixed-price transfer with confidence.
                 </p>
 
                 <button
@@ -66,13 +66,13 @@ export const Footer: React.FC<FooterProps> = ({ onBookNowClick }) => {
                 </div>
                 <div>
                   <a
-                    href="tel:+971555123456"
+                    href="tel:+18005551234"
                     className="block text-[16px] font-extrabold text-[#092D5C] hover:text-[#FF7100] transition-colors"
                   >
-                    +971 555 123456
+                    +1 (800) 555-1234
                   </a>
                   <span className="text-[12.5px] font-medium text-[#64748B]">
-                    Call Us
+                    Call 24/7 Dispatch
                   </span>
                 </div>
               </div>
@@ -84,28 +84,28 @@ export const Footer: React.FC<FooterProps> = ({ onBookNowClick }) => {
                 </div>
                 <div>
                   <a
-                    href="mailto:info@anticorcar.com"
+                    href="mailto:dispatch@cctransportation.com"
                     className="block text-[16px] font-extrabold text-[#092D5C] hover:text-[#FF7100] transition-colors"
                   >
-                    info@anticorcar.com
+                    dispatch@cctransportation.com
                   </a>
                   <span className="text-[12.5px] font-medium text-[#64748B]">
-                    Email Us
+                    Executive Inquiries
                   </span>
                 </div>
               </div>
 
-              {/* Row 3: Location */}
+              {/* Row 3: Service Areas */}
               <div className="flex items-center gap-4 group">
                 <div className="w-12 h-12 rounded-full bg-[#FFE6D3] flex items-center justify-center flex-shrink-0 text-[#FF7100] group-hover:bg-[#FF7100] group-hover:text-white transition-colors duration-200 shadow-2xs">
                   <MapPin className="w-5 h-5 stroke-[2]" />
                 </div>
                 <div>
                   <span className="block text-[16px] font-extrabold text-[#092D5C]">
-                    Dubai, Sharjah
+                    Airport & City Transfers
                   </span>
                   <span className="text-[12.5px] font-medium text-[#64748B]">
-                    Our Locations
+                    Executive Chauffeur Service
                   </span>
                 </div>
               </div>
@@ -121,7 +121,7 @@ export const Footer: React.FC<FooterProps> = ({ onBookNowClick }) => {
             <AnticorLogo className="h-6" subtitleClass="hidden" />
           </div>
           <div>
-            © {new Date().getFullYear()} AnticorCar.com. All rights reserved. Renting. Your Way. Premium.
+            © {new Date().getFullYear()} C&C Transportation Service LLC. All rights reserved. Executive Chauffeur • AeroRide.
           </div>
         </div>
 

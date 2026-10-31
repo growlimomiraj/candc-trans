@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, CheckCircle, Calendar, MapPin, Car } from 'lucide-react';
+import { X, CheckCircle, Car } from 'lucide-react';
 import { CarItem } from './FeaturedCars.tsx';
 
 interface BookingModalProps {
@@ -17,9 +17,9 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [location, setLocation] = useState('Dubai, Sharjah');
+  const [serviceType, setServiceType] = useState('AeroRide (Fixed Airport / City Transfer)');
+  const [location, setLocation] = useState('Airport Transfer (Fixed Rate)');
   const [pickUpDate, setPickUpDate] = useState('2026-11-01');
-  const [dropOffDate, setDropOffDate] = useState('2026-11-04');
 
   if (!isOpen) return null;
 
@@ -33,12 +33,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   };
 
   const defaultCar: CarItem = {
-    id: 'rangerover-sport',
-    name: 'Range Rover Sport',
-    category: 'SUV',
-    seats: '5 Seats',
-    price: 240,
-    image: '/assets/hd_car_rangerover.png',
+    id: 'kia-ev9',
+    name: '2026 Kia EV9 (All-Electric)',
+    category: 'AeroRide & Executive Flagship',
+    seats: '6 Seats',
+    price: 95,
+    rateUnit: '/trip',
+    image: '/assets/ai/ai_car_kia_ev9.png',
   };
 
   const currentCar = selectedCar || defaultCar;
@@ -62,10 +63,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               <CheckCircle className="w-10 h-10" />
             </div>
             <h3 className="text-2xl font-bold text-[#092D5C]">
-              Booking Request Confirmed!
+              Reservation Request Received!
             </h3>
             <p className="text-[#64748B] text-sm max-w-xs">
-              Thank you, {name || 'Customer'}. Our luxury dispatch team in {location} will contact you shortly with your reservation details.
+              Thank you, {name || 'Valued Client'}. C&C Transportation 24/7 dispatch will confirm your {currentCar.name} booking shortly.
             </p>
           </div>
         ) : (
@@ -78,10 +79,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({
               </div>
               <div>
                 <h3 className="text-xl font-extrabold text-[#092D5C]">
-                  Book {currentCar.name}
+                  Reserve {currentCar.name}
                 </h3>
                 <p className="text-xs text-[#64748B] font-medium">
-                  {currentCar.category} • ${currentCar.price}/day • Dubai & Sharjah
+                  {currentCar.category} • ${currentCar.price}{currentCar.rateUnit} • Jet Black Fleet
                 </p>
               </div>
             </div>
@@ -95,7 +96,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 <input
                   required
                   type="text"
-                  placeholder="e.g. James Carter"
+                  placeholder="e.g. Robert Smith"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-[#FF7100] focus:ring-1 focus:ring-[#FF7100] outline-none"
@@ -110,7 +111,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   <input
                     required
                     type="tel"
-                    placeholder="+971 50 123 4567"
+                    placeholder="+1 (555) 000-0000"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-[#FF7100] focus:ring-1 focus:ring-[#FF7100] outline-none"
@@ -123,7 +124,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                   <input
                     required
                     type="email"
-                    placeholder="name@email.com"
+                    placeholder="client@executive.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-[#FF7100] focus:ring-1 focus:ring-[#FF7100] outline-none"
@@ -133,55 +134,39 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
               <div>
                 <label className="block text-xs font-semibold text-[#092D5C] mb-1">
-                  Pick-up Location
+                  Service Tier
                 </label>
                 <select
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
+                  value={serviceType}
+                  onChange={(e) => setServiceType(e.target.value)}
                   className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-[#FF7100] focus:ring-1 focus:ring-[#FF7100] outline-none cursor-pointer"
                 >
-                  <option value="Dubai, Sharjah">Dubai, Sharjah</option>
-                  <option value="Dubai International Airport (DXB)">Dubai International Airport (DXB)</option>
-                  <option value="Downtown Dubai & Burj Khalifa">Downtown Dubai & Burj Khalifa</option>
-                  <option value="Dubai Marina & JBR">Dubai Marina & JBR</option>
-                  <option value="Abu Dhabi">Abu Dhabi</option>
+                  <option value="AeroRide (Fixed Airport / City Transfer)">AeroRide (Fixed Cheap Airport / City Transfer)</option>
+                  <option value="C&C Executive (High-Value Hourly Chauffeur)">C&C Executive (High-Value Hourly Chauffeur)</option>
+                  <option value="Executive Business Meeting / Event">Executive Business Meeting / Event</option>
                 </select>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-semibold text-[#092D5C] mb-1">
-                    Pick-up Date
-                  </label>
-                  <input
-                    required
-                    type="date"
-                    value={pickUpDate}
-                    onChange={(e) => setPickUpDate(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs focus:border-[#FF7100] outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-[#092D5C] mb-1">
-                    Drop-off Date
-                  </label>
-                  <input
-                    required
-                    type="date"
-                    value={dropOffDate}
-                    onChange={(e) => setDropOffDate(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs focus:border-[#FF7100] outline-none"
-                  />
-                </div>
+              <div>
+                <label className="block text-xs font-semibold text-[#092D5C] mb-1">
+                  Pick-up Date & Time
+                </label>
+                <input
+                  required
+                  type="date"
+                  value={pickUpDate}
+                  onChange={(e) => setPickUpDate(e.target.value)}
+                  className="w-full px-3 py-2 rounded-xl border border-gray-200 text-xs focus:border-[#FF7100] outline-none"
+                />
               </div>
             </div>
 
             {/* Total Estimate & Submit */}
             <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
               <div>
-                <span className="text-xs text-[#64748B]">Rate / Day</span>
+                <span className="text-xs text-[#64748B]">Starting Rate</span>
                 <div className="text-xl font-black text-[#092D5C]">
-                  ${currentCar.price}
+                  ${currentCar.price} <span className="text-xs font-normal text-gray-500">{currentCar.rateUnit}</span>
                 </div>
               </div>
 
@@ -189,7 +174,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 type="submit"
                 className="bg-[#FF7100] hover:bg-[#E66500] text-white font-bold text-sm px-8 py-3 rounded-full shadow-md hover:shadow-lg transition-all cursor-pointer"
               >
-                Confirm Reservation
+                Confirm Request
               </button>
             </div>
 

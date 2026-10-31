@@ -1,5 +1,5 @@
 import React from 'react';
-import { Car, ShieldCheck, MapPin, Headphones, Play } from 'lucide-react';
+import { Award, ShieldCheck, Zap, Headphones, Play } from 'lucide-react';
 
 interface WhyChooseUsProps {
   onPlayClick?: () => void;
@@ -8,24 +8,24 @@ interface WhyChooseUsProps {
 export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({ onPlayClick }) => {
   const benefits = [
     {
-      icon: <Car className="w-5 h-5 stroke-[2] text-[#FF7100]" />,
-      title: 'Premium Fleet',
-      desc: 'Luxury to Economy',
+      icon: <Award className="w-5 h-5 stroke-[2] text-[#FF7100]" />,
+      title: 'C&C Executive',
+      desc: 'High-Value Business Luxury',
     },
     {
       icon: <ShieldCheck className="w-5 h-5 stroke-[2] text-[#FF7100]" />,
-      title: 'Fully Insured',
-      desc: 'Travel with Confidence',
+      title: 'AeroRide Fixed Rates',
+      desc: 'Predictable Cheap Pricing',
     },
     {
-      icon: <MapPin className="w-5 h-5 stroke-[2] text-[#FF7100]" />,
-      title: 'Flexible Locations',
-      desc: 'Dubai and Beyond',
+      icon: <Zap className="w-5 h-5 stroke-[2] text-[#FF7100]" />,
+      title: 'All-Electric Flagship',
+      desc: 'Black 2026 Kia EV9',
     },
     {
       icon: <Headphones className="w-5 h-5 stroke-[2] text-[#FF7100]" />,
-      title: '24/7 Support',
-      desc: 'Anytime, Anywhere',
+      title: '24/7 Dispatch',
+      desc: 'Discreet, Punctual & Safe',
     },
   ];
 
@@ -50,7 +50,7 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({ onPlayClick }) => {
                       target.src = '/assets/hd_clean_why_choose_us.png';
                     }
                   }}
-                  alt="Why Choose AnticorCar? Driver on tropical coastal road"
+                  alt="Why Choose C&C Transportation Service"
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
 
@@ -60,7 +60,7 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({ onPlayClick }) => {
                     <Play className="w-6 h-6 fill-current ml-1" />
                   </div>
                   <span className="mt-3 text-white font-bold text-sm sm:text-base drop-shadow-md tracking-wide">
-                    Why Choose AnticorCar?
+                    Why Choose C&C Transportation?
                   </span>
                 </div>
               </div>
@@ -78,12 +78,12 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({ onPlayClick }) => {
             {/* Main Heading */}
             <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-extrabold text-[#092D5C] tracking-tight leading-[1.15]">
               <span className="block">More Than Just</span>
-              <span className="block">a Car Rental</span>
+              <span className="block">a Car Service</span>
             </h2>
 
             {/* Description */}
             <p className="text-[#64748B] text-base leading-relaxed">
-              At AnticorCar.com, we make your journey smoother, safer, and more enjoyable. Whether you're here for business or leisure, we've got the perfect ride for you.
+              At C&C Transportation Service, we elevate executive ground travel. Whether you need our high-value C&C Executive Chauffeur for corporate VIPs or AeroRide's fixed-price city and airport transfers, we have the perfect ride for you.
             </p>
 
             {/* 4 Benefits in 2-Column Grid */}

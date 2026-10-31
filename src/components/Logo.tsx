@@ -1,12 +1,11 @@
 import React from 'react';
 
 export const AnticorLogo: React.FC<{ className?: string; subtitleClass?: string }> = ({
-  className = "h-8",
   subtitleClass = "text-[9px] text-[#64748B]"
 }) => {
   return (
-    <div className="flex items-center gap-2 select-none group cursor-pointer">
-      {/* Brand Icon: Dynamic overlapping swooshes */}
+    <div className="flex items-center gap-2.5 select-none group cursor-pointer">
+      {/* Brand Icon: Dynamic overlapping executive swooshes */}
       <svg
         viewBox="0 0 54 44"
         fill="none"
@@ -32,15 +31,15 @@ export const AnticorLogo: React.FC<{ className?: string; subtitleClass?: string 
         />
       </svg>
 
-      {/* Typography */}
+      {/* Typography for C&C Transportation */}
       <div className="flex flex-col leading-none">
         <div className="flex items-baseline font-bold text-xl tracking-tight">
-          <span className="text-[#092D5C]">Anticor</span>
-          <span className="text-[#092D5C]">Car</span>
-          <span className="text-[#FF7100]">.com</span>
+          <span className="text-[#092D5C]">C&C</span>
+          <span className="text-[#092D5C] ml-1.5">Transportation</span>
+          <span className="text-[#FF7100] font-black">.</span>
         </div>
-        <span className={`tracking-normal font-medium mt-0.5 ${subtitleClass}`}>
-          Renting. Your Way. Premium.
+        <span className={`tracking-normal font-semibold mt-0.5 ${subtitleClass}`}>
+          Executive Service • AeroRide Fixed Rates
         </span>
       </div>
     </div>

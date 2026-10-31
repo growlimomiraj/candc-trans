@@ -7,8 +7,9 @@ export interface CarItem {
   category: string;
   seats: string;
   price: number;
+  rateUnit: string;
+  tag?: string;
   image: string;
-  fallbackImage: string;
 }
 
 interface FeaturedCarsProps {
@@ -19,40 +20,44 @@ interface FeaturedCarsProps {
 export const FeaturedCars: React.FC<FeaturedCarsProps> = ({ onRentClick, onViewAllClick }) => {
   const cars: CarItem[] = [
     {
-      id: 'camry',
-      name: 'Toyota Camry',
-      category: 'Sedan',
-      seats: '5 Seats',
-      price: 100,
-      image: '/assets/ai/ai_car_camry.png',
-      fallbackImage: '/assets/hd_clean_car_camry.png',
+      id: 'kia-ev9',
+      name: '2026 Kia EV9 (Electric)',
+      category: 'All-Electric Flagship • Jet Black',
+      seats: '6 Seats',
+      price: 95,
+      rateUnit: '/trip',
+      tag: 'AeroRide Fixed Rate',
+      image: '/assets/ai/ai_car_kia_ev9.png',
     },
     {
-      id: 'bmw-x5',
-      name: 'BMW X5',
-      category: 'SUV',
-      seats: '5 Seats',
-      price: 160,
-      image: '/assets/ai/ai_car_bmw_x5.png',
-      fallbackImage: '/assets/hd_clean_car_bmw_x5.png',
+      id: 'cadillac-escalade',
+      name: 'Cadillac Escalade ESV',
+      category: 'Executive Luxury SUV • Jet Black',
+      seats: '7 Seats',
+      price: 180,
+      rateUnit: '/hr',
+      tag: 'C&C Executive',
+      image: '/assets/ai/ai_car_black_escalade.png',
     },
     {
-      id: 'mercedes-c',
-      name: 'Mercedes C-Class',
-      category: 'Sedan',
+      id: 'bmw-i7',
+      name: 'BMW 7-Series / i7',
+      category: 'Chauffeur Executive • Jet Black',
       seats: '5 Seats',
       price: 150,
-      image: '/assets/ai/ai_car_mercedes_c.png',
-      fallbackImage: '/assets/hd_clean_car_mercedes.png',
+      rateUnit: '/hr',
+      tag: 'C&C Executive',
+      image: '/assets/ai/ai_car_black_bmw.png',
     },
     {
-      id: 'rangerover-sport',
-      name: 'Range Rover Sport',
-      category: 'SUV',
+      id: 'rangerover-lucid',
+      name: 'Range Rover Sport / Lucid',
+      category: 'Ultra-Luxury VIP • Jet Black',
       seats: '5 Seats',
-      price: 240,
+      price: 160,
+      rateUnit: '/hr',
+      tag: 'C&C Executive',
       image: '/assets/ai/ai_car_rangerover_sport.png',
-      fallbackImage: '/assets/hd_clean_car_rangerover.png',
     },
   ];
 
@@ -64,7 +69,7 @@ export const FeaturedCars: React.FC<FeaturedCarsProps> = ({ onRentClick, onViewA
         <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-9 gap-4">
           <div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-[#092D5C] tracking-tight">
-              Explore Our Featured Cars
+              Explore Our All-Black Executive & AeroRide Fleet
             </h2>
             
             {/* Orange decorative underline */}
@@ -78,7 +83,7 @@ export const FeaturedCars: React.FC<FeaturedCarsProps> = ({ onRentClick, onViewA
             onClick={onViewAllClick}
             className="inline-flex items-center gap-1 text-[14px] font-bold text-[#092D5C] hover:text-[#FF7100] transition-colors self-start sm:self-auto cursor-pointer group"
           >
-            <span>View All Cars</span>
+            <span>View All Fleet</span>
             <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
@@ -91,18 +96,19 @@ export const FeaturedCars: React.FC<FeaturedCarsProps> = ({ onRentClick, onViewA
               className="bg-white rounded-2xl border border-gray-100 shadow-[0_4px_20px_-4px_rgba(9,45,92,0.06)] hover:shadow-[0_12px_30px_-6px_rgba(9,45,92,0.12)] transition-all duration-300 p-3.5 flex flex-col group"
             >
               {/* Vehicle Photograph Container */}
-              <div className="w-full aspect-[16/10] rounded-xl overflow-hidden bg-gray-50 mb-3.5 relative">
+              <div className="w-full aspect-[16/10] rounded-xl overflow-hidden bg-gray-900 mb-3.5 relative">
                 <img
                   src={car.image}
-                  onError={(e) => {
-                    const target = e.currentTarget;
-                    if (target.src !== window.location.origin + car.fallbackImage) {
-                      target.src = car.fallbackImage;
-                    }
-                  }}
                   alt={car.name}
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
                 />
+
+                {/* Service Tier Pill Badge */}
+                {car.tag && (
+                  <div className="absolute top-2.5 left-2.5 bg-[#092D5C]/90 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded-md tracking-wider">
+                    {car.tag}
+                  </div>
+                )}
               </div>
 
               {/* Vehicle Information */}
@@ -115,14 +121,14 @@ export const FeaturedCars: React.FC<FeaturedCarsProps> = ({ onRentClick, onViewA
                   {car.category}, {car.seats}
                 </p>
 
-                {/* Price and Rent Button Row */}
+                {/* Price and Book Button Row */}
                 <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between">
                   <div className="flex items-baseline">
                     <span className="text-[18px] font-black text-[#092D5C]">
                       ${car.price}
                     </span>
                     <span className="text-[12.5px] font-medium text-[#64748B] ml-0.5">
-                      /day
+                      {car.rateUnit}
                     </span>
                   </div>
 
@@ -130,7 +136,7 @@ export const FeaturedCars: React.FC<FeaturedCarsProps> = ({ onRentClick, onViewA
                     onClick={() => onRentClick?.(car)}
                     className="border border-[#FF7100] text-[#FF7100] hover:bg-[#FF7100] hover:text-white px-3.5 py-1 rounded-full text-[12.5px] font-semibold transition-all duration-200 cursor-pointer shadow-2xs hover:shadow"
                   >
-                    Rent
+                    Reserve
                   </button>
                 </div>
               </div>
