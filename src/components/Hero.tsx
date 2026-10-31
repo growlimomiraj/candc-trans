@@ -78,10 +78,26 @@ export const Hero: React.FC = () => {
               <div className="relative overflow-hidden rounded-[42px] md:rounded-[56px] shadow-2xl bg-gradient-to-tr from-[#092D5C]/10 to-transparent">
                 <div className="relative rounded-[40px] md:rounded-[54px] overflow-hidden aspect-[1.22/1]">
                   <img
-                    src="/assets/hd_clean_hero_car.png"
+                    src="/assets/ai/ai_hero_rangerover.png"
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      if (target.src !== window.location.origin + '/assets/hd_clean_hero_car.png') {
+                        target.src = '/assets/hd_clean_hero_car.png';
+                      }
+                    }}
                     alt="Premium White Range Rover in Dubai with Burj Khalifa skyline"
                     className="w-full h-full object-cover object-center transform hover:scale-[1.02] transition-transform duration-700 ease-out"
                   />
+                  
+                  {/* Handwritten Script Headline overlay */}
+                  <div className="absolute top-4 right-8 md:top-6 md:right-12 pointer-events-none select-none">
+                    <span className="font-script text-2xl md:text-3xl text-[#092D5C] font-bold tracking-wide -rotate-6 block drop-shadow-sm">
+                      Ride. Rule.
+                    </span>
+                    <span className="font-script text-xl md:text-2xl text-[#092D5C] font-bold tracking-wide -rotate-3 block ml-4 drop-shadow-sm">
+                      Enjoy the Journey!
+                    </span>
+                  </div>
                 </div>
               </div>
 

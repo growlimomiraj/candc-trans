@@ -8,6 +8,7 @@ export interface CarItem {
   seats: string;
   price: number;
   image: string;
+  fallbackImage: string;
 }
 
 interface FeaturedCarsProps {
@@ -23,7 +24,8 @@ export const FeaturedCars: React.FC<FeaturedCarsProps> = ({ onRentClick, onViewA
       category: 'Sedan',
       seats: '5 Seats',
       price: 100,
-      image: '/assets/hd_clean_car_camry.png',
+      image: '/assets/ai/ai_car_camry.png',
+      fallbackImage: '/assets/hd_clean_car_camry.png',
     },
     {
       id: 'bmw-x5',
@@ -31,7 +33,8 @@ export const FeaturedCars: React.FC<FeaturedCarsProps> = ({ onRentClick, onViewA
       category: 'SUV',
       seats: '5 Seats',
       price: 160,
-      image: '/assets/hd_clean_car_bmw_x5.png',
+      image: '/assets/ai/ai_car_bmw_x5.png',
+      fallbackImage: '/assets/hd_clean_car_bmw_x5.png',
     },
     {
       id: 'mercedes-c',
@@ -39,7 +42,8 @@ export const FeaturedCars: React.FC<FeaturedCarsProps> = ({ onRentClick, onViewA
       category: 'Sedan',
       seats: '5 Seats',
       price: 150,
-      image: '/assets/hd_clean_car_mercedes.png',
+      image: '/assets/ai/ai_car_mercedes_c.png',
+      fallbackImage: '/assets/hd_clean_car_mercedes.png',
     },
     {
       id: 'rangerover-sport',
@@ -47,7 +51,8 @@ export const FeaturedCars: React.FC<FeaturedCarsProps> = ({ onRentClick, onViewA
       category: 'SUV',
       seats: '5 Seats',
       price: 240,
-      image: '/assets/hd_clean_car_rangerover.png',
+      image: '/assets/ai/ai_car_rangerover_sport.png',
+      fallbackImage: '/assets/hd_clean_car_rangerover.png',
     },
   ];
 
@@ -62,7 +67,7 @@ export const FeaturedCars: React.FC<FeaturedCarsProps> = ({ onRentClick, onViewA
               Explore Our Featured Cars
             </h2>
             
-            {/* Orange decorative underline matching reference */}
+            {/* Orange decorative underline */}
             <div className="flex items-center gap-1.5 mt-2.5">
               <span className="w-9 h-[3.5px] bg-[#FF7100] rounded-full inline-block" />
               <span className="w-3.5 h-[3.5px] bg-[#FF7100] rounded-full inline-block" />
@@ -89,6 +94,12 @@ export const FeaturedCars: React.FC<FeaturedCarsProps> = ({ onRentClick, onViewA
               <div className="w-full aspect-[16/10] rounded-xl overflow-hidden bg-gray-50 mb-3.5 relative">
                 <img
                   src={car.image}
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (target.src !== window.location.origin + car.fallbackImage) {
+                      target.src = car.fallbackImage;
+                    }
+                  }}
                   alt={car.name}
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
                 />

@@ -50,10 +50,31 @@ export const SpecialOffer: React.FC<SpecialOfferProps> = ({ onBookNowClick }) =>
             <div className="lg:col-span-7 relative h-64 sm:h-80 lg:h-96 w-full overflow-hidden">
               <div className="slant-left-edge w-full h-full relative">
                 <img
-                  src="/assets/hd_clean_special_offer.png"
+                  src="/assets/ai/ai_special_offer_blue_bmw.png"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (target.src !== window.location.origin + '/assets/hd_clean_special_offer.png') {
+                      target.src = '/assets/hd_clean_special_offer.png';
+                    }
+                  }}
                   alt="Blue luxury sports sedan with Up to 20% OFF discount badge"
                   className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700 ease-out"
                 />
+
+                {/* Floating Circular Orange Discount Badge matching reference */}
+                <div className="absolute top-4 right-6 sm:top-6 sm:right-10 z-20">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-22 md:h-22 rounded-full bg-[#FF7100] shadow-[0_6px_20px_rgba(255,113,0,0.45)] border-2 border-white flex flex-col items-center justify-center text-white text-center select-none transform hover:scale-105 transition-transform duration-200">
+                    <span className="text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider leading-none">
+                      UP TO
+                    </span>
+                    <span className="text-xl sm:text-2xl md:text-3xl font-black leading-none my-0.5 tracking-tight">
+                      20%
+                    </span>
+                    <span className="text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider leading-none">
+                      OFF
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
 

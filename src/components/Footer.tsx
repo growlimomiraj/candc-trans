@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, Mail, MapPin, ArrowRight } from 'lucide-react';
+import { ArrowRight, Phone, Mail, MapPin } from 'lucide-react';
 import { AnticorLogo } from './Logo.tsx';
 
 interface FooterProps {
@@ -11,114 +11,108 @@ export const Footer: React.FC<FooterProps> = ({ onBookNowClick }) => {
     <footer id="contact" className="pt-8 pb-14 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Full-width Closing Section Container matching 100% Visual Blueprint */}
+        {/* Full-width Closing Section with Rounded Corners */}
         <div className="relative rounded-3xl md:rounded-[36px] overflow-hidden border border-gray-100 shadow-[0_12px_40px_-10px_rgba(9,45,92,0.12)] bg-[#F8FBFE]">
-          
-          {/* Desktop Direct Graphic Rendering for 100% Pixel Fidelity */}
-          <div className="hidden lg:block relative w-full aspect-[1632/420]">
-            <img
-              src="/assets/hd_cta_banner_exact.png"
-              alt="Ready for Your Next Adventure? AnticorCar.com"
-              className="w-full h-full object-cover select-none"
-            />
-
-            {/* Clickable Overlay for Book Now Button */}
-            <button
-              onClick={onBookNowClick}
-              aria-label="Book Now"
-              className="absolute left-[5.4%] bottom-[20%] w-[15.5%] h-[24%] rounded-full cursor-pointer hover:bg-white/10 active:scale-98 transition-all"
-            />
-
-            {/* Clickable Overlay for Phone */}
-            <a
-              href="tel:+971555123456"
-              aria-label="Call +971 555 123456"
-              className="absolute right-[5%] top-[14%] w-[33%] h-[23%] rounded-xl cursor-pointer hover:bg-orange-50/20 transition-all"
-            />
-
-            {/* Clickable Overlay for Email */}
-            <a
-              href="mailto:info@anticorcar.com"
-              aria-label="Email info@anticorcar.com"
-              className="absolute right-[5%] top-[41%] w-[33%] h-[23%] rounded-xl cursor-pointer hover:bg-orange-50/20 transition-all"
-            />
-          </div>
-
-          {/* Mobile & Tablet Responsive Layout */}
-          <div className="block lg:hidden">
-            <div className="grid grid-cols-1 items-stretch">
+          <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
+            
+            {/* Left Side: Cinematic Road with Dark Navy Overlay (7 cols) */}
+            <div className="lg:col-span-7 relative min-h-[320px] sm:min-h-[360px] flex flex-col justify-center p-8 sm:p-12 lg:p-14 overflow-hidden">
               
-              {/* Left Side: Road Image with Dark Navy Overlay */}
-              <div className="relative min-h-[260px] flex flex-col justify-center p-8 overflow-hidden bg-slate-900">
-                <img
-                  src="/assets/hd_clean_cta_road.png"
-                  alt="Scenic mountain road"
-                  className="absolute inset-0 w-full h-full object-cover opacity-60"
-                />
-                <div className="relative z-10 max-w-sm">
-                  <h2 className="text-2xl font-extrabold text-white tracking-tight leading-tight mb-2">
-                    Ready for Your Next Adventure?
-                  </h2>
-                  <p className="text-slate-200 text-xs font-normal mb-6 leading-relaxed">
-                    Book your dream car today and hit the road with confidence.
-                  </p>
-                  <button
-                    onClick={onBookNowClick}
-                    className="bg-[#FF7100] hover:bg-[#E66500] text-white font-bold text-xs px-6 py-2.5 rounded-full shadow-lg transition-all inline-flex items-center gap-1.5 cursor-pointer"
-                  >
-                    <span>Book Now</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
+              {/* Background Road Image with AI quality */}
+              <img
+                src="/assets/ai/ai_cta_road.png"
+                onError={(e) => {
+                  const target = e.currentTarget;
+                  if (target.src !== window.location.origin + '/assets/hd_clean_cta_road.png') {
+                    target.src = '/assets/hd_clean_cta_road.png';
+                  }
+                }}
+                alt="Winding mountain road surrounded by greenery"
+                className="absolute inset-0 w-full h-full object-cover object-center"
+              />
 
-              {/* Right Side: Contact Information */}
-              <div className="bg-[#F8FBFE] p-6 sm:p-8 space-y-4">
+              {/* Dark Navy Overlay matching reference (#092D5C at 80% opacity) */}
+              <div className="absolute inset-0 bg-[#092D5C]/80 mix-blend-multiply" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#092D5C] via-[#092D5C]/85 to-transparent" />
+
+              {/* Content on Left */}
+              <div className="relative z-10 max-w-md">
+                <h2 className="text-2xl sm:text-3xl lg:text-[38px] font-extrabold text-white tracking-tight leading-tight mb-3">
+                  Ready for Your Next Adventure?
+                </h2>
                 
-                {/* Phone */}
-                <a href="tel:+971555123456" className="flex items-center gap-3.5 group">
-                  <div className="w-10 h-10 rounded-full bg-[#FFE6D3] flex items-center justify-center flex-shrink-0 text-[#FF7100]">
-                    <Phone className="w-4 h-4 stroke-[2]" />
-                  </div>
-                  <div>
-                    <span className="block text-[15px] font-extrabold text-[#092D5C] group-hover:text-[#FF7100] transition-colors">
-                      +971 555 123456
-                    </span>
-                    <span className="text-xs text-[#64748B]">Call Us</span>
-                  </div>
-                </a>
+                <p className="text-slate-200 text-sm sm:text-[15px] font-normal mb-7 leading-relaxed">
+                  Book your dream car today and hit the road with confidence.
+                </p>
 
-                {/* Email */}
-                <a href="mailto:info@anticorcar.com" className="flex items-center gap-3.5 group">
-                  <div className="w-10 h-10 rounded-full bg-[#FFE6D3] flex items-center justify-center flex-shrink-0 text-[#FF7100]">
-                    <Mail className="w-4 h-4 stroke-[2]" />
-                  </div>
-                  <div>
-                    <span className="block text-[15px] font-extrabold text-[#092D5C] group-hover:text-[#FF7100] transition-colors">
-                      info@anticorcar.com
-                    </span>
-                    <span className="text-xs text-[#64748B]">Email Us</span>
-                  </div>
-                </a>
-
-                {/* Location */}
-                <div className="flex items-center gap-3.5">
-                  <div className="w-10 h-10 rounded-full bg-[#FFE6D3] flex items-center justify-center flex-shrink-0 text-[#FF7100]">
-                    <MapPin className="w-4 h-4 stroke-[2]" />
-                  </div>
-                  <div>
-                    <span className="block text-[15px] font-extrabold text-[#092D5C]">
-                      Dubai, Sharjah
-                    </span>
-                    <span className="text-xs text-[#64748B]">Our Locations</span>
-                  </div>
-                </div>
-
+                <button
+                  onClick={onBookNowClick}
+                  className="bg-[#FF7100] hover:bg-[#E66500] text-white font-bold text-sm sm:text-[15px] px-7 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 inline-flex items-center gap-2 cursor-pointer group"
+                >
+                  <span>Book Now</span>
+                  <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                </button>
               </div>
 
             </div>
-          </div>
 
+            {/* Right Side: White Background with 3 Contact Rows (5 cols) */}
+            <div className="lg:col-span-5 bg-[#F8FBFE] p-8 sm:p-10 lg:p-12 flex flex-col justify-center space-y-6">
+              
+              {/* Row 1: Phone */}
+              <div className="flex items-center gap-4 group">
+                <div className="w-12 h-12 rounded-full bg-[#FFE6D3] flex items-center justify-center flex-shrink-0 text-[#FF7100] group-hover:bg-[#FF7100] group-hover:text-white transition-colors duration-200 shadow-2xs">
+                  <Phone className="w-5 h-5 stroke-[2]" />
+                </div>
+                <div>
+                  <a
+                    href="tel:+971555123456"
+                    className="block text-[16px] font-extrabold text-[#092D5C] hover:text-[#FF7100] transition-colors"
+                  >
+                    +971 555 123456
+                  </a>
+                  <span className="text-[12.5px] font-medium text-[#64748B]">
+                    Call Us
+                  </span>
+                </div>
+              </div>
+
+              {/* Row 2: Email */}
+              <div className="flex items-center gap-4 group">
+                <div className="w-12 h-12 rounded-full bg-[#FFE6D3] flex items-center justify-center flex-shrink-0 text-[#FF7100] group-hover:bg-[#FF7100] group-hover:text-white transition-colors duration-200 shadow-2xs">
+                  <Mail className="w-5 h-5 stroke-[2]" />
+                </div>
+                <div>
+                  <a
+                    href="mailto:info@anticorcar.com"
+                    className="block text-[16px] font-extrabold text-[#092D5C] hover:text-[#FF7100] transition-colors"
+                  >
+                    info@anticorcar.com
+                  </a>
+                  <span className="text-[12.5px] font-medium text-[#64748B]">
+                    Email Us
+                  </span>
+                </div>
+              </div>
+
+              {/* Row 3: Location */}
+              <div className="flex items-center gap-4 group">
+                <div className="w-12 h-12 rounded-full bg-[#FFE6D3] flex items-center justify-center flex-shrink-0 text-[#FF7100] group-hover:bg-[#FF7100] group-hover:text-white transition-colors duration-200 shadow-2xs">
+                  <MapPin className="w-5 h-5 stroke-[2]" />
+                </div>
+                <div>
+                  <span className="block text-[16px] font-extrabold text-[#092D5C]">
+                    Dubai, Sharjah
+                  </span>
+                  <span className="text-[12.5px] font-medium text-[#64748B]">
+                    Our Locations
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
         </div>
 
         {/* Bottom Sub-footer */}

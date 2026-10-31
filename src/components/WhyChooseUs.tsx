@@ -1,5 +1,5 @@
 import React from 'react';
-import { Car, ShieldCheck, MapPin, Headphones } from 'lucide-react';
+import { Car, ShieldCheck, MapPin, Headphones, Play } from 'lucide-react';
 
 interface WhyChooseUsProps {
   onPlayClick?: () => void;
@@ -34,7 +34,7 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({ onPlayClick }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           
-          {/* Left Column: Slanted Cinematic Driving Photo */}
+          {/* Left Column: Slanted Driving Photo */}
           <div className="lg:col-span-6 relative">
             <div
               onClick={onPlayClick}
@@ -43,10 +43,26 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({ onPlayClick }) => {
               {/* Slanted Container */}
               <div className="slant-right-edge relative aspect-[1.12/1] w-full overflow-hidden bg-slate-900">
                 <img
-                  src="/assets/hd_clean_why_choose_us.png"
+                  src="/assets/ai/ai_why_choose_us_driver.png"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    if (target.src !== window.location.origin + '/assets/hd_clean_why_choose_us.png') {
+                      target.src = '/assets/hd_clean_why_choose_us.png';
+                    }
+                  }}
                   alt="Why Choose AnticorCar? Driver on tropical coastal road"
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
                 />
+
+                {/* Play Button & Caption Overlay */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center p-4 bg-black/15 group-hover:bg-black/25 transition-colors">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#FF7100] text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                    <Play className="w-6 h-6 fill-current ml-1" />
+                  </div>
+                  <span className="mt-3 text-white font-bold text-sm sm:text-base drop-shadow-md tracking-wide">
+                    Why Choose AnticorCar?
+                  </span>
+                </div>
               </div>
             </div>
           </div>
