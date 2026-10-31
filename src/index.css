@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-primary-navy: #092D5C;
+    --color-brand-orange: #FF7100;
+    --color-brand-orange-hover: #E66500;
+    --color-light-blue: #EAF5FC;
+    --color-text-muted: #64748B;
+  }
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    color: #1E293B;
+    background-color: #FFFFFF;
+    overflow-x: hidden;
+  }
+}
+
+.font-script {
+  font-family: 'Caveat', cursive;
+}
+
+/* Custom clip paths for pixel-perfect recreation */
+.slant-right-edge {
+  clip-path: polygon(0 0, 100% 0, 78% 100%, 0 100%);
+}
+
+@media (max-width: 1024px) {
+  .slant-right-edge {
+    clip-path: none;
+  }
+}
+
+.slant-left-edge {
+  clip-path: polygon(22% 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+@media (max-width: 1024px) {
+  .slant-left-edge {
+    clip-path: none;
+  }
+}
+
+.cta-diagonal-split {
+  clip-path: polygon(0 0, 100% 0, 82% 100%, 0 100%);
+}
+
+@media (max-width: 1024px) {
+  .cta-diagonal-split {
+    clip-path: none;
+  }
+}
+
+/* Hero container curved flow */
+.hero-image-curve {
+  border-radius: 42% 58% 60% 40% / 45% 45% 55% 55%;
+}
+
+/* Smooth transitions */
+.transition-smooth {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
