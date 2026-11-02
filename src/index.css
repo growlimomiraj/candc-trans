@@ -2,62 +2,141 @@
 
 @layer base {
   :root {
-    --color-primary-navy: #092D5C;
-    --color-brand-orange: #FF7100;
-    --color-brand-orange-hover: #E66500;
-    --color-light-blue: #EAF5FC;
-    --color-text-muted: #64748B;
+    --e-global-color-primary: #FF0000;
+    --e-global-color-secondary: #000000;
+    --e-global-color-text: #FFFFFF;
+    --e-global-color-accent: #FF0000;
+    --font-playfair: 'Playfair Display', serif;
+    --font-poppins: 'Poppins', sans-serif;
+    --font-montserrat: 'Montserrat', sans-serif;
+    --font-orbitron: 'Orbitron', sans-serif;
   }
 
   body {
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    color: #1E293B;
-    background-color: #FFFFFF;
+    font-family: var(--font-poppins);
+    background-color: #101010;
+    color: #FFFFFF;
     overflow-x: hidden;
   }
 }
 
-.font-script {
-  font-family: 'Caveat', cursive;
+.font-playfair {
+  font-family: 'Playfair Display', serif;
 }
 
-/* Custom clip paths for pixel-perfect recreation */
-.slant-right-edge {
-  clip-path: polygon(0 0, 100% 0, 78% 100%, 0 100%);
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
 }
 
-@media (max-width: 1024px) {
-  .slant-right-edge {
-    clip-path: none;
+.font-montserrat {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif;
+}
+
+@keyframes kenBurnsZoomIn {
+  0% {
+    transform: scale3d(1, 1, 1) translate3d(0, 0, 0);
+  }
+  100% {
+    transform: scale3d(1.25, 1.25, 1) translate3d(0, 0, 0);
   }
 }
 
-.slant-left-edge {
-  clip-path: polygon(22% 0, 100% 0, 100% 100%, 0% 100%);
+.bbc-hero-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  opacity: 0;
+  transition: opacity 1500ms ease-in-out;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform: scale3d(1, 1, 1) translate3d(0, 0, 0);
 }
 
-@media (max-width: 1024px) {
-  .slant-left-edge {
-    clip-path: none;
-  }
+.bbc-hero-slide--active {
+  opacity: 1;
+  z-index: 2;
+  animation: kenBurnsZoomIn 7000ms linear forwards;
 }
 
-.cta-diagonal-split {
-  clip-path: polygon(0 0, 100% 0, 82% 100%, 0 100%);
+.bbc-hero-slide--prev {
+  opacity: 0;
+  z-index: 1;
+  animation: kenBurnsZoomIn 7000ms linear forwards;
 }
 
-@media (max-width: 1024px) {
-  .cta-diagonal-split {
-    clip-path: none;
-  }
+/* Custom radio button matching red dot on white card */
+.bbc-radio {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #9CA3AF;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  display: inline-grid;
+  place-content: center;
+  cursor: pointer;
+  vertical-align: middle;
 }
 
-/* Hero container curved flow */
-.hero-image-curve {
-  border-radius: 42% 58% 60% 40% / 45% 45% 55% 55%;
+.bbc-radio::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  background-color: #FF0000;
 }
 
-/* Smooth transitions */
-.transition-smooth {
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+.bbc-radio:checked {
+  border-color: #FF0000;
+}
+
+.bbc-radio:checked::before {
+  transform: scale(1);
+}
+
+/* Form input fields matching exact card screenshot */
+.bbc-input {
+  background-color: #F8F9FA;
+  border: 1px solid #D1D5DB;
+  color: #111111;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  border-radius: 4px;
+  padding: 10px 14px;
+  width: 100%;
+  transition: outline 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.bbc-input::placeholder {
+  color: #9CA3AF;
+  font-size: 14px;
+}
+
+.bbc-input:focus {
+  background-color: #FFFFFF;
+  outline: 2px solid #FF0000;
+  border-color: transparent;
+}
+
+/* Custom styled select with chevron */
+select.bbc-input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23374151'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
+  padding-right: 36px;
+  cursor: pointer;
 }
