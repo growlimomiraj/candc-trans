@@ -17,61 +17,181 @@ const ORIGIN_2025_04 = 'https://bottlebuschicago.com/wp-content/uploads/2025/04'
 const cdnUrl = (rawUrl: string, width: number, quality = 82) =>
   `https://wsrv.nl/?url=${encodeURIComponent(rawUrl)}&w=${width}&q=${quality}&output=webp`;
 
-const HERO_RAW_IMAGES = [
-  `${ORIGIN_2025_02}/rsw-1024h-770cg-true.png`,
-  `${ORIGIN_2025_02}/rsw-2304h-1732cg-truem.png`,
-  `${ORIGIN_2025_02}/rsw-1200cg-truem.png`,
-  `${ORIGIN_2025_02}/rsw-1200h-1200cg-true.webp`
+const HERO_SLIDESHOW_IMAGES = [
+  {
+    src: '/fleet/seattle-shuttle-main.png',
+    fallbackSrc: 'https://seattleexpressshuttle.com/wp-content/uploads/2026/05/ChatGPT-Image-May-12-2026-11_24_28-AM.png'
+  },
+  {
+    src: '/fleet/seattle-shuttle-side.jpg',
+    fallbackSrc: 'https://seattleexpressshuttle.com/wp-content/uploads/2026/05/pexels-eddievaldes155-19871522-scaled.jpg'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1600&q=85',
+    fallbackSrc: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1600&q=85'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1548574505-5e239809ee19?auto=format&fit=crop&w=1600&q=85',
+    fallbackSrc: 'https://images.unsplash.com/photo-1548574505-5e239809ee19?auto=format&fit=crop&w=1600&q=85'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1600&q=85',
+    fallbackSrc: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1600&q=85'
+  }
 ];
 
-const HERO_SLIDESHOW_IMAGES = HERO_RAW_IMAGES.map((raw) => ({
-  src: cdnUrl(raw, 1600, 86),
-  fallbackSrc: raw
-}));
-
-const RAW_GALLERY_DEFS: Array<{ id: number; file: string; width: number; height: number; title: string }> = [
-  { id: 1, file: 'rsw-2480h-3307cg-truem.png', width: 720, height: 960, title: 'Seattle Express Shuttle Fleet 1' },
-  { id: 2, file: 'IMG_2687.webp', width: 960, height: 720, title: 'Seattle Express Shuttle Fleet 2' },
-  { id: 3, file: 'IMG_7070.webp', width: 960, height: 960, title: 'Seattle Express Shuttle Fleet 3' },
-  { id: 4, file: 'rsw-1024h-770cg-true.png', width: 960, height: 722, title: 'Seattle Express Shuttle Fleet 4' },
-  { id: 5, file: 'rsw-1024h-512cg-true.png', width: 960, height: 480, title: 'Seattle Express Shuttle Fleet 5' },
-  { id: 6, file: 'rsw-1024h-512cg-truem.png', width: 960, height: 480, title: 'Seattle Express Shuttle Fleet 6' },
-  { id: 7, file: 'rsw-1200h-1200cg-truem.png', width: 960, height: 960, title: 'Seattle Express Shuttle Fleet 7' },
-  { id: 8, file: 'rsw-1200h-1600cg-true.png', width: 720, height: 960, title: 'Seattle Express Shuttle Fleet 8' },
-  { id: 9, file: 'rsw-1200cg-truem.png', width: 960, height: 638, title: 'Seattle Express Shuttle Fleet 9' },
-  { id: 10, file: 'rsw-1200h-902cg-true-2.png', width: 960, height: 722, title: 'Seattle Express Shuttle Fleet 10' },
-  { id: 11, file: 'rsw-1200h-902cg-true-3.png', width: 960, height: 722, title: 'Seattle Express Shuttle Fleet 11' },
-  { id: 12, file: 'rsw-2048h-1540cg-true.png', width: 960, height: 722, title: 'Seattle Express Shuttle Fleet 12' },
-  { id: 13, file: 'rsw-1440cg-true.png', width: 960, height: 960, title: 'Seattle Express Shuttle Fleet 13' },
-  { id: 14, file: 'rsw-1200h-902cg-true.png', width: 960, height: 722, title: 'Seattle Express Shuttle Fleet 14' },
-  { id: 15, file: 'rsw-2304h-1732cg-truem-2.png', width: 960, height: 722, title: 'Seattle Express Shuttle Fleet 15' },
-  { id: 16, file: 'rsw-2304h-1732cg-truem.png', width: 960, height: 722, title: 'Seattle Express Shuttle Fleet 16' },
-  { id: 17, file: 'rsw-2480h-1240cg-true.png', width: 960, height: 480, title: 'Seattle Express Shuttle Fleet 17' },
-  { id: 18, file: 'rsw-834h-834cg-true.png', width: 834, height: 834, title: 'Seattle Express Shuttle Fleet 18' },
-  { id: 19, file: 'rsw-776h-776cg-true-2.png', width: 776, height: 775, title: 'Seattle Express Shuttle Fleet 19' },
-  { id: 20, file: 'rsw-768h-577cg-true.png', width: 768, height: 577, title: 'Seattle Express Shuttle Fleet 20' },
-  { id: 21, file: 'rsw-776h-776cg-true.png', width: 776, height: 776, title: 'Seattle Express Shuttle Fleet 21' },
-  { id: 22, file: 'rsw-1200h-1200cg-true.webp', width: 960, height: 960, title: 'Seattle Express Shuttle Fleet 22' }
+const GALLERY_ITEMS: GalleryItem[] = [
+  {
+    id: 1,
+    src: '/fleet/seattle-shuttle-main.png',
+    hdSrc: '/fleet/seattle-shuttle-main.png',
+    fallbackSrc: 'https://seattleexpressshuttle.com/wp-content/uploads/2026/05/ChatGPT-Image-May-12-2026-11_24_28-AM.png',
+    width: 960,
+    height: 720,
+    title: 'Seattle Express Shuttle — Mercedes Executive Sprinter'
+  },
+  {
+    id: 2,
+    src: '/fleet/seattle-shuttle-side.jpg',
+    hdSrc: '/fleet/seattle-shuttle-side.jpg',
+    fallbackSrc: 'https://seattleexpressshuttle.com/wp-content/uploads/2026/05/pexels-eddievaldes155-19871522-scaled.jpg',
+    width: 960,
+    height: 720,
+    title: 'Seattle Express Shuttle — Luxury Passenger Van'
+  },
+  {
+    id: 3,
+    src: 'https://images.unsplash.com/photo-1548574505-5e239809ee19?auto=format&fit=crop&w=800&q=80',
+    hdSrc: 'https://images.unsplash.com/photo-1548574505-5e239809ee19?auto=format&fit=crop&w=1600&q=85',
+    fallbackSrc: 'https://images.unsplash.com/photo-1548574505-5e239809ee19?auto=format&fit=crop&w=1600&q=85',
+    width: 960,
+    height: 640,
+    title: 'Cruise Port Transfer — Pier 66 & Pier 91'
+  },
+  {
+    id: 4,
+    src: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800&q=80',
+    hdSrc: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1600&q=85',
+    fallbackSrc: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1600&q=85',
+    width: 960,
+    height: 720,
+    title: 'Sea-Tac Airport Executive Shuttle'
+  },
+  {
+    id: 5,
+    src: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
+    hdSrc: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1600&q=85',
+    fallbackSrc: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1600&q=85',
+    width: 960,
+    height: 640,
+    title: 'Luxury Executive Black Car SUV'
+  },
+  {
+    id: 6,
+    src: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=800&q=80',
+    hdSrc: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=1600&q=85',
+    fallbackSrc: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=1600&q=85',
+    width: 960,
+    height: 640,
+    title: 'Professional Chauffeur Service'
+  },
+  {
+    id: 7,
+    src: 'https://images.unsplash.com/photo-1502175353174-a7a70e73b362?auto=format&fit=crop&w=800&q=80',
+    hdSrc: 'https://images.unsplash.com/photo-1502175353174-a7a70e73b362?auto=format&fit=crop&w=1600&q=85',
+    fallbackSrc: 'https://images.unsplash.com/photo-1502175353174-a7a70e73b362?auto=format&fit=crop&w=1600&q=85',
+    width: 960,
+    height: 640,
+    title: 'Seattle Waterfront & Cruise Terminals'
+  },
+  {
+    id: 8,
+    src: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=800&q=80',
+    hdSrc: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=1600&q=85',
+    fallbackSrc: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=1600&q=85',
+    width: 960,
+    height: 720,
+    title: 'Executive Passenger Sprinter Van'
+  },
+  {
+    id: 9,
+    src: 'https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?auto=format&fit=crop&w=800&q=80',
+    hdSrc: 'https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?auto=format&fit=crop&w=1600&q=85',
+    fallbackSrc: 'https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?auto=format&fit=crop&w=1600&q=85',
+    width: 960,
+    height: 640,
+    title: 'Private Chauffeur Airport SUV'
+  },
+  {
+    id: 10,
+    src: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80',
+    hdSrc: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1600&q=85',
+    fallbackSrc: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1600&q=85',
+    width: 960,
+    height: 720,
+    title: 'Luxury Group Express Coach'
+  },
+  {
+    id: 11,
+    src: 'https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&w=800&q=80',
+    hdSrc: 'https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&w=1600&q=85',
+    fallbackSrc: 'https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&w=1600&q=85',
+    width: 960,
+    height: 640,
+    title: 'Airport Luggage & Boarding Assistance'
+  },
+  {
+    id: 12,
+    src: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
+    hdSrc: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1600&q=85',
+    fallbackSrc: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1600&q=85',
+    width: 960,
+    height: 640,
+    title: 'Executive Black SUV Fleet'
+  },
+  {
+    id: 13,
+    src: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80',
+    hdSrc: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=1600&q=85',
+    fallbackSrc: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=1600&q=85',
+    width: 960,
+    height: 640,
+    title: 'Group Cruise Charter Service'
+  },
+  {
+    id: 14,
+    src: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80',
+    hdSrc: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1600&q=85',
+    fallbackSrc: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1600&q=85',
+    width: 960,
+    height: 640,
+    title: 'Private Chauffeur Sedan'
+  },
+  {
+    id: 15,
+    src: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    hdSrc: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=85',
+    fallbackSrc: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=85',
+    width: 960,
+    height: 640,
+    title: 'Seattle Pier 91 & Cruise Line Transfer'
+  },
+  {
+    id: 16,
+    src: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=800&q=80',
+    hdSrc: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1600&q=85',
+    fallbackSrc: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1600&q=85',
+    width: 960,
+    height: 640,
+    title: 'Executive Corporate Group Transfer'
+  }
 ];
-
-const GALLERY_ITEMS: GalleryItem[] = RAW_GALLERY_DEFS.map((item) => {
-  const raw = `${ORIGIN_2025_02}/${item.file}`;
-  return {
-    id: item.id,
-    src: cdnUrl(raw, 800, 80),
-    hdSrc: cdnUrl(raw, 1600, 85),
-    fallbackSrc: raw,
-    width: item.width,
-    height: item.height,
-    title: item.title
-  };
-});
 
 const MASONRY_COLUMNS: GalleryItem[][] = [
-  [GALLERY_ITEMS[0], GALLERY_ITEMS[4], GALLERY_ITEMS[8], GALLERY_ITEMS[12], GALLERY_ITEMS[16], GALLERY_ITEMS[20]],
-  [GALLERY_ITEMS[1], GALLERY_ITEMS[5], GALLERY_ITEMS[9], GALLERY_ITEMS[13], GALLERY_ITEMS[17], GALLERY_ITEMS[21]],
-  [GALLERY_ITEMS[2], GALLERY_ITEMS[6], GALLERY_ITEMS[10], GALLERY_ITEMS[14], GALLERY_ITEMS[18]],
-  [GALLERY_ITEMS[3], GALLERY_ITEMS[7], GALLERY_ITEMS[11], GALLERY_ITEMS[15], GALLERY_ITEMS[19]]
+  [GALLERY_ITEMS[0], GALLERY_ITEMS[4], GALLERY_ITEMS[8], GALLERY_ITEMS[12]],
+  [GALLERY_ITEMS[1], GALLERY_ITEMS[5], GALLERY_ITEMS[9], GALLERY_ITEMS[13]],
+  [GALLERY_ITEMS[2], GALLERY_ITEMS[6], GALLERY_ITEMS[10], GALLERY_ITEMS[14]],
+  [GALLERY_ITEMS[3], GALLERY_ITEMS[7], GALLERY_ITEMS[11], GALLERY_ITEMS[15]]
 ];
 
 interface SubmittedQuoteData {
