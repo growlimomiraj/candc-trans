@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut, CheckCircle2, Plane, Users, Hotel, PhoneCall, ArrowRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut, CheckCircle2, Plane, Users, Hotel, PhoneCall, ArrowRight, Clock, Sparkles, Copy, Check, MessageSquare, MapPin, ShieldCheck, Zap } from 'lucide-react';
 
 interface GalleryItem {
   id: number;
@@ -273,6 +273,66 @@ export default function App() {
 
   const [formError, setFormError] = useState<string>('');
   const [submittedQuote, setSubmittedQuote] = useState<SubmittedQuoteData | null>(null);
+
+  // Smart Interactive State
+  const [smartNotification, setSmartNotification] = useState<string>('');
+  const [copiedHotline, setCopiedHotline] = useState<boolean>(false);
+  const [seattleTime, setSeattleTime] = useState<string>('');
+  const [activeServiceTab, setActiveServiceTab] = useState<'airport' | 'crew' | 'hotel'>('airport');
+
+  // Live Seattle Local Time (Pacific Time)
+  useEffect(() => {
+    const updateTime = () => {
+      try {
+        const timeStr = new Intl.DateTimeFormat('en-US', {
+          timeZone: 'America/Los_Angeles',
+          hour: 'numeric',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true
+        }).format(new Date());
+        setSeattleTime(timeStr);
+      } catch {
+        setSeattleTime('2:00 PM PST');
+      }
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Smart Pre-fill and Scroll Handler
+  const handleSmartSelect = (
+    service: string,
+    trip: string,
+    pickup: string,
+    dropoff: string,
+    hours = '3',
+    pax = '4'
+  ) => {
+    setServiceType(service);
+    setTripType(trip);
+    setPickupLocation(pickup);
+    setDropoffLocation(dropoff);
+    setBookingHours(hours);
+    setPassengers(pax);
+    setSmartNotification(`Smart Selected: ${service} · Route loaded into instant calculator`);
+
+    const el = document.getElementById('quote-card');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.classList.add('ring-4', 'ring-[#F60102]', 'ring-offset-4', 'transition-all');
+      setTimeout(() => {
+        el.classList.remove('ring-4', 'ring-[#F60102]', 'ring-offset-4');
+      }, 2500);
+    }
+  };
+
+  const handleCopyHotline = () => {
+    navigator.clipboard.writeText('+1 (206) 504-6000');
+    setCopiedHotline(true);
+    setTimeout(() => setCopiedHotline(false), 2000);
+  };
 
   // Lightbox Slideshow State
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -594,7 +654,22 @@ export default function App() {
             </div>
 
             {/* Right Column: Instant Online Quote Box (White Card) */}
-            <div className="w-full lg:w-[50%] bg-white text-[#111111] border border-gray-200 shadow-2xl rounded-[12px] p-[20px] md:p-[40px]">
+            <div id="quote-card" className="w-full lg:w-[50%] bg-white text-[#111111] border border-gray-200 shadow-2xl rounded-[12px] p-[20px] md:p-[40px] transition-all duration-300">
+              {smartNotification && (
+                <div className="mb-4 p-3 bg-red-50 border border-[#F60102]/30 rounded-lg flex items-center justify-between text-xs font-montserrat text-[#111111] animate-fadeIn">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-[#F60102] shrink-0" />
+                    <span><strong>{smartNotification}</strong></span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setSmartNotification('')}
+                    className="text-gray-400 hover:text-black font-bold text-sm ml-2"
+                  >
+                    ×
+                  </button>
+                </div>
+              )}
               <h2 className="font-playfair text-[19px] md:text-[26px] font-bold uppercase text-center text-[#111111] mb-[20px]">
                 Instant Online Quote
               </h2>
@@ -918,6 +993,22 @@ export default function App() {
                     </div>
                   )}
 
+                  {/* Smart Live Route Indicator */}
+                  {pickupLocation && dropoffLocation && (
+                    <div className="p-3 bg-red-50/90 border border-[#F60102]/25 rounded-md text-xs font-montserrat text-[#111111] flex items-center justify-between shadow-sm">
+                      <div className="flex items-center gap-2">
+                        <Sparkles className="w-4 h-4 text-[#F60102] shrink-0" />
+                        <div>
+                          <span className="font-semibold text-[#111111]">Smart Route Calculated:</span>{' '}
+                          <span className="text-gray-600 font-medium">{pickupLocation} ➔ {dropoffLocation}</span>
+                        </div>
+                      </div>
+                      <span className="bg-[#F60102] text-white px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider shrink-0">
+                        Zero Surge
+                      </span>
+                    </div>
+                  )}
+
                   {/* Submit Button */}
                   <div className="pt-[4px]">
                     <button
@@ -995,148 +1086,432 @@ export default function App() {
         </section>
 
         {/* -------------------------------------------------------------------
-            SECTION: AIRPORT, CREW & HOTEL SHUTTLE SERVICES
+            SECTION: SMART AIRPORT, CREW & HOTEL SHUTTLE SERVICES
         ------------------------------------------------------------------- */}
-        <section className="w-full bg-[#141414] py-[50px] md:py-[80px] px-[20px] border-t border-b border-white/5">
-          <div className="max-w-[1140px] mx-auto">
+        <section className="w-full bg-[#141414] py-[50px] md:py-[80px] px-[20px] border-t border-b border-white/5 relative overflow-hidden">
+          {/* Subtle Background Glow */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-[#F60102]/5 blur-[120px] pointer-events-none rounded-full" />
+
+          <div className="max-w-[1140px] mx-auto relative z-10">
             {/* Header */}
-            <div className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
-              <span className="text-[#F60102] tracking-[0.2em] text-xs font-bold uppercase font-montserrat block mb-2">
-                Premier Transportation Solutions
-              </span>
+            <div className="text-center max-w-2xl mx-auto mb-10 md:mb-12">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F60102]/10 border border-[#F60102]/30 text-[#F60102] text-xs font-bold uppercase font-montserrat tracking-widest mb-3">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Smart Transportation Hub</span>
+              </div>
               <h2 className="font-playfair text-[26px] md:text-[40px] font-bold uppercase leading-tight text-white">
                 Specialized Seattle Services
               </h2>
               <div className="w-16 h-[2px] bg-[#F60102] mx-auto mt-4 mb-4" />
               <p className="font-montserrat text-white/70 text-sm md:text-base leading-relaxed">
-                Direct express connections between Sea-Tac International Airport, downtown Seattle partner hotels, and regional cruise terminals.
+                Click any service below to instantly pre-fill the smart quote calculator or connect directly with our 24/7 Seattle dispatch center.
               </p>
             </div>
 
-            {/* Three Boxes in One Line */}
+            {/* Three Smart Boxes in One Line */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-stretch">
               {/* Box 1: Airport Transfers */}
-              <div className="bg-[#1a1a1a] hover:bg-[#202020] border border-white/10 hover:border-[#F60102]/60 rounded-lg p-6 md:p-8 flex flex-col justify-between transition-all duration-300 group shadow-lg hover:shadow-2xl hover:shadow-[#F60102]/10">
+              <div 
+                className={`relative bg-[#1a1a1a] hover:bg-[#202020] border rounded-xl p-6 md:p-8 flex flex-col justify-between transition-all duration-300 group shadow-lg hover:shadow-2xl hover:shadow-[#F60102]/15 ${
+                  activeServiceTab === 'airport' ? 'border-[#F60102]/70 ring-1 ring-[#F60102]/40' : 'border-white/10 hover:border-[#F60102]/50'
+                }`}
+              >
                 <div>
-                  <div className="w-14 h-14 rounded-full bg-[#F60102]/15 border border-[#F60102]/30 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#F60102] transition-all duration-300">
-                    <Plane className="w-7 h-7 text-[#F60102] group-hover:text-white transition-colors" />
+                  {/* Top Status & Icon */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="w-14 h-14 rounded-full bg-[#F60102]/15 border border-[#F60102]/30 flex items-center justify-center group-hover:scale-110 group-hover:bg-[#F60102] transition-all duration-300">
+                      <Plane className="w-7 h-7 text-[#F60102] group-hover:text-white transition-colors" />
+                    </div>
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-semibold font-montserrat">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      Flight Radar Active
+                    </span>
                   </div>
-                  <h3 className="font-playfair text-[22px] md:text-[24px] font-bold text-white mb-3 group-hover:text-[#F60102] transition-colors">
+
+                  <h3 className="font-playfair text-[22px] md:text-[24px] font-bold text-white mb-2 group-hover:text-[#F60102] transition-colors">
                     Airport Transfers
                   </h3>
-                  <p className="font-montserrat text-white/70 text-sm leading-relaxed mb-6">
-                    Direct, non-stop private and group transfers to and from Seattle-Tacoma International Airport (SEA). Features real-time flight tracking, curbside meet &amp; greet, and full luggage assistance.
+                  <p className="font-montserrat text-white/70 text-sm leading-relaxed mb-5">
+                    Non-stop private transfers to/from Seattle-Tacoma International Airport (SEA). Real-time flight tracking with zero delay penalties.
                   </p>
+
+                  {/* Smart Quick-Route Chips */}
+                  <div className="mb-6 space-y-2">
+                    <span className="text-[11px] uppercase tracking-wider font-bold text-white/50 block font-montserrat">
+                      ⚡ Quick-Select Route:
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => handleSmartSelect(
+                          'Sea-Tac Airport Express Transfer',
+                          'Point to Point',
+                          'Sea-Tac International Airport (SEA)',
+                          'Downtown Seattle Hotel',
+                          '2',
+                          '3'
+                        )}
+                        className="px-2.5 py-1 rounded bg-white/5 hover:bg-[#F60102] hover:text-white text-white/80 border border-white/10 text-xs font-montserrat transition-colors cursor-pointer text-left"
+                      >
+                        SEA ➔ Downtown ($65)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleSmartSelect(
+                          'Airport to Cruise Pier Express',
+                          'Cruise Port Shuttle',
+                          'Sea-Tac International Airport (SEA)',
+                          'Seattle Cruise Terminal (Pier 66 / Pier 91)',
+                          '2',
+                          '2'
+                        )}
+                        className="px-2.5 py-1 rounded bg-white/5 hover:bg-[#F60102] hover:text-white text-white/80 border border-white/10 text-xs font-montserrat transition-colors cursor-pointer text-left"
+                      >
+                        SEA ➔ Pier 66/91 ($30/pax)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleSmartSelect(
+                          'Sea-Tac Airport to Eastside Transfer',
+                          'Point to Point',
+                          'Sea-Tac International Airport (SEA)',
+                          'Bellevue Downtown',
+                          '2',
+                          '4'
+                        )}
+                        className="px-2.5 py-1 rounded bg-white/5 hover:bg-[#F60102] hover:text-white text-white/80 border border-white/10 text-xs font-montserrat transition-colors cursor-pointer text-left"
+                      >
+                        SEA ➔ Bellevue ($75)
+                      </button>
+                    </div>
+                  </div>
+
                   <ul className="space-y-2 mb-6 text-xs text-white/80 font-montserrat">
                     <li className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#F60102]" />
-                      Real-Time Flight Arrival Tracking
+                      <Check className="w-3.5 h-3.5 text-[#F60102]" />
+                      Real-Time SEA Flight Radar Tracking
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#F60102]" />
-                      Curbside &amp; Terminal Meet &amp; Greet
+                      <Check className="w-3.5 h-3.5 text-[#F60102]" />
+                      Curbside Meet &amp; Greet with Luggage Assistance
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#F60102]" />
-                      Executive Sprinters &amp; Black SUVs
+                      <Check className="w-3.5 h-3.5 text-[#F60102]" />
+                      Mercedes Sprinter &amp; Cadillac Escalade Fleet
                     </li>
                   </ul>
                 </div>
-                <a
-                  href="#quote-form"
-                  className="inline-flex items-center gap-2 text-sm font-semibold font-montserrat text-[#F60102] hover:text-white transition-colors pt-4 border-t border-white/10 cursor-pointer"
+
+                <button
+                  type="button"
+                  onClick={() => handleSmartSelect(
+                    'Sea-Tac Airport Express Transfer',
+                    'Point to Point',
+                    'Seattle-Tacoma International Airport (SEA)',
+                    'Downtown Seattle Hotel / Residence',
+                    '3',
+                    '4'
+                  )}
+                  className="w-full inline-flex items-center justify-between text-sm font-semibold font-montserrat text-[#F60102] group-hover:text-white bg-white/5 group-hover:bg-[#F60102] py-3 px-4 rounded-lg transition-all duration-300 cursor-pointer border border-white/10"
                 >
-                  Book Airport Transfer
+                  <span>Book Airport Transfer</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </a>
+                </button>
               </div>
 
               {/* Box 2: Airport Crew Transfer */}
-              <div className="bg-[#1a1a1a] hover:bg-[#202020] border border-white/10 hover:border-[#F60102]/60 rounded-lg p-6 md:p-8 flex flex-col justify-between transition-all duration-300 group shadow-lg hover:shadow-2xl hover:shadow-[#F60102]/10">
+              <div 
+                className={`relative bg-[#1a1a1a] hover:bg-[#202020] border rounded-xl p-6 md:p-8 flex flex-col justify-between transition-all duration-300 group shadow-lg hover:shadow-2xl hover:shadow-[#F60102]/15 ${
+                  activeServiceTab === 'crew' ? 'border-[#F60102]/70 ring-1 ring-[#F60102]/40' : 'border-white/10 hover:border-[#F60102]/50'
+                }`}
+              >
                 <div>
-                  <div className="w-14 h-14 rounded-full bg-[#F60102]/15 border border-[#F60102]/30 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#F60102] transition-all duration-300">
-                    <Users className="w-7 h-7 text-[#F60102] group-hover:text-white transition-colors" />
+                  {/* Top Status & Icon */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="w-14 h-14 rounded-full bg-[#F60102]/15 border border-[#F60102]/30 flex items-center justify-center group-hover:scale-110 group-hover:bg-[#F60102] transition-all duration-300">
+                      <Users className="w-7 h-7 text-[#F60102] group-hover:text-white transition-colors" />
+                    </div>
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-[11px] font-semibold font-montserrat">
+                      <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
+                      Airline Direct Billing
+                    </span>
                   </div>
-                  <h3 className="font-playfair text-[22px] md:text-[24px] font-bold text-white mb-3 group-hover:text-[#F60102] transition-colors">
+
+                  <h3 className="font-playfair text-[22px] md:text-[24px] font-bold text-white mb-2 group-hover:text-[#F60102] transition-colors">
                     Airport Crew Transfer
                   </h3>
-                  <p className="font-montserrat text-white/70 text-sm leading-relaxed mb-6">
-                    Specialized, highly dependable shuttle service dedicated to commercial airline flight crews, pilots, and attendants between Sea-Tac terminals and layover hotels with 24/7 priority dispatch.
+                  <p className="font-montserrat text-white/70 text-sm leading-relaxed mb-5">
+                    Dedicated, prioritized transportation for airline pilots, flight attendants, and operations crews between Sea-Tac terminals and layover hotels.
                   </p>
+
+                  {/* Smart Quick-Select Crew Categories */}
+                  <div className="mb-6 space-y-2">
+                    <span className="text-[11px] uppercase tracking-wider font-bold text-white/50 block font-montserrat">
+                      ⚡ Quick-Select Crew Dispatch:
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => handleSmartSelect(
+                          'Airline Flight Deck / Pilot Crew Transfer',
+                          'Scheduled Crew Shuttle',
+                          'Sea-Tac Airport (SEA) - Gate / Flight Operations',
+                          'Airline Layover Partner Hotel',
+                          '2',
+                          '2'
+                        )}
+                        className="px-2.5 py-1 rounded bg-white/5 hover:bg-[#F60102] hover:text-white text-white/80 border border-white/10 text-xs font-montserrat transition-colors cursor-pointer text-left"
+                      >
+                        Pilots &amp; Flight Deck
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleSmartSelect(
+                          'Airline Cabin Attendant Crew Shuttle',
+                          'Scheduled Crew Shuttle',
+                          'Sea-Tac Airport (SEA) - Baggage Level Ops',
+                          'Sea-Tac Partner Hotel',
+                          '2',
+                          '6'
+                        )}
+                        className="px-2.5 py-1 rounded bg-white/5 hover:bg-[#F60102] hover:text-white text-white/80 border border-white/10 text-xs font-montserrat transition-colors cursor-pointer text-left"
+                      >
+                        Cabin Crew Shuttles
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleSmartSelect(
+                          'Airline Corporate Layover Transportation',
+                          'Contract Layover Shuttles',
+                          'Sea-Tac Terminal VIP Ground Curb',
+                          'Downtown Seattle Hotel',
+                          '4',
+                          '8'
+                        )}
+                        className="px-2.5 py-1 rounded bg-white/5 hover:bg-[#F60102] hover:text-white text-white/80 border border-white/10 text-xs font-montserrat transition-colors cursor-pointer text-left"
+                      >
+                        Contract Layover Shuttles
+                      </button>
+                    </div>
+                  </div>
+
                   <ul className="space-y-2 mb-6 text-xs text-white/80 font-montserrat">
                     <li className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#F60102]" />
-                      24/7 Dedicated Crew Dispatch Desk
+                      <Check className="w-3.5 h-3.5 text-[#F60102]" />
+                      Guaranteed Under-10-Min Ramp &amp; Gate Response
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#F60102]" />
-                      Guaranteed On-Time Layover Pickups
+                      <Check className="w-3.5 h-3.5 text-[#F60102]" />
+                      Direct Corporate Invoicing &amp; Airline Vouchers
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#F60102]" />
-                      Spacious Luggage Capacity for Gear
+                      <Check className="w-3.5 h-3.5 text-[#F60102]" />
+                      Extra Luggage Bays for Flight Bags &amp; Uniforms
                     </li>
                   </ul>
                 </div>
-                <a
-                  href="tel:+12065046000"
-                  className="inline-flex items-center gap-2 text-sm font-semibold font-montserrat text-[#F60102] hover:text-white transition-colors pt-4 border-t border-white/10 cursor-pointer"
+
+                <button
+                  type="button"
+                  onClick={() => handleSmartSelect(
+                    'Airport Airline Crew Transfer',
+                    'Scheduled Crew Shuttle',
+                    'Sea-Tac Airport (SEA) - Flight Ops / Terminal',
+                    'Airline Partner Layover Hotel',
+                    '3',
+                    '6'
+                  )}
+                  className="w-full inline-flex items-center justify-between text-sm font-semibold font-montserrat text-[#F60102] group-hover:text-white bg-white/5 group-hover:bg-[#F60102] py-3 px-4 rounded-lg transition-all duration-300 cursor-pointer border border-white/10"
                 >
-                  Schedule Crew Transfer
+                  <span>Schedule Crew Transfer</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </a>
+                </button>
               </div>
 
               {/* Box 3: Book Seattle Hotels */}
-              <div className="bg-[#1a1a1a] hover:bg-[#202020] border border-white/10 hover:border-[#F60102]/60 rounded-lg p-6 md:p-8 flex flex-col justify-between transition-all duration-300 group shadow-lg hover:shadow-2xl hover:shadow-[#F60102]/10">
+              <div 
+                className={`relative bg-[#1a1a1a] hover:bg-[#202020] border rounded-xl p-6 md:p-8 flex flex-col justify-between transition-all duration-300 group shadow-lg hover:shadow-2xl hover:shadow-[#F60102]/15 ${
+                  activeServiceTab === 'hotel' ? 'border-[#F60102]/70 ring-1 ring-[#F60102]/40' : 'border-white/10 hover:border-[#F60102]/50'
+                }`}
+              >
                 <div>
-                  <div className="w-14 h-14 rounded-full bg-[#F60102]/15 border border-[#F60102]/30 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#F60102] transition-all duration-300">
-                    <Hotel className="w-7 h-7 text-[#F60102] group-hover:text-white transition-colors" />
+                  {/* Top Status & Icon */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="w-14 h-14 rounded-full bg-[#F60102]/15 border border-[#F60102]/30 flex items-center justify-center group-hover:scale-110 group-hover:bg-[#F60102] transition-all duration-300">
+                      <Hotel className="w-7 h-7 text-[#F60102] group-hover:text-white transition-colors" />
+                    </div>
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[11px] font-semibold font-montserrat">
+                      <DollarSign className="w-3.5 h-3.5 text-amber-400" />
+                      $30/Person Flat Rate
+                    </span>
                   </div>
-                  <h3 className="font-playfair text-[22px] md:text-[24px] font-bold text-white mb-3 group-hover:text-[#F60102] transition-colors">
+
+                  <h3 className="font-playfair text-[22px] md:text-[24px] font-bold text-white mb-2 group-hover:text-[#F60102] transition-colors">
                     Book Seattle Hotels
                   </h3>
-                  <p className="font-montserrat text-white/70 text-sm leading-relaxed mb-6">
-                    Convenient scheduled and on-demand transfers between Sea-Tac area partner hotels, downtown Seattle, and Cruise Terminal Pier 66 &amp; Pier 91 at unbeatable rates from $30 per person.
+                  <p className="font-montserrat text-white/70 text-sm leading-relaxed mb-5">
+                    Express hotel-to-cruise terminal connections from Sea-Tac &amp; downtown partner hotels directly to Pier 66 and Pier 91 cruise berths.
                   </p>
+
+                  {/* Smart Quick-Select Hotels */}
+                  <div className="mb-6 space-y-2">
+                    <span className="text-[11px] uppercase tracking-wider font-bold text-white/50 block font-montserrat">
+                      ⚡ Quick-Select Partner Hotel:
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => handleSmartSelect(
+                          'Hotel to Cruise Pier Shuttle',
+                          'Cruise Port Shuttle ($30/person)',
+                          'Hilton Seattle Airport & Conference Center',
+                          'Seattle Cruise Terminal (Pier 66 / Pier 91)',
+                          '2',
+                          '2'
+                        )}
+                        className="px-2.5 py-1 rounded bg-white/5 hover:bg-[#F60102] hover:text-white text-white/80 border border-white/10 text-xs font-montserrat transition-colors cursor-pointer text-left"
+                      >
+                        Hilton Sea-Tac
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleSmartSelect(
+                          'Hotel to Cruise Pier Shuttle',
+                          'Cruise Port Shuttle ($30/person)',
+                          'Seattle Marriott Waterfront',
+                          'Seattle Cruise Terminal Pier 66',
+                          '1',
+                          '2'
+                        )}
+                        className="px-2.5 py-1 rounded bg-white/5 hover:bg-[#F60102] hover:text-white text-white/80 border border-white/10 text-xs font-montserrat transition-colors cursor-pointer text-left"
+                      >
+                        Marriott Waterfront
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleSmartSelect(
+                          'Hotel to Cruise Pier Shuttle',
+                          'Cruise Port Shuttle ($30/person)',
+                          'The Fairmont Olympic Hotel Seattle',
+                          'Seattle Cruise Terminal (Pier 66 / Pier 91)',
+                          '2',
+                          '4'
+                        )}
+                        className="px-2.5 py-1 rounded bg-white/5 hover:bg-[#F60102] hover:text-white text-white/80 border border-white/10 text-xs font-montserrat transition-colors cursor-pointer text-left"
+                      >
+                        Fairmont Olympic
+                      </button>
+                    </div>
+                  </div>
+
                   <ul className="space-y-2 mb-6 text-xs text-white/80 font-montserrat">
                     <li className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#F60102]" />
-                      Direct Pier 66 &amp; Pier 91 Cruise Transfers
+                      <Check className="w-3.5 h-3.5 text-[#F60102]" />
+                      Direct Pier 66 &amp; Pier 91 Baggage Drops
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#F60102]" />
-                      Sea-Tac &amp; Downtown Partner Hotels
+                      <Check className="w-3.5 h-3.5 text-[#F60102]" />
+                      $30 Per Person Shared or $120 Private Van
                     </li>
                     <li className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#F60102]" />
-                      Single Seat ($30) or Private Van
+                      <Check className="w-3.5 h-3.5 text-[#F60102]" />
+                      Doorstep Hotel Lobby Pickup Guarantee
                     </li>
                   </ul>
                 </div>
-                <a
-                  href="#quote-form"
-                  className="inline-flex items-center gap-2 text-sm font-semibold font-montserrat text-[#F60102] hover:text-white transition-colors pt-4 border-t border-white/10 cursor-pointer"
+
+                <button
+                  type="button"
+                  onClick={() => handleSmartSelect(
+                    'Cruise Shuttle (Hotel to Pier 66 / Pier 91)',
+                    'Cruise Port Shuttle ($30/person)',
+                    'Sea-Tac / Downtown Seattle Partner Hotel',
+                    'Seattle Cruise Terminal (Pier 66 or Pier 91)',
+                    '2',
+                    '2'
+                  )}
+                  className="w-full inline-flex items-center justify-between text-sm font-semibold font-montserrat text-[#F60102] group-hover:text-white bg-white/5 group-hover:bg-[#F60102] py-3 px-4 rounded-lg transition-all duration-300 cursor-pointer border border-white/10"
                 >
-                  Book Hotel Shuttle
+                  <span>Book Hotel Shuttle ($30)</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </a>
+                </button>
               </div>
             </div>
 
-            {/* Call Hotline Button at the Bottom */}
-            <div className="mt-12 md:mt-16 flex flex-col items-center justify-center text-center">
-              <a
-                href="tel:+12065046000"
-                className="inline-flex items-center justify-center gap-3 px-8 md:px-12 py-4 md:py-5 bg-[#F60102] hover:bg-[#d60102] text-white font-montserrat font-bold text-base md:text-lg tracking-wider uppercase rounded-md shadow-xl shadow-[#F60102]/25 hover:shadow-[#F60102]/40 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer group"
-                aria-label="Call Seattle Express Shuttle Hotline"
-              >
-                <PhoneCall className="w-5 h-5 md:w-6 md:h-6 animate-pulse" />
-                <span>Call Hotline: +1 (206) 504-6000</span>
-              </a>
-              <p className="mt-3 text-xs md:text-sm text-white/50 font-montserrat">
-                24/7 Seattle Express Shuttle Dispatch Desk &middot; Immediate Booking &amp; Live Support
-              </p>
+            {/* Smart 24/7 Live Hotline Dispatch Terminal */}
+            <div className="mt-12 md:mt-16 bg-[#181818] border border-white/10 rounded-2xl p-6 md:p-8 max-w-4xl mx-auto shadow-2xl relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#F60102]/10 rounded-full blur-3xl pointer-events-none" />
+
+              {/* Status Bar */}
+              <div className="flex flex-wrap items-center justify-between gap-3 pb-6 border-b border-white/10 text-xs font-montserrat text-white/70">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
+                  <span className="text-white font-semibold">24/7 LIVE DISPATCH OPERATIONAL</span>
+                </div>
+                <div className="flex items-center gap-4">
+                  <span className="flex items-center gap-1.5 text-white/80">
+                    <Clock className="w-3.5 h-3.5 text-[#F60102]" />
+                    Seattle Time: <strong className="text-white">{seattleTime || 'Live PT'}</strong>
+                  </span>
+                  <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 font-semibold text-[11px]">
+                    <Zap className="w-3 h-3" /> Avg. Wait &lt; 30s
+                  </span>
+                </div>
+              </div>
+
+              {/* Action Buttons Row */}
+              <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="text-center sm:text-left">
+                  <h4 className="font-playfair text-xl md:text-2xl font-bold text-white">
+                    Need Immediate Pickup or Flight Assistance?
+                  </h4>
+                  <p className="text-white/60 text-xs md:text-sm font-montserrat mt-1">
+                    Connect directly with a live Seattle Express Shuttle dispatcher standing by 24 hours a day.
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center justify-center gap-3 shrink-0 w-full sm:w-auto">
+                  {/* Primary Hotline Button */}
+                  <a
+                    href="tel:+12065046000"
+                    className="inline-flex items-center justify-center gap-3 px-6 md:px-8 py-3.5 bg-[#F60102] hover:bg-[#d60102] text-white font-montserrat font-bold text-sm md:text-base tracking-wider uppercase rounded-lg shadow-xl shadow-[#F60102]/30 hover:shadow-[#F60102]/50 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
+                    aria-label="Call Hotline Now"
+                  >
+                    <PhoneCall className="w-5 h-5 animate-pulse" />
+                    <span>Call Hotline: (206) 504-6000</span>
+                  </a>
+
+                  {/* SMS Button */}
+                  <a
+                    href="sms:+12065046000"
+                    className="inline-flex items-center justify-center gap-2 px-4 py-3.5 bg-white/5 hover:bg-white/10 text-white border border-white/15 rounded-lg text-sm font-montserrat font-semibold transition-colors cursor-pointer"
+                    title="Send SMS text to dispatch"
+                  >
+                    <MessageSquare className="w-4 h-4 text-[#F60102]" />
+                    <span>SMS Dispatch</span>
+                  </a>
+
+                  {/* Copy Button */}
+                  <button
+                    type="button"
+                    onClick={handleCopyHotline}
+                    className="inline-flex items-center justify-center gap-2 px-4 py-3.5 bg-white/5 hover:bg-white/10 text-white border border-white/15 rounded-lg text-sm font-montserrat font-semibold transition-colors cursor-pointer"
+                    title="Copy hotline number"
+                  >
+                    {copiedHotline ? (
+                      <>
+                        <Check className="w-4 h-4 text-emerald-400" />
+                        <span className="text-emerald-400">Copied!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-4 h-4 text-white/70" />
+                        <span>Copy</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </section>
