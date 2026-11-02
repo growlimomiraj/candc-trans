@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut, CheckCircle2, Plane, Users, Hotel, PhoneCall, ArrowRight, Clock, Sparkles, Copy, Check, MessageSquare, MapPin, ShieldCheck, Zap } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut, CheckCircle2, Plane, Users, Hotel, PhoneCall, ArrowRight, Clock, Sparkles, Copy, Check, MessageSquare, MapPin, ShieldCheck, Zap, DollarSign } from 'lucide-react';
 
 interface GalleryItem {
   id: number;
