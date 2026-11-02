@@ -19,72 +19,76 @@ const cdnUrl = (rawUrl: string, width: number, quality = 82) =>
 
 const HERO_SLIDESHOW_IMAGES = [
   {
-    src: '/fleet/seattle-shuttle-main.png',
-    fallbackSrc: 'https://seattleexpressshuttle.com/wp-content/uploads/2026/05/ChatGPT-Image-May-12-2026-11_24_28-AM.png'
+    src: '/fleet/seattle-pier66-escalade.jpg',
+    fallbackSrc: '/fleet/seattle-pier66-escalade.jpg'
   },
   {
-    src: '/fleet/seattle-shuttle-side.jpg',
-    fallbackSrc: 'https://seattleexpressshuttle.com/wp-content/uploads/2026/05/pexels-eddievaldes155-19871522-scaled.jpg'
+    src: '/fleet/seatac-sprinter-delta.png',
+    fallbackSrc: '/fleet/seatac-sprinter-delta.png'
   },
   {
-    src: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1600&q=85',
-    fallbackSrc: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1600&q=85'
+    src: '/fleet/sprinter-limo-interior.jpg',
+    fallbackSrc: '/fleet/sprinter-limo-interior.jpg'
   },
   {
-    src: 'https://images.unsplash.com/photo-1548574505-5e239809ee19?auto=format&fit=crop&w=1600&q=85',
-    fallbackSrc: 'https://images.unsplash.com/photo-1548574505-5e239809ee19?auto=format&fit=crop&w=1600&q=85'
+    src: '/fleet/chevrolet-suburban-seattle.jpg',
+    fallbackSrc: '/fleet/chevrolet-suburban-seattle.jpg'
   },
   {
-    src: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1600&q=85',
-    fallbackSrc: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1600&q=85'
+    src: '/fleet/mercedes-sprinter-seatac.jpg',
+    fallbackSrc: '/fleet/mercedes-sprinter-seatac.jpg'
+  },
+  {
+    src: '/fleet/seattle-mercedes-sprinter.jpg',
+    fallbackSrc: '/fleet/seattle-mercedes-sprinter.jpg'
   }
 ];
 
 const GALLERY_ITEMS: GalleryItem[] = [
   {
     id: 1,
-    src: '/fleet/seattle-shuttle-main.png',
-    hdSrc: '/fleet/seattle-shuttle-main.png',
-    fallbackSrc: 'https://seattleexpressshuttle.com/wp-content/uploads/2026/05/ChatGPT-Image-May-12-2026-11_24_28-AM.png',
+    src: '/fleet/seatac-sprinter-delta.png',
+    hdSrc: '/fleet/seatac-sprinter-delta.png',
+    fallbackSrc: '/fleet/seatac-sprinter-delta.png',
     width: 960,
     height: 720,
-    title: 'Seattle Express Shuttle — Mercedes Executive Sprinter'
+    title: 'Sea-Tac Airport Executive Transfer — Mercedes Sprinter'
   },
   {
     id: 2,
-    src: '/fleet/seattle-shuttle-side.jpg',
-    hdSrc: '/fleet/seattle-shuttle-side.jpg',
-    fallbackSrc: 'https://seattleexpressshuttle.com/wp-content/uploads/2026/05/pexels-eddievaldes155-19871522-scaled.jpg',
+    src: '/fleet/seattle-mercedes-sprinter.jpg',
+    hdSrc: '/fleet/seattle-mercedes-sprinter.jpg',
+    fallbackSrc: '/fleet/seattle-mercedes-sprinter.jpg',
     width: 960,
     height: 720,
-    title: 'Seattle Express Shuttle — Luxury Passenger Van'
+    title: 'Executive Passenger Shuttle — Mercedes-Benz Sprinter'
   },
   {
     id: 3,
-    src: 'https://images.unsplash.com/photo-1548574505-5e239809ee19?auto=format&fit=crop&w=800&q=80',
-    hdSrc: 'https://images.unsplash.com/photo-1548574505-5e239809ee19?auto=format&fit=crop&w=1600&q=85',
-    fallbackSrc: 'https://images.unsplash.com/photo-1548574505-5e239809ee19?auto=format&fit=crop&w=1600&q=85',
+    src: '/fleet/seattle-pier66-escalade.jpg',
+    hdSrc: '/fleet/seattle-pier66-escalade.jpg',
+    fallbackSrc: '/fleet/seattle-pier66-escalade.jpg',
     width: 960,
-    height: 640,
-    title: 'Cruise Port Transfer — Pier 66 & Pier 91'
+    height: 540,
+    title: 'Seattle Pier 66 Cruise Terminal — Luxury Cadillac Escalade'
   },
   {
     id: 4,
-    src: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=800&q=80',
-    hdSrc: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1600&q=85',
-    fallbackSrc: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1600&q=85',
+    src: '/fleet/sprinter-limo-interior.jpg',
+    hdSrc: '/fleet/sprinter-limo-interior.jpg',
+    fallbackSrc: '/fleet/sprinter-limo-interior.jpg',
     width: 960,
-    height: 720,
-    title: 'Sea-Tac Airport Executive Shuttle'
+    height: 540,
+    title: 'VIP Limo Sprinter — Diamond-Quilted Leather & Starlight Headliner'
   },
   {
     id: 5,
-    src: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
-    hdSrc: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1600&q=85',
-    fallbackSrc: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1600&q=85',
+    src: '/fleet/cadillac-escalade-black.jpg',
+    hdSrc: '/fleet/cadillac-escalade-black.jpg',
+    fallbackSrc: '/fleet/cadillac-escalade-black.jpg',
     width: 960,
-    height: 640,
-    title: 'Luxury Executive Black Car SUV'
+    height: 540,
+    title: 'Executive Black Car SUV — Cadillac Escalade ESV'
   },
   {
     id: 6,
@@ -93,97 +97,97 @@ const GALLERY_ITEMS: GalleryItem[] = [
     fallbackSrc: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=1600&q=85',
     width: 960,
     height: 640,
-    title: 'Professional Chauffeur Service'
+    title: 'Professional Chauffeur Service — Seattle & Puget Sound'
   },
   {
     id: 7,
-    src: 'https://images.unsplash.com/photo-1502175353174-a7a70e73b362?auto=format&fit=crop&w=800&q=80',
-    hdSrc: 'https://images.unsplash.com/photo-1502175353174-a7a70e73b362?auto=format&fit=crop&w=1600&q=85',
-    fallbackSrc: 'https://images.unsplash.com/photo-1502175353174-a7a70e73b362?auto=format&fit=crop&w=1600&q=85',
+    src: '/fleet/chevrolet-suburban-seattle.jpg',
+    hdSrc: '/fleet/chevrolet-suburban-seattle.jpg',
+    fallbackSrc: '/fleet/chevrolet-suburban-seattle.jpg',
     width: 960,
-    height: 640,
-    title: 'Seattle Waterfront & Cruise Terminals'
+    height: 540,
+    title: 'Seattle Downtown & Airport Chauffeur — Chevrolet Suburban'
   },
   {
     id: 8,
-    src: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=800&q=80',
-    hdSrc: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=1600&q=85',
-    fallbackSrc: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=1600&q=85',
+    src: '/fleet/mercedes-sclass-fairmont.jpg',
+    hdSrc: '/fleet/mercedes-sclass-fairmont.jpg',
+    fallbackSrc: '/fleet/mercedes-sclass-fairmont.jpg',
     width: 960,
-    height: 720,
-    title: 'Executive Passenger Sprinter Van'
+    height: 540,
+    title: 'Fairmont Olympic Hotel Seattle — Mercedes-Benz S-Class Chauffeur'
   },
   {
     id: 9,
-    src: 'https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?auto=format&fit=crop&w=800&q=80',
-    hdSrc: 'https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?auto=format&fit=crop&w=1600&q=85',
-    fallbackSrc: 'https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?auto=format&fit=crop&w=1600&q=85',
+    src: '/fleet/mercedes-sprinter-seatac.jpg',
+    hdSrc: '/fleet/mercedes-sprinter-seatac.jpg',
+    fallbackSrc: '/fleet/mercedes-sprinter-seatac.jpg',
     width: 960,
-    height: 640,
-    title: 'Private Chauffeur Airport SUV'
+    height: 540,
+    title: 'Sea-Tac Airport Arrivals & VIP Ground Transportation — Mercedes Sprinter'
   },
   {
     id: 10,
-    src: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80',
-    hdSrc: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1600&q=85',
-    fallbackSrc: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1600&q=85',
+    src: '/fleet/cadillac-escalade-interior.jpg',
+    hdSrc: '/fleet/cadillac-escalade-interior.jpg',
+    fallbackSrc: '/fleet/cadillac-escalade-interior.jpg',
     width: 960,
-    height: 720,
-    title: 'Luxury Group Express Coach'
+    height: 540,
+    title: 'Luxury Executive SUV Cabin — Reclining Captain Chairs'
   },
   {
     id: 11,
-    src: 'https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&w=800&q=80',
-    hdSrc: 'https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&w=1600&q=85',
-    fallbackSrc: 'https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&w=1600&q=85',
+    src: '/fleet/cadillac-escalade-waterfront.jpg',
+    hdSrc: '/fleet/cadillac-escalade-waterfront.jpg',
+    fallbackSrc: '/fleet/cadillac-escalade-waterfront.jpg',
     width: 960,
-    height: 640,
-    title: 'Airport Luggage & Boarding Assistance'
+    height: 540,
+    title: 'Seattle Waterfront & Cruise Transfer — Luxury Black SUV'
   },
   {
     id: 12,
-    src: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80',
-    hdSrc: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1600&q=85',
-    fallbackSrc: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1600&q=85',
+    src: '/fleet/rangerover-sport-black.jpg',
+    hdSrc: '/fleet/rangerover-sport-black.jpg',
+    fallbackSrc: '/fleet/rangerover-sport-black.jpg',
     width: 960,
-    height: 640,
-    title: 'Executive Black SUV Fleet'
+    height: 540,
+    title: 'Executive Private Chauffeur SUV — All-Black Luxury'
   },
   {
     id: 13,
-    src: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80',
-    hdSrc: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=1600&q=85',
-    fallbackSrc: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=1600&q=85',
+    src: '/fleet/seattle-shuttle-main.png',
+    hdSrc: '/fleet/seattle-shuttle-main.png',
+    fallbackSrc: 'https://seattleexpressshuttle.com/wp-content/uploads/2026/05/ChatGPT-Image-May-12-2026-11_24_28-AM.png',
     width: 960,
-    height: 640,
-    title: 'Group Cruise Charter Service'
+    height: 720,
+    title: 'Seattle Express Shuttle — Mercedes Executive Sprinter'
   },
   {
     id: 14,
-    src: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80',
-    hdSrc: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1600&q=85',
-    fallbackSrc: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1600&q=85',
+    src: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
+    hdSrc: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1600&q=85',
+    fallbackSrc: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1600&q=85',
     width: 960,
     height: 640,
-    title: 'Private Chauffeur Sedan'
+    title: 'Executive Black Car SUV — Private Chauffeur'
   },
   {
     id: 15,
-    src: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
-    hdSrc: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=85',
-    fallbackSrc: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=85',
+    src: '/fleet/seattle-shuttle-side.jpg',
+    hdSrc: '/fleet/seattle-shuttle-side.jpg',
+    fallbackSrc: 'https://seattleexpressshuttle.com/wp-content/uploads/2026/05/pexels-eddievaldes155-19871522-scaled.jpg',
     width: 960,
-    height: 640,
-    title: 'Seattle Pier 91 & Cruise Line Transfer'
+    height: 720,
+    title: 'Seattle Express Shuttle — Luxury Passenger Van'
   },
   {
     id: 16,
-    src: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=800&q=80',
-    hdSrc: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1600&q=85',
-    fallbackSrc: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1600&q=85',
+    src: '/fleet/mercedes-sprinter-night.jpg',
+    hdSrc: '/fleet/mercedes-sprinter-night.jpg',
+    fallbackSrc: 'https://images.unsplash.com/photo-1765461734605-34657fa04db2?auto=format&fit=crop&w=1600&q=85',
     width: 960,
     height: 640,
-    title: 'Executive Corporate Group Transfer'
+    title: 'Executive Night Transfer — Mercedes-Benz Limo Sprinter'
   }
 ];
 
