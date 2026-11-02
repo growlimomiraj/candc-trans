@@ -444,7 +444,7 @@ export default function App() {
 
               {/* Vehicle Category Check List */}
               <ul className="space-y-[3px]">
-                {['Party Buses', 'Limo Sprinters', 'Executive', 'Shuttle', 'SUVs'].map((item) => (
+                {['Cruise Shuttles', 'Limo Sprinters', 'Executive', 'Shuttle', 'SUVs'].map((item) => (
                   <li key={item} className="flex items-center gap-[10px]">
                     <span className="inline-flex items-center justify-center shrink-0">
                       <svg
