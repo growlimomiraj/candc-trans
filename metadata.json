@@ -1,0 +1,6 @@
+{
+  "name": "Seattle Express Shuttle — Sea-Tac Airport & Cruise Transfers",
+  "description": "Cruise Shuttle from Sea-Tac Hotels to Pier 66 & Pier 91, Sea-Tac Airport Shuttles, and Executive Ground Transportation with instant online quotes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
