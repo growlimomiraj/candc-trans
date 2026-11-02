@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut, CheckCircle2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut, CheckCircle2, Plane, Users, Hotel, PhoneCall, ArrowRight } from 'lucide-react';
 
 interface GalleryItem {
   id: number;
@@ -991,6 +991,153 @@ export default function App() {
             <h3 className="font-montserrat text-[14px] md:text-[17px] font-medium leading-[22px] text-white">
               Cruise Shuttle from Sea-Tac Hotels to Pier 66 & Pier 91 · Airport Transfers · Charters
             </h3>
+          </div>
+        </section>
+
+        {/* -------------------------------------------------------------------
+            SECTION: AIRPORT, CREW & HOTEL SHUTTLE SERVICES
+        ------------------------------------------------------------------- */}
+        <section className="w-full bg-[#141414] py-[50px] md:py-[80px] px-[20px] border-t border-b border-white/5">
+          <div className="max-w-[1140px] mx-auto">
+            {/* Header */}
+            <div className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
+              <span className="text-[#F60102] tracking-[0.2em] text-xs font-bold uppercase font-montserrat block mb-2">
+                Premier Transportation Solutions
+              </span>
+              <h2 className="font-playfair text-[26px] md:text-[40px] font-bold uppercase leading-tight text-white">
+                Specialized Seattle Services
+              </h2>
+              <div className="w-16 h-[2px] bg-[#F60102] mx-auto mt-4 mb-4" />
+              <p className="font-montserrat text-white/70 text-sm md:text-base leading-relaxed">
+                Direct express connections between Sea-Tac International Airport, downtown Seattle partner hotels, and regional cruise terminals.
+              </p>
+            </div>
+
+            {/* Three Boxes in One Line */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-stretch">
+              {/* Box 1: Airport Transfers */}
+              <div className="bg-[#1a1a1a] hover:bg-[#202020] border border-white/10 hover:border-[#F60102]/60 rounded-lg p-6 md:p-8 flex flex-col justify-between transition-all duration-300 group shadow-lg hover:shadow-2xl hover:shadow-[#F60102]/10">
+                <div>
+                  <div className="w-14 h-14 rounded-full bg-[#F60102]/15 border border-[#F60102]/30 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#F60102] transition-all duration-300">
+                    <Plane className="w-7 h-7 text-[#F60102] group-hover:text-white transition-colors" />
+                  </div>
+                  <h3 className="font-playfair text-[22px] md:text-[24px] font-bold text-white mb-3 group-hover:text-[#F60102] transition-colors">
+                    Airport Transfers
+                  </h3>
+                  <p className="font-montserrat text-white/70 text-sm leading-relaxed mb-6">
+                    Direct, non-stop private and group transfers to and from Seattle-Tacoma International Airport (SEA). Features real-time flight tracking, curbside meet &amp; greet, and full luggage assistance.
+                  </p>
+                  <ul className="space-y-2 mb-6 text-xs text-white/80 font-montserrat">
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#F60102]" />
+                      Real-Time Flight Arrival Tracking
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#F60102]" />
+                      Curbside &amp; Terminal Meet &amp; Greet
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#F60102]" />
+                      Executive Sprinters &amp; Black SUVs
+                    </li>
+                  </ul>
+                </div>
+                <a
+                  href="#quote-form"
+                  className="inline-flex items-center gap-2 text-sm font-semibold font-montserrat text-[#F60102] hover:text-white transition-colors pt-4 border-t border-white/10 cursor-pointer"
+                >
+                  Book Airport Transfer
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </a>
+              </div>
+
+              {/* Box 2: Airport Crew Transfer */}
+              <div className="bg-[#1a1a1a] hover:bg-[#202020] border border-white/10 hover:border-[#F60102]/60 rounded-lg p-6 md:p-8 flex flex-col justify-between transition-all duration-300 group shadow-lg hover:shadow-2xl hover:shadow-[#F60102]/10">
+                <div>
+                  <div className="w-14 h-14 rounded-full bg-[#F60102]/15 border border-[#F60102]/30 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#F60102] transition-all duration-300">
+                    <Users className="w-7 h-7 text-[#F60102] group-hover:text-white transition-colors" />
+                  </div>
+                  <h3 className="font-playfair text-[22px] md:text-[24px] font-bold text-white mb-3 group-hover:text-[#F60102] transition-colors">
+                    Airport Crew Transfer
+                  </h3>
+                  <p className="font-montserrat text-white/70 text-sm leading-relaxed mb-6">
+                    Specialized, highly dependable shuttle service dedicated to commercial airline flight crews, pilots, and attendants between Sea-Tac terminals and layover hotels with 24/7 priority dispatch.
+                  </p>
+                  <ul className="space-y-2 mb-6 text-xs text-white/80 font-montserrat">
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#F60102]" />
+                      24/7 Dedicated Crew Dispatch Desk
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#F60102]" />
+                      Guaranteed On-Time Layover Pickups
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#F60102]" />
+                      Spacious Luggage Capacity for Gear
+                    </li>
+                  </ul>
+                </div>
+                <a
+                  href="tel:+12065046000"
+                  className="inline-flex items-center gap-2 text-sm font-semibold font-montserrat text-[#F60102] hover:text-white transition-colors pt-4 border-t border-white/10 cursor-pointer"
+                >
+                  Schedule Crew Transfer
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </a>
+              </div>
+
+              {/* Box 3: Book Seattle Hotels */}
+              <div className="bg-[#1a1a1a] hover:bg-[#202020] border border-white/10 hover:border-[#F60102]/60 rounded-lg p-6 md:p-8 flex flex-col justify-between transition-all duration-300 group shadow-lg hover:shadow-2xl hover:shadow-[#F60102]/10">
+                <div>
+                  <div className="w-14 h-14 rounded-full bg-[#F60102]/15 border border-[#F60102]/30 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#F60102] transition-all duration-300">
+                    <Hotel className="w-7 h-7 text-[#F60102] group-hover:text-white transition-colors" />
+                  </div>
+                  <h3 className="font-playfair text-[22px] md:text-[24px] font-bold text-white mb-3 group-hover:text-[#F60102] transition-colors">
+                    Book Seattle Hotels
+                  </h3>
+                  <p className="font-montserrat text-white/70 text-sm leading-relaxed mb-6">
+                    Convenient scheduled and on-demand transfers between Sea-Tac area partner hotels, downtown Seattle, and Cruise Terminal Pier 66 &amp; Pier 91 at unbeatable rates from $30 per person.
+                  </p>
+                  <ul className="space-y-2 mb-6 text-xs text-white/80 font-montserrat">
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#F60102]" />
+                      Direct Pier 66 &amp; Pier 91 Cruise Transfers
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#F60102]" />
+                      Sea-Tac &amp; Downtown Partner Hotels
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#F60102]" />
+                      Single Seat ($30) or Private Van
+                    </li>
+                  </ul>
+                </div>
+                <a
+                  href="#quote-form"
+                  className="inline-flex items-center gap-2 text-sm font-semibold font-montserrat text-[#F60102] hover:text-white transition-colors pt-4 border-t border-white/10 cursor-pointer"
+                >
+                  Book Hotel Shuttle
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </a>
+              </div>
+            </div>
+
+            {/* Call Hotline Button at the Bottom */}
+            <div className="mt-12 md:mt-16 flex flex-col items-center justify-center text-center">
+              <a
+                href="tel:+12065046000"
+                className="inline-flex items-center justify-center gap-3 px-8 md:px-12 py-4 md:py-5 bg-[#F60102] hover:bg-[#d60102] text-white font-montserrat font-bold text-base md:text-lg tracking-wider uppercase rounded-md shadow-xl shadow-[#F60102]/25 hover:shadow-[#F60102]/40 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer group"
+                aria-label="Call Seattle Express Shuttle Hotline"
+              >
+                <PhoneCall className="w-5 h-5 md:w-6 md:h-6 animate-pulse" />
+                <span>Call Hotline: +1 (206) 504-6000</span>
+              </a>
+              <p className="mt-3 text-xs md:text-sm text-white/50 font-montserrat">
+                24/7 Seattle Express Shuttle Dispatch Desk &middot; Immediate Booking &amp; Live Support
+              </p>
+            </div>
           </div>
         </section>
 
