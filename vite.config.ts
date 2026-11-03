@@ -1,7 +1,7 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import { defineConfig, Plugin } from 'vite';
+import { defineConfig, loadEnv, Plugin } from 'vite';
 
 function apiDevMiddlewarePlugin(): Plugin {
   return {
@@ -46,7 +46,10 @@ function apiDevMiddlewarePlugin(): Plugin {
   };
 }
 
-export default defineConfig(() => {
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '');
+  process.env = { ...process.env, ...env };
+
   return {
     base: '/',
     plugins: [react(), tailwindcss(), apiDevMiddlewarePlugin()],

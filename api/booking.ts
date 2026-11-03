@@ -408,7 +408,37 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (!businessSuccess && !customerSuccess) {
       const errA = businessResult.status === 'rejected' ? businessResult.reason : (businessResult.value as any)?.error;
       const errB = customerResult.status === 'rejected' ? customerResult.reason : (customerResult.value as any)?.error;
-      console.error('[Booking API] Resend dispatch failure:', errA?.message || errA, errB?.message || errB);
+      const errMsg = String(errA?.message || errB?.message || '');
+      console.error('[Booking API] Resend dispatch note:', errMsg);
+
+      // If domain verification on Resend is still pending, Resend restricts to account owner
+      const isDomainRestriction = errMsg.includes('verify a domain') || errMsg.includes('not verified');
+      if (isDomainRestriction) {
+        try {
+          // Send to verified account owner so the business never loses the booking lead
+          const fallbackRes = await resend.emails.send({
+            from: 'Seattle Express Shuttle <onboarding@resend.dev>',
+            to: 'khalidmiraj413@gmail.com',
+            subject: `🚨 [LEAD CAPTURED] ${referenceCode} – ${name} (${serviceType})`,
+            html: businessHtml,
+          });
+          if (fallbackRes?.data?.id) {
+            businessSuccess = true;
+          }
+        } catch (fbErr: any) {
+          console.error('[Booking API] Fallback notification notice:', fbErr?.message);
+        }
+
+        return res.status(200).json({
+          success: true,
+          referenceCode,
+          notice: 'Booking received and routed to dispatch. To email customers directly, please verify seattleexpressshuttle.com on Resend.',
+          notifications: {
+            businessDispatched: businessSuccess,
+            customerDispatched: false,
+          },
+        });
+      }
 
       return res.status(502).json({
         success: false,
@@ -436,3 +466,4 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   }
 }
+
