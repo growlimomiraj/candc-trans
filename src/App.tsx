@@ -1,323 +1,60 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut, CheckCircle2, Plane, Users, Hotel, PhoneCall, ArrowRight, Clock, Sparkles, Copy, Check, MessageSquare, MapPin, ShieldCheck, Zap, DollarSign } from 'lucide-react';
+import React, { useState } from 'react';
+import { Header } from './components/Header.tsx';
+import { Hero } from './components/Hero.tsx';
+import { Services } from './components/Services.tsx';
+import { Fleet } from './components/Fleet.tsx';
+import { BrandStructure } from './components/BrandStructure.tsx';
+import { WhyChooseUs } from './components/WhyChooseUs.tsx';
+import { About } from './components/About.tsx';
+import { Testimonials } from './components/Testimonials.tsx';
+import { FinalCTA } from './components/FinalCTA.tsx';
+import { Footer } from './components/Footer.tsx';
+import { LightboxModal, GalleryItem } from './components/LightboxModal.tsx';
+import { Phone, MessageSquare } from 'lucide-react';
 
-interface GalleryItem {
-  id: number;
-  src: string;
-  hdSrc: string;
-  fallbackSrc: string;
-  width: number;
-  height: number;
-  title: string;
-}
-
-const ORIGIN_2025_02 = 'https://bottlebuschicago.com/wp-content/uploads/2025/02';
-const ORIGIN_2025_04 = 'https://bottlebuschicago.com/wp-content/uploads/2025/04';
-
-const cdnUrl = (rawUrl: string, width: number, quality = 82) =>
-  `https://wsrv.nl/?url=${encodeURIComponent(rawUrl)}&w=${width}&q=${quality}&output=webp`;
-
-const HERO_SLIDESHOW_IMAGES = [
-  {
-    src: '/fleet/seattle-pier66-escalade.jpg',
-    fallbackSrc: '/fleet/seattle-pier66-escalade.jpg'
-  },
-  {
-    src: '/fleet/seatac-sprinter-delta.png',
-    fallbackSrc: '/fleet/seatac-sprinter-delta.png'
-  },
-  {
-    src: '/fleet/sprinter-limo-interior.jpg',
-    fallbackSrc: '/fleet/sprinter-limo-interior.jpg'
-  },
-  {
-    src: '/fleet/chevrolet-suburban-seattle.jpg',
-    fallbackSrc: '/fleet/chevrolet-suburban-seattle.jpg'
-  },
-  {
-    src: '/fleet/mercedes-sprinter-seatac.jpg',
-    fallbackSrc: '/fleet/mercedes-sprinter-seatac.jpg'
-  },
-  {
-    src: '/fleet/seattle-mercedes-sprinter.jpg',
-    fallbackSrc: '/fleet/seattle-mercedes-sprinter.jpg'
-  }
-];
-
-const GALLERY_ITEMS: GalleryItem[] = [
+const FLEET_GALLERY: GalleryItem[] = [
   {
     id: 1,
-    src: '/fleet/seatac-sprinter-delta.png',
-    hdSrc: '/fleet/seatac-sprinter-delta.png',
-    fallbackSrc: '/fleet/seatac-sprinter-delta.png',
-    width: 960,
-    height: 720,
-    title: 'Sea-Tac Airport Executive Transfer — Mercedes Sprinter'
+    src: '/assets/ai/ai_car_kia_ev9.png',
+    hdSrc: '/assets/ai/ai_car_kia_ev9.png',
+    title: '2026 Kia EV9 (Jet Black) — Confirmed All-Electric Flagship',
   },
   {
     id: 2,
-    src: '/fleet/seattle-mercedes-sprinter.jpg',
-    hdSrc: '/fleet/seattle-mercedes-sprinter.jpg',
-    fallbackSrc: '/fleet/seattle-mercedes-sprinter.jpg',
-    width: 960,
-    height: 720,
-    title: 'Executive Passenger Shuttle — Mercedes-Benz Sprinter'
+    src: '/fleet/seattle-pier66-escalade.jpg',
+    hdSrc: '/fleet/seattle-pier66-escalade.jpg',
+    title: 'Seattle Pier 66 Cruise Terminal — Cadillac Escalade ESV',
   },
   {
     id: 3,
-    src: '/fleet/seattle-pier66-escalade.jpg',
-    hdSrc: '/fleet/seattle-pier66-escalade.jpg',
-    fallbackSrc: '/fleet/seattle-pier66-escalade.jpg',
-    width: 960,
-    height: 540,
-    title: 'Seattle Pier 66 Cruise Terminal — Luxury Cadillac Escalade'
+    src: '/fleet/seatac-sprinter-delta.png',
+    hdSrc: '/fleet/seatac-sprinter-delta.png',
+    title: 'Sea-Tac Airport Executive Transfer — Mercedes-Benz Sprinter',
   },
   {
     id: 4,
     src: '/fleet/sprinter-limo-interior.jpg',
     hdSrc: '/fleet/sprinter-limo-interior.jpg',
-    fallbackSrc: '/fleet/sprinter-limo-interior.jpg',
-    width: 960,
-    height: 540,
-    title: 'VIP Limo Sprinter — Diamond-Quilted Leather & Starlight Headliner'
+    title: 'Executive Sprinter Cabin — Diamond-Quilted Leather & Captain Chairs',
   },
   {
     id: 5,
     src: '/fleet/cadillac-escalade-black.jpg',
     hdSrc: '/fleet/cadillac-escalade-black.jpg',
-    fallbackSrc: '/fleet/cadillac-escalade-black.jpg',
-    width: 960,
-    height: 540,
-    title: 'Executive Black Car SUV — Cadillac Escalade ESV'
+    title: 'Executive Black Car SUV — Cadillac Escalade ESV',
   },
   {
     id: 6,
-    src: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=800&q=80',
-    hdSrc: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=1600&q=85',
-    fallbackSrc: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=1600&q=85',
-    width: 960,
-    height: 640,
-    title: 'Professional Chauffeur Service — Seattle & Puget Sound'
-  },
-  {
-    id: 7,
     src: '/fleet/chevrolet-suburban-seattle.jpg',
     hdSrc: '/fleet/chevrolet-suburban-seattle.jpg',
-    fallbackSrc: '/fleet/chevrolet-suburban-seattle.jpg',
-    width: 960,
-    height: 540,
-    title: 'Seattle Downtown & Airport Chauffeur — Chevrolet Suburban'
+    title: 'Seattle Downtown & Airport Chauffeur — Chevrolet Suburban',
   },
-  {
-    id: 8,
-    src: '/fleet/mercedes-sclass-fairmont.jpg',
-    hdSrc: '/fleet/mercedes-sclass-fairmont.jpg',
-    fallbackSrc: '/fleet/mercedes-sclass-fairmont.jpg',
-    width: 960,
-    height: 540,
-    title: 'Fairmont Olympic Hotel Seattle — Mercedes-Benz S-Class Chauffeur'
-  },
-  {
-    id: 9,
-    src: '/fleet/mercedes-sprinter-seatac.jpg',
-    hdSrc: '/fleet/mercedes-sprinter-seatac.jpg',
-    fallbackSrc: '/fleet/mercedes-sprinter-seatac.jpg',
-    width: 960,
-    height: 540,
-    title: 'Sea-Tac Airport Arrivals & VIP Ground Transportation — Mercedes Sprinter'
-  },
-  {
-    id: 10,
-    src: '/fleet/cadillac-escalade-interior.jpg',
-    hdSrc: '/fleet/cadillac-escalade-interior.jpg',
-    fallbackSrc: '/fleet/cadillac-escalade-interior.jpg',
-    width: 960,
-    height: 540,
-    title: 'Luxury Executive SUV Cabin — Reclining Captain Chairs'
-  },
-  {
-    id: 11,
-    src: '/fleet/cadillac-escalade-waterfront.jpg',
-    hdSrc: '/fleet/cadillac-escalade-waterfront.jpg',
-    fallbackSrc: '/fleet/cadillac-escalade-waterfront.jpg',
-    width: 960,
-    height: 540,
-    title: 'Seattle Waterfront & Cruise Transfer — Luxury Black SUV'
-  },
-  {
-    id: 12,
-    src: '/fleet/rangerover-sport-black.jpg',
-    hdSrc: '/fleet/rangerover-sport-black.jpg',
-    fallbackSrc: '/fleet/rangerover-sport-black.jpg',
-    width: 960,
-    height: 540,
-    title: 'Executive Private Chauffeur SUV — All-Black Luxury'
-  },
-  {
-    id: 13,
-    src: '/fleet/seattle-shuttle-main.png',
-    hdSrc: '/fleet/seattle-shuttle-main.png',
-    fallbackSrc: 'https://seattleexpressshuttle.com/wp-content/uploads/2026/05/ChatGPT-Image-May-12-2026-11_24_28-AM.png',
-    width: 960,
-    height: 720,
-    title: 'Seattle Express Shuttle — Mercedes Executive Sprinter'
-  },
-  {
-    id: 14,
-    src: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
-    hdSrc: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1600&q=85',
-    fallbackSrc: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1600&q=85',
-    width: 960,
-    height: 640,
-    title: 'Executive Black Car SUV — Private Chauffeur'
-  },
-  {
-    id: 15,
-    src: '/fleet/seattle-shuttle-side.jpg',
-    hdSrc: '/fleet/seattle-shuttle-side.jpg',
-    fallbackSrc: 'https://seattleexpressshuttle.com/wp-content/uploads/2026/05/pexels-eddievaldes155-19871522-scaled.jpg',
-    width: 960,
-    height: 720,
-    title: 'Seattle Express Shuttle — Luxury Passenger Van'
-  },
-  {
-    id: 16,
-    src: '/fleet/mercedes-sprinter-night.jpg',
-    hdSrc: '/fleet/mercedes-sprinter-night.jpg',
-    fallbackSrc: 'https://images.unsplash.com/photo-1765461734605-34657fa04db2?auto=format&fit=crop&w=1600&q=85',
-    width: 960,
-    height: 640,
-    title: 'Executive Night Transfer — Mercedes-Benz Limo Sprinter'
-  }
 ];
-
-const MASONRY_COLUMNS: GalleryItem[][] = [
-  [GALLERY_ITEMS[0], GALLERY_ITEMS[4], GALLERY_ITEMS[8], GALLERY_ITEMS[12]],
-  [GALLERY_ITEMS[1], GALLERY_ITEMS[5], GALLERY_ITEMS[9], GALLERY_ITEMS[13]],
-  [GALLERY_ITEMS[2], GALLERY_ITEMS[6], GALLERY_ITEMS[10], GALLERY_ITEMS[14]],
-  [GALLERY_ITEMS[3], GALLERY_ITEMS[7], GALLERY_ITEMS[11], GALLERY_ITEMS[15]]
-];
-
-interface SubmittedQuoteData {
-  referenceCode: string;
-  name: string;
-  phone: string;
-  email: string;
-  passengers: string;
-  date: string;
-  serviceType: string;
-  dayOfWeek: string;
-  bookingHours: string;
-  pickupTime: string;
-  tripType: string;
-  pickupLocation: string;
-  dropoffLocation: string;
-  canText: string;
-  estimatedRate: number;
-  depositAmount: number;
-}
-
-/**
- * Seattle Express Shuttle Official Logo
- */
-const SeattleExpressLogo: React.FC<{ size?: 'header' | 'footer' }> = ({ size = 'header' }) => {
-  const isFooter = size === 'footer';
-  return (
-    <div className="inline-flex items-center justify-center select-none py-1">
-      <img
-        src="/logo.png"
-        alt="Seattle Express Shuttle"
-        width={500}
-        height={167}
-        fetchPriority={isFooter ? 'auto' : 'high'}
-        decoding="async"
-        className={`w-auto object-contain rounded-[6px] shadow-sm transition-transform duration-200 hover:scale-[1.02] ${
-          isFooter ? 'h-[52px] md:h-[68px]' : 'h-[46px] md:h-[58px]'
-        }`}
-        onError={(e) => {
-          if (e.currentTarget.src !== 'https://seattleexpressshuttle.com/wp-content/uploads/2026/10/seattle-express-shuttle-logo-2026.webp') {
-            e.currentTarget.src = 'https://seattleexpressshuttle.com/wp-content/uploads/2026/10/seattle-express-shuttle-logo-2026.webp';
-          }
-        }}
-      />
-    </div>
-  );
-};
 
 export default function App() {
-  // Hero background Ken Burns slideshow index (tracks active and previous slide for seamless zoom during crossfade)
-  const [slideState, setSlideState] = useState<{ current: number; prev: number | null }>({
-    current: 0,
-    prev: null
-  });
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  // Animated Google review counter (0 -> 378 over 2000ms)
-  const [reviewCount, setReviewCount] = useState<number>(0);
-
-  // Instant Online Quote Form State
-  const [name, setName] = useState<string>('');
-  const [phone, setPhone] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [passengers, setPassengers] = useState<string>('');
-  const [date, setDate] = useState<string>('');
-  const [serviceType, setServiceType] = useState<string>('');
-  const [dayOfWeek, setDayOfWeek] = useState<string>('Monday');
-  const [bookingHours, setBookingHours] = useState<string>('');
-  const [pickupHour, setPickupHour] = useState<string>('');
-  const [pickupMinute, setPickupMinute] = useState<string>('');
-  const [pickupAmPm, setPickupAmPm] = useState<string>('PM');
-  const [tripType, setTripType] = useState<string>('');
-  const [pickupLocation, setPickupLocation] = useState<string>('');
-  const [dropoffLocation, setDropoffLocation] = useState<string>('');
-  const [canText, setCanText] = useState<string>('Yes');
-
-  const [formError, setFormError] = useState<string>('');
-  const [submittedQuote, setSubmittedQuote] = useState<SubmittedQuoteData | null>(null);
-
-  // Smart Interactive State
-  const [smartNotification, setSmartNotification] = useState<string>('');
-  const [copiedHotline, setCopiedHotline] = useState<boolean>(false);
-  const [seattleTime, setSeattleTime] = useState<string>('');
-  const [activeServiceTab, setActiveServiceTab] = useState<'airport' | 'crew' | 'hotel'>('airport');
-
-  // Live Seattle Local Time (Pacific Time)
-  useEffect(() => {
-    const updateTime = () => {
-      try {
-        const timeStr = new Intl.DateTimeFormat('en-US', {
-          timeZone: 'America/Los_Angeles',
-          hour: 'numeric',
-          minute: '2-digit',
-          second: '2-digit',
-          hour12: true
-        }).format(new Date());
-        setSeattleTime(timeStr);
-      } catch {
-        setSeattleTime('2:00 PM PST');
-      }
-    };
-    updateTime();
-    const interval = setInterval(updateTime, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Smart Pre-fill and Scroll Handler
-  const handleSmartSelect = (
-    service: string,
-    trip: string,
-    pickup: string,
-    dropoff: string,
-    hours = '3',
-    pax = '4'
-  ) => {
-    setServiceType(service);
-    setTripType(trip);
-    setPickupLocation(pickup);
-    setDropoffLocation(dropoff);
-    setBookingHours(hours);
-    setPassengers(pax);
-    setSmartNotification(`Smart Selected: ${service} · Route loaded into instant calculator`);
-
+  const scrollToQuoteCard = () => {
     const el = document.getElementById('quote-card');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -328,1463 +65,142 @@ export default function App() {
     }
   };
 
-  const handleCopyHotline = () => {
-    navigator.clipboard.writeText('+1 (206) 504-6000');
-    setCopiedHotline(true);
-    setTimeout(() => setCopiedHotline(false), 2000);
+  const scrollToServices = () => {
+    const el = document.getElementById('services');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
-  // Lightbox Slideshow State
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [isZoomed, setIsZoomed] = useState<boolean>(false);
-
-  // Hero slideshow interval (2000ms slide duration + 1500ms crossfade = 3500ms cycle)
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setSlideState((s) => ({
-        prev: s.current,
-        current: (s.current + 1) % HERO_SLIDESHOW_IMAGES.length
-      }));
-    }, 3500);
-    return () => clearInterval(timer);
-  }, []);
-
-  // Counter animation from 0 to 378
-  useEffect(() => {
-    const duration = 2000;
-    const target = 378;
-    const startTime = performance.now();
-    let rafId: number;
-
-    const tick = (now: number) => {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      setReviewCount(Math.floor(progress * target));
-      if (progress < 1) {
-        rafId = requestAnimationFrame(tick);
-      }
-    };
-
-    rafId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId);
-  }, []);
-
-  // Lightbox keyboard navigation
-  const handlePrevImage = useCallback(() => {
-    setIsZoomed(false);
-    setLightboxIndex((prev) =>
-      prev === null ? null : (prev - 1 + GALLERY_ITEMS.length) % GALLERY_ITEMS.length
+  const handleSelectService = (serviceName: string) => {
+    window.dispatchEvent(
+      new CustomEvent('prefill-quote', {
+        detail: {
+          service: serviceName,
+          trip: serviceName.includes('$30') ? 'Cruise Port Shuttle ($30/person)' : 'One Way Transfer',
+          pickup: 'Sea-Tac Airport / Hotel',
+          dropoff: serviceName.includes('Cruise') ? 'Seattle Cruise Terminal (Pier 66 / 91)' : 'Downtown Seattle Hotel',
+          hours: '2',
+          pax: '2',
+        },
+      })
     );
-  }, []);
+    scrollToQuoteCard();
+  };
 
-  const handleNextImage = useCallback(() => {
-    setIsZoomed(false);
-    setLightboxIndex((prev) =>
-      prev === null ? null : (prev + 1) % GALLERY_ITEMS.length
+  const handleSelectVehicle = (vehicleName: string) => {
+    window.dispatchEvent(
+      new CustomEvent('prefill-quote', {
+        detail: {
+          service: `Private Charter — ${vehicleName}`,
+          trip: 'Hourly Dedicated Charter',
+          pickup: 'Seattle Area Address',
+          dropoff: 'Puget Sound Regional Itinerary',
+          hours: '3',
+          pax: '4',
+        },
+      })
     );
-  }, []);
-
-  useEffect(() => {
-    if (lightboxIndex === null) return;
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setLightboxIndex(null);
-      if (e.key === 'ArrowLeft') handlePrevImage();
-      if (e.key === 'ArrowRight') handleNextImage();
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [lightboxIndex, handlePrevImage, handleNextImage]);
-
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormError('');
-
-    if (
-      !name.trim() ||
-      !phone.trim() ||
-      !email.trim() ||
-      !passengers.trim() ||
-      !date.trim() ||
-      !serviceType.trim() ||
-      !bookingHours.trim() ||
-      !pickupHour.trim() ||
-      !tripType.trim() ||
-      !pickupLocation.trim() ||
-      !dropoffLocation.trim()
-    ) {
-      setFormError('Please fill in all required fields to generate your instant online quote.');
-      return;
-    }
-
-    const paxNum = Math.max(1, parseInt(passengers, 10) || 12);
-    const hrsNum = Math.max(2, parseInt(bookingHours, 10) || 4);
-    const isWeekend = ['Friday', 'Saturday', 'Sunday'].includes(dayOfWeek);
-    const baseHourly =
-      paxNum > 24
-        ? isWeekend
-          ? 310
-          : 255
-        : paxNum > 14
-        ? isWeekend
-          ? 255
-          : 210
-        : paxNum > 6
-        ? isWeekend
-          ? 190
-          : 160
-        : isWeekend
-        ? 130
-        : 110;
-    const estimatedRate = baseHourly * hrsNum;
-    const depositAmount = Math.round(estimatedRate * 0.25);
-
-    const formattedMin = (pickupMinute.trim() || '00').padStart(2, '0');
-    const quoteRecord: SubmittedQuoteData = {
-      referenceCode: `SES-${Math.floor(1000 + Math.random() * 9000)}`,
-      name: name.trim(),
-      phone: phone.trim(),
-      email: email.trim(),
-      passengers: passengers.trim(),
-      date: date.trim(),
-      serviceType: serviceType.trim(),
-      dayOfWeek,
-      bookingHours: bookingHours.trim(),
-      pickupTime: `${pickupHour.trim()}:${formattedMin} ${pickupAmPm}`,
-      tripType: tripType.trim(),
-      pickupLocation: pickupLocation.trim(),
-      dropoffLocation: dropoffLocation.trim(),
-      canText,
-      estimatedRate,
-      depositAmount
-    };
-
-    setSubmittedQuote(quoteRecord);
+    scrollToQuoteCard();
   };
 
   return (
-    <div id="top" className="min-h-screen bg-[#101010] text-white flex flex-col selection:bg-[#F60102] selection:text-white">
+    <div className="min-h-screen bg-[#F5F2EC] text-[#343434] flex flex-col font-manrope selection:bg-[#F60102] selection:text-white">
       <a
-        href="#content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-[#F60102] focus:text-white focus:px-4 focus:py-2 focus:rounded"
+        href="#quote-card"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-[#F60102] focus:text-white focus:px-4 focus:py-2 focus:rounded-sm"
       >
-        Skip to content
+        Skip to Instant Quote
       </a>
 
-      {/* =====================================================================
-          HEADER — Seattle Express Shuttle
-      ===================================================================== */}
-      <header className="w-full bg-white border-b border-gray-200 shadow-xs sticky top-0 z-40">
-        <div className="max-w-[1140px] mx-auto px-[20px] py-[12px] flex flex-col md:flex-row items-center justify-between gap-[15px] md:gap-0">
-          {/* Left: Seattle Express Shuttle Logo */}
-          <div className="w-full md:w-[40%] flex justify-center md:justify-start items-center">
-            <a href="#top" aria-label="Seattle Express Shuttle Home" className="inline-block">
-              <SeattleExpressLogo size="header" />
-            </a>
-          </div>
+      {/* 1. NAVIGATION — Official Seattle Express Shuttle Logo & Brand */}
+      <Header onBookClick={scrollToQuoteCard} />
 
-          {/* Right: Call & Email Buttons */}
-          <div className="w-full md:w-[60%] flex flex-col sm:flex-row justify-center md:justify-end items-center gap-[10px]">
-            <a
-              href="tel:+12065046000"
-              className="w-full sm:w-auto text-center bg-[#F60102] hover:bg-[#d40102] text-white font-montserrat text-[14px] md:text-[16px] font-bold leading-none px-[20px] py-[12px] rounded-[4px] shadow-sm transition-colors flex items-center justify-center gap-2"
-            >
-              <svg aria-hidden="true" className="w-[16px] h-[16px] fill-current shrink-0" viewBox="0 0 512 512">
-                <path d="M497.39 361.8l-112-48a24 24 0 0 0-28 6.9l-49.6 60.6A370.66 370.66 0 0 1 130.6 204.11l60.6-49.6a23.94 23.94 0 0 0 6.9-28l-48-112A24.16 24.16 0 0 0 122.6.61l-104 24A24 24 0 0 0 0 48c0 256.5 207.9 464 464 464a24 24 0 0 0 23.4-18.6l24-104a24.29 24.29 0 0 0-14.01-27.6z" />
-              </svg>
-              <span>+1 (206) 504-6000</span>
-            </a>
-            <a
-              href="mailto:info@seattleexpressshuttle.com"
-              className="w-full sm:w-auto text-center bg-[#101010] hover:bg-[#252525] text-white font-montserrat text-[14px] md:text-[16px] font-bold leading-none px-[20px] py-[12px] rounded-[4px] shadow-sm transition-colors flex items-center justify-center gap-2"
-            >
-              <svg aria-hidden="true" className="w-[16px] h-[16px] fill-current shrink-0" viewBox="0 0 512 512">
-                <path d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z" />
-              </svg>
-              <span>info@seattleexpressshuttle.com</span>
-            </a>
-          </div>
-        </div>
-      </header>
-
-      {/* =====================================================================
-          MAIN CONTENT
-      ===================================================================== */}
+      {/* MAIN BODY SECTIONS */}
       <main id="content" className="flex-1">
-        {/* -------------------------------------------------------------------
-            SECTION 1: HERO SLIDESHOW + LEFT BRANDING + RIGHT WHITE QUOTE CARD
-        ------------------------------------------------------------------- */}
-        <section className="relative min-h-[700px] flex items-center justify-center py-[40px] md:py-[20px] px-[20px] overflow-hidden">
-          {/* Hardware-Accelerated Continuous Ken Burns Background Slideshow */}
-          <div className="absolute inset-0 z-0 overflow-hidden bg-black pointer-events-none">
-            {HERO_SLIDESHOW_IMAGES.map((slide, idx) => {
-              const isActive = idx === slideState.current;
-              const isPrev = idx === slideState.prev;
-              const stateClass = isActive
-                ? 'bbc-hero-slide--active'
-                : isPrev
-                ? 'bbc-hero-slide--prev'
-                : '';
-              return (
-                <img
-                  key={slide.src}
-                  src={slide.src}
-                  alt=""
-                  decoding="async"
-                  fetchPriority={idx === 0 ? 'high' : 'auto'}
-                  onError={(e) => {
-                    if (e.currentTarget.src !== slide.fallbackSrc) {
-                      e.currentTarget.src = slide.fallbackSrc;
-                    }
-                  }}
-                  className={`bbc-hero-slide ${stateClass}`}
-                />
-              );
-            })}
-            <div className="absolute inset-0 z-[3] bg-black/32" />
-          </div>
+        {/* 2. HERO SECTION — EXACT HERO LAYOUT WITH KEN BURNS SLIDESHOW & WORKING INSTANT QUOTE CARD */}
+        <Hero onQuoteSubmit={() => {}} />
 
-          {/* Inner Boxed Container (max-w-1140px) */}
-          <div className="relative z-10 w-full max-w-[1140px] mx-auto flex flex-col lg:flex-row items-center justify-between gap-[30px] lg:gap-[20px]">
-            {/* Left Column */}
-            <div className="w-full lg:w-[48%] flex flex-col items-start justify-center space-y-[16px] md:space-y-[20px]">
-              {/* Google Reviews Badge */}
-              <a
-                href="https://www.google.com/maps/search/?api=1&query=Seattle+Express+Shuttle"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full md:w-[85%] bg-[#FFFFFF36] border border-[#FFFFFF54] rounded-[3px] px-[8px] py-[5px] flex flex-wrap items-center justify-center gap-[8px] md:gap-[10px] hover:bg-[#FFFFFF48] transition-colors"
-              >
-                <span className="font-montserrat text-[12px] md:text-[20px] font-normal text-white leading-[22px]">
-                  5.0 stars
-                </span>
+        {/* 3. SERVICES SECTION — Cruise Shuttles ($30), Airport Shuttles, Private Trips, Charters */}
+        <Services onSelectService={handleSelectService} />
 
-                {/* 5 Gold Stars */}
-                <div className="flex items-center gap-[2px]" aria-label="Rated 5 out of 5">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <svg
-                      key={star}
-                      aria-hidden="true"
-                      className="w-[14px] h-[14px] md:w-[20px] md:h-[20px] fill-[#F0AD4E]"
-                      viewBox="0 0 1000 1000"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M450 75L338 312 88 350C46 354 25 417 58 450L238 633 196 896C188 942 238 975 275 954L500 837 725 954C767 975 813 942 804 896L763 633 942 450C975 417 954 358 913 350L663 312 550 75C529 33 471 33 450 75Z" />
-                    </svg>
-                  ))}
-                </div>
+        {/* 4. BRAND STRUCTURE & OPTIONS */}
+        <BrandStructure onSelectOption={handleSelectService} />
 
-                {/* Animated 378 Counter */}
-                <span className="font-montserrat text-[14px] md:text-[20px] font-medium text-white">
-                  {reviewCount}
-                </span>
+        {/* 5. FLEET (Confirmed 2026 Kia EV9 Flagship, Escalades & Sprinters) */}
+        <Fleet onSelectVehicle={handleSelectVehicle} />
 
-                <span className="font-montserrat text-[12px] md:text-[20px] font-normal text-white leading-[22px]">
-                  Reviews On
-                </span>
+        {/* 6. WHY CHOOSE US */}
+        <WhyChooseUs />
 
-                {/* Google Icon SVG */}
-                <div className="inline-flex items-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-[20px] h-[20px] md:w-[30px] md:h-[30px]"
-                    viewBox="0 0 33 33"
-                    fill="none"
-                  >
-                    <rect x="0.746094" y="0.309082" width="32" height="32" rx="4" fill="#F8F8F8" />
-                    <path
-                      d="M27.3061 16.5591C27.3061 15.7791 27.2361 15.0291 27.1061 14.3091H16.7461V18.5691H22.6661C22.4061 19.9391 21.6261 21.0991 20.4561 21.8791V24.6491H24.0261C26.1061 22.7291 27.3061 19.9091 27.3061 16.5591Z"
-                      fill="#6D96FF"
-                    />
-                    <path
-                      d="M16.7458 27.3092C19.7158 27.3092 22.2058 26.3292 24.0258 24.6492L20.4558 21.8792C19.4758 22.5392 18.2258 22.9392 16.7458 22.9392C13.8858 22.9392 11.4558 21.0092 10.5858 18.4092H6.92578V21.2492C8.73578 24.8392 12.4458 27.3092 16.7458 27.3092Z"
-                      fill="#34A853"
-                    />
-                    <path
-                      d="M10.5861 18.3989C10.3661 17.7389 10.2361 17.0389 10.2361 16.3089C10.2361 15.5789 10.3661 14.8789 10.5861 14.2189V11.3789H6.92606C6.17606 12.8589 5.74606 14.5289 5.74606 16.3089C5.74606 18.0889 6.17606 19.7589 6.92606 21.2389L9.77606 19.0189L10.5861 18.3989Z"
-                      fill="#FBBC05"
-                    />
-                    <path
-                      d="M16.7458 9.67914C18.3658 9.67914 19.8158 10.2391 20.9558 11.3291L24.1058 8.17914C22.2058 6.39914 19.7158 5.30914 16.7458 5.30914C12.4458 5.30914 8.73578 7.77914 6.92578 11.3691L10.5858 14.2091C11.4558 11.6091 13.8858 9.67914 16.7458 9.67914Z"
-                      fill="#EA4335"
-                    />
-                  </svg>
-                </div>
-              </a>
+        {/* 7. ABOUT US — Official Seattle Express Shuttle Credentials */}
+        <About />
 
-              {/* 40th Anniversary NLA Badge Image */}
-              <div>
-                <img
-                  src={`${ORIGIN_2025_04}/40th-Anniversary-NLA-TransparentBlack-1-scaled-1-300x102.webp`}
-                  alt="National Limousine Association"
-                  decoding="async"
-                  className="w-[150px] md:w-[200px] h-auto object-contain"
-                />
-              </div>
+        {/* 8. TESTIMONIALS — 5.0 Google Reviews */}
+        <Testimonials />
 
-              {/* LUXURY TRANSPORTATION Heading */}
-              <h1 className="font-playfair text-[32px] md:text-[54px] font-extrabold text-white leading-[1.15] tracking-normal">
-                LUXURY TRANSPORTATION
-              </h1>
-
-              {/* Vehicle Category Check List */}
-              <ul className="space-y-[3px]">
-                {['Cruise Shuttles', 'Limo Sprinters', 'Executive', 'Shuttle', 'SUVs'].map((item) => (
-                  <li key={item} className="flex items-center gap-[10px]">
-                    <span className="inline-flex items-center justify-center shrink-0">
-                      <svg
-                        aria-hidden="true"
-                        className="w-[16px] h-[16px] md:w-[20px] md:h-[20px] fill-[#00C000]"
-                        viewBox="0 0 512 512"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path d="M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z" />
-                      </svg>
-                    </span>
-                    <span className="font-poppins text-[16px] md:text-[20px] font-normal text-white">
-                      {item}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-
-              {/* No Hidden Fee */}
-              <h2 className="font-montserrat text-[16px] md:text-[22px] font-semibold uppercase text-white">
-                No Hidden Fee
-              </h2>
-            </div>
-
-            {/* Right Column: Instant Online Quote Box (White Card) */}
-            <div id="quote-card" className="w-full lg:w-[50%] bg-white text-[#111111] border border-gray-200 shadow-2xl rounded-[12px] p-[20px] md:p-[40px] transition-all duration-300">
-              {smartNotification && (
-                <div className="mb-4 p-3 bg-red-50 border border-[#F60102]/30 rounded-lg flex items-center justify-between text-xs font-montserrat text-[#111111] animate-fadeIn">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-[#F60102] shrink-0" />
-                    <span><strong>{smartNotification}</strong></span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setSmartNotification('')}
-                    className="text-gray-400 hover:text-black font-bold text-sm ml-2"
-                  >
-                    ×
-                  </button>
-                </div>
-              )}
-              <h2 className="font-playfair text-[19px] md:text-[26px] font-bold uppercase text-center text-[#111111] mb-[20px]">
-                Instant Online Quote
-              </h2>
-
-              {submittedQuote ? (
-                <div className="bg-[#F8F9FA] border border-gray-200 rounded-[8px] p-[20px] space-y-[14px] font-poppins text-[#111111]">
-                  <div className="flex items-center gap-2 text-[#009900] font-semibold text-[16px]">
-                    <CheckCircle2 className="w-5 h-5 shrink-0" />
-                    <span>Instant Quote Generated ({submittedQuote.referenceCode})</span>
-                  </div>
-
-                  <p className="text-[13px] text-gray-700 leading-relaxed">
-                    Thank you, <strong className="text-[#111111]">{submittedQuote.name}</strong>! Here is your Seattle Express Shuttle instant quote estimate for your{' '}
-                    <strong className="text-[#111111]">{submittedQuote.serviceType}</strong> ({submittedQuote.tripType}) on{' '}
-                    <strong className="text-[#111111]">{submittedQuote.date}</strong> ({submittedQuote.dayOfWeek}) at{' '}
-                    <strong className="text-[#111111]">{submittedQuote.pickupTime}</strong>:
-                  </p>
-
-                  <div className="bg-white border border-gray-200 rounded-[6px] p-[14px] space-y-[8px] text-[13px]">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Passengers &amp; Hours:</span>
-                      <span className="font-semibold text-[#111111]">
-                        {submittedQuote.passengers} Guests · {submittedQuote.bookingHours} Hours
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Route:</span>
-                      <span className="text-[#111111] text-right">
-                        {submittedQuote.pickupLocation} → {submittedQuote.dropoffLocation}
-                      </span>
-                    </div>
-                    <div className="flex justify-between pt-2 border-t border-gray-200 text-[15px]">
-                      <span className="font-semibold text-[#111111]">Estimated All-In Charter Quote:</span>
-                      <span className="font-bold text-[#009900]">${submittedQuote.estimatedRate}</span>
-                    </div>
-                    <div className="flex justify-between text-[13px]">
-                      <span className="text-gray-600">Deposit to Confirm Reservation:</span>
-                      <span className="font-semibold text-[#F60102]">${submittedQuote.depositAmount}</span>
-                    </div>
-                  </div>
-
-                  <p className="text-[12px] text-gray-600">
-                    We have logged your quote details for <strong className="text-[#111111]">{submittedQuote.phone}</strong> and{' '}
-                    <strong className="text-[#111111]">{submittedQuote.email}</strong>. For immediate confirmation, please text or call at <a href="tel:+12065046000" className="text-[#F60102] font-semibold underline">+1 (206) 504-6000</a>
-                    .
-                  </p>
-
-                  <div className="flex flex-wrap items-center gap-3 pt-2">
-                    <a
-                      href={`sms:+12065046000?body=${encodeURIComponent(`Hi Seattle Express Shuttle, my quote ref is ${submittedQuote.referenceCode} for ${submittedQuote.passengers} passengers on ${submittedQuote.date} (${submittedQuote.bookingHours} hrs).`
-                      )}`}
-                      className="flex-1 text-center bg-[#F60102] hover:bg-[#d40102] text-white font-orbitron text-[13px] font-medium py-[10px] px-[16px] rounded-[4px] transition-colors"
-                    >
-                      Text: +1 (206) 504-6000
-                    </a>
-                    <button
-                      type="button"
-                      onClick={() => setSubmittedQuote(null)}
-                      className="bg-gray-200 hover:bg-gray-300 text-[#111111] font-poppins text-[13px] font-medium py-[10px] px-[16px] rounded-[4px] transition-colors cursor-pointer"
-                    >
-                      New Quote
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <form onSubmit={handleFormSubmit} className="space-y-[16px]" noValidate>
-                  {/* Row 1: Name & Phone */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-[16px]">
-                    <div>
-                      <label htmlFor="input_1_5" className="block font-poppins text-[14px] font-medium text-[#111111] mb-[6px]">
-                        Name
-                      </label>
-                      <input
-                        id="input_1_5"
-                        type="text"
-                        required
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="bbc-input"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="input_1_3" className="block font-poppins text-[14px] font-medium text-[#111111] mb-[6px]">
-                        Phone
-                      </label>
-                      <input
-                        id="input_1_3"
-                        type="tel"
-                        required
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        className="bbc-input"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Row 2: Email & No Of Passengers */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-[16px]">
-                    <div>
-                      <label htmlFor="input_1_7" className="block font-poppins text-[14px] font-medium text-[#111111] mb-[6px]">
-                        Email
-                      </label>
-                      <input
-                        id="input_1_7"
-                        type="email"
-                        required
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="bbc-input"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="input_1_8" className="block font-poppins text-[14px] font-medium text-[#111111] mb-[6px]">
-                        No Of Passengers
-                      </label>
-                      <input
-                        id="input_1_8"
-                        type="number"
-                        min={1}
-                        required
-                        value={passengers}
-                        onChange={(e) => setPassengers(e.target.value)}
-                        className="bbc-input"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Row 3: Date & Type of Service */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-[16px]">
-                    <div>
-                      <label htmlFor="input_1_9" className="block font-poppins text-[14px] font-medium text-[#111111] mb-[6px]">
-                        Date
-                      </label>
-                      <input
-                        id="input_1_9"
-                        type="text"
-                        placeholder="mm/dd/yyyy"
-                        onFocus={(e) => (e.currentTarget.type = 'date')}
-                        onBlur={(e) => {
-                          if (!e.currentTarget.value) e.currentTarget.type = 'text';
-                        }}
-                        required
-                        value={date}
-                        onChange={(e) => setDate(e.target.value)}
-                        className="bbc-input"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="input_1_10" className="block font-poppins text-[14px] font-medium text-[#111111] mb-[6px]">
-                        Type of Service
-                      </label>
-                      <input
-                        id="input_1_10"
-                        type="text"
-                        required
-                        value={serviceType}
-                        onChange={(e) => setServiceType(e.target.value)}
-                        className="bbc-input"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Row 4: Day of Week & Booking Hours */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-[16px]">
-                    <div>
-                      <label htmlFor="input_1_11" className="block font-poppins text-[14px] font-medium text-[#111111] mb-[6px]">
-                        Day of Week
-                      </label>
-                      <select
-                        id="input_1_11"
-                        value={dayOfWeek}
-                        onChange={(e) => setDayOfWeek(e.target.value)}
-                        className="bbc-input"
-                      >
-                        <option value="Monday">Monday</option>
-                        <option value="Tuesday">Tuesday</option>
-                        <option value="Wednesday">Wednesday</option>
-                        <option value="Thursday">Thursday</option>
-                        <option value="Friday">Friday</option>
-                        <option value="Saturday">Saturday</option>
-                        <option value="Sunday">Sunday</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label htmlFor="input_1_12" className="block font-poppins text-[14px] font-medium text-[#111111] mb-[6px]">
-                        Booking Hours
-                      </label>
-                      <input
-                        id="input_1_12"
-                        type="number"
-                        min={1}
-                        required
-                        value={bookingHours}
-                        onChange={(e) => setBookingHours(e.target.value)}
-                        className="bbc-input"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Row 5: Pick Up Time */}
-                  <fieldset>
-                    <legend className="block font-poppins text-[14px] font-medium text-[#111111] mb-[6px]">
-                      Pick Up Time
-                    </legend>
-                    <div className="grid grid-cols-3 gap-[10px]">
-                      <input
-                        id="input_1_14_1"
-                        type="number"
-                        min={1}
-                        max={12}
-                        placeholder="HH"
-                        aria-label="Hours"
-                        required
-                        value={pickupHour}
-                        onChange={(e) => setPickupHour(e.target.value)}
-                        className="bbc-input"
-                      />
-                      <input
-                        id="input_1_14_2"
-                        type="number"
-                        min={0}
-                        max={59}
-                        placeholder="MM"
-                        aria-label="Minutes"
-                        value={pickupMinute}
-                        onChange={(e) => setPickupMinute(e.target.value)}
-                        className="bbc-input"
-                      />
-                      <select
-                        id="input_1_14_3"
-                        aria-label="AM/PM"
-                        value={pickupAmPm}
-                        onChange={(e) => setPickupAmPm(e.target.value)}
-                        className="bbc-input"
-                      >
-                        <option value="AM">AM</option>
-                        <option value="PM">PM</option>
-                      </select>
-                    </div>
-                  </fieldset>
-
-                  {/* Row 6: Type of Trip */}
-                  <div>
-                    <label htmlFor="input_1_13" className="block font-poppins text-[14px] font-medium text-[#111111] mb-[6px]">
-                      Type of Trip
-                    </label>
-                    <input
-                      id="input_1_13"
-                      type="text"
-                      required
-                      value={tripType}
-                      onChange={(e) => setTripType(e.target.value)}
-                      className="bbc-input"
-                    />
-                  </div>
-
-                  {/* Row 7: Pick Up Location & Drop Off Location */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-[16px]">
-                    <div>
-                      <label htmlFor="input_1_15" className="block font-poppins text-[14px] font-medium text-[#111111] mb-[6px]">
-                        Pick Up Location
-                      </label>
-                      <input
-                        id="input_1_15"
-                        type="text"
-                        required
-                        value={pickupLocation}
-                        onChange={(e) => setPickupLocation(e.target.value)}
-                        className="bbc-input"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="input_1_16" className="block font-poppins text-[14px] font-medium text-[#111111] mb-[6px]">
-                        Drop Off Location
-                      </label>
-                      <input
-                        id="input_1_16"
-                        type="text"
-                        required
-                        value={dropoffLocation}
-                        onChange={(e) => setDropoffLocation(e.target.value)}
-                        className="bbc-input"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Row 8: Can We Text You? */}
-                  <fieldset>
-                    <legend className="block font-poppins text-[14px] font-medium text-[#111111] mb-[8px]">
-                      Can We Text You?
-                    </legend>
-                    <div className="flex flex-row items-center gap-[24px]">
-                      <label className="inline-flex items-center gap-[8px] font-poppins text-[14px] text-[#111111] cursor-pointer">
-                        <input
-                          type="radio"
-                          name="can_we_text"
-                          value="Yes"
-                          checked={canText === 'Yes'}
-                          onChange={() => setCanText('Yes')}
-                          className="bbc-radio"
-                        />
-                        <span>Yes</span>
-                      </label>
-                      <label className="inline-flex items-center gap-[8px] font-poppins text-[14px] text-[#111111] cursor-pointer">
-                        <input
-                          type="radio"
-                          name="can_we_text"
-                          value="No"
-                          checked={canText === 'No'}
-                          onChange={() => setCanText('No')}
-                          className="bbc-radio"
-                        />
-                        <span>No</span>
-                      </label>
-                    </div>
-                  </fieldset>
-
-                  {formError && (
-                    <div className="text-[13px] font-poppins text-[#F60102] bg-[#F60102]/10 border border-[#F60102]/40 rounded px-3 py-2">
-                      {formError}
-                    </div>
-                  )}
-
-                  {/* Smart Live Route Indicator */}
-                  {pickupLocation && dropoffLocation && (
-                    <div className="p-3 bg-red-50/90 border border-[#F60102]/25 rounded-md text-xs font-montserrat text-[#111111] flex items-center justify-between shadow-sm">
-                      <div className="flex items-center gap-2">
-                        <Sparkles className="w-4 h-4 text-[#F60102] shrink-0" />
-                        <div>
-                          <span className="font-semibold text-[#111111]">Smart Route Calculated:</span>{' '}
-                          <span className="text-gray-600 font-medium">{pickupLocation} ➔ {dropoffLocation}</span>
-                        </div>
-                      </div>
-                      <span className="bg-[#F60102] text-white px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider shrink-0">
-                        Zero Surge
-                      </span>
-                    </div>
-                  )}
-
-                  {/* Submit Button */}
-                  <div className="pt-[4px]">
-                    <button
-                      type="submit"
-                      id="gform_submit_button_1"
-                      className="w-full bg-[#F60102] hover:bg-[#d40102] text-white font-orbitron text-[15px] font-medium py-[12px] px-[24px] rounded-[4px] transition-colors cursor-pointer"
-                    >
-                      Get Instant Quote
-                    </button>
-                  </div>
-                </form>
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* -------------------------------------------------------------------
-            SECTION 2: THREE FEATURE CARDS
-            Clean Vehicles | Professional Drivers | Customer Service
-        ------------------------------------------------------------------- */}
-        <section className="w-full bg-[#101010] py-[40px] md:py-[80px] px-[20px]">
-          <div className="max-w-[1140px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-[20px] items-stretch">
-            <div className="bg-white border border-gray-200 shadow-lg rounded-[12px] p-[30px] flex flex-col items-center justify-center text-center gap-[10px]">
-              <h2 className="font-playfair text-[18px] md:text-[26px] font-bold capitalize text-[#111111]">
-                Clean Vehicles
-              </h2>
-              <p className="font-montserrat text-[14px] md:text-[16px] font-normal leading-[20px] md:leading-[24px] text-gray-700">
-                Travel with peace of mind knowing that every vehicle is disinfected and sanitized before every trip.
-              </p>
-            </div>
-
-            <div className="bg-white border border-gray-200 shadow-lg rounded-[12px] p-[30px] flex flex-col items-center justify-center text-center gap-[10px]">
-              <h2 className="font-playfair text-[18px] md:text-[26px] font-bold capitalize text-[#111111]">
-                Professional Drivers
-              </h2>
-              <p className="font-montserrat text-[14px] md:text-[16px] font-normal leading-[20px] md:leading-[24px] text-gray-700">
-                We only work with the best. Experienced, clean cut and reliable chauffeurs at your service.
-              </p>
-            </div>
-
-            <div className="bg-white border border-gray-200 shadow-lg rounded-[12px] p-[30px] flex flex-col items-center justify-center text-center gap-[10px]">
-              <h2 className="font-playfair text-[18px] md:text-[26px] font-bold capitalize text-[#111111]">
-                Customer Service
-              </h2>
-              <p className="font-montserrat text-[14px] md:text-[16px] font-normal leading-[20px] md:leading-[24px] text-gray-700">
-                Providing a hassle free, quality driven experience is our number one priority
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* -------------------------------------------------------------------
-            SECTION 3: STICKY / FIXED PARALLAX BANNER (elementor-element-2c58a7a)
-        ------------------------------------------------------------------- */}
-        <section
-          className="relative w-full min-h-[200px] md:min-h-[300px] py-[40px] px-[20px] flex flex-col items-center justify-center bg-fixed bg-top bg-no-repeat bg-cover overflow-hidden"
-          style={{
-            backgroundImage: `url("${cdnUrl(`${ORIGIN_2025_02}/IMG_2687.jpeg`, 1600, 84)}"), url("${ORIGIN_2025_02}/IMG_2687.jpeg")`,
-            backgroundAttachment: 'fixed',
-            backgroundPosition: 'top center',
-            backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover'
-          }}
-        >
-          <div className="absolute inset-0 bg-black/60 pointer-events-none" />
-
-          <div className="relative z-10 max-w-[1140px] mx-auto flex flex-col items-center justify-center text-center gap-[4px] md:gap-[20px]">
-            <h2 className="font-playfair text-[22px] md:text-[52px] font-bold uppercase leading-[32px] md:leading-[1.15] text-white">
-              Seattle&apos;s Premier Express Shuttle Service
-            </h2>
-            <h3 className="font-montserrat text-[14px] md:text-[17px] font-medium leading-[22px] text-white">
-              Cruise Shuttle from Sea-Tac Hotels to Pier 66 & Pier 91 · Airport Transfers · Charters
-            </h3>
-          </div>
-        </section>
-
-        {/* -------------------------------------------------------------------
-            SECTION: SMART AIRPORT, CREW & HOTEL SHUTTLE SERVICES
-        ------------------------------------------------------------------- */}
-        <section className="w-full bg-[#141414] py-[50px] md:py-[80px] px-[20px] border-t border-b border-white/5 relative overflow-hidden">
-          {/* Subtle Background Glow */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-[#F60102]/5 blur-[120px] pointer-events-none rounded-full" />
-
-          <div className="max-w-[1140px] mx-auto relative z-10">
-            {/* Header */}
-            <div className="text-center max-w-2xl mx-auto mb-10 md:mb-12">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#F60102]/10 border border-[#F60102]/30 text-[#F60102] text-xs font-bold uppercase font-montserrat tracking-widest mb-3">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Smart Transportation Hub</span>
-              </div>
-              <h2 className="font-playfair text-[26px] md:text-[40px] font-bold uppercase leading-tight text-white">
-                Specialized Seattle Services
-              </h2>
-              <div className="w-16 h-[2px] bg-[#F60102] mx-auto mt-4 mb-4" />
-              <p className="font-montserrat text-white/70 text-sm md:text-base leading-relaxed">
-                Click any service below to instantly pre-fill the smart quote calculator or connect directly with our 24/7 Seattle dispatch center.
-              </p>
-            </div>
-
-            {/* Three Smart Boxes in One Line */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-stretch">
-              {/* Box 1: Airport Transfers */}
-              <div 
-                className={`relative bg-[#1a1a1a] hover:bg-[#202020] border rounded-xl p-6 md:p-8 flex flex-col justify-between transition-all duration-300 group shadow-lg hover:shadow-2xl hover:shadow-[#F60102]/15 ${
-                  activeServiceTab === 'airport' ? 'border-[#F60102]/70 ring-1 ring-[#F60102]/40' : 'border-white/10 hover:border-[#F60102]/50'
-                }`}
-              >
-                <div>
-                  {/* Top Status & Icon */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="w-14 h-14 rounded-full bg-[#F60102]/15 border border-[#F60102]/30 flex items-center justify-center group-hover:scale-110 group-hover:bg-[#F60102] transition-all duration-300">
-                      <Plane className="w-7 h-7 text-[#F60102] group-hover:text-white transition-colors" />
-                    </div>
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-semibold font-montserrat">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      Flight Radar Active
-                    </span>
-                  </div>
-
-                  <h3 className="font-playfair text-[22px] md:text-[24px] font-bold text-white mb-2 group-hover:text-[#F60102] transition-colors">
-                    Airport Transfers
-                  </h3>
-                  <p className="font-montserrat text-white/70 text-sm leading-relaxed mb-5">
-                    Non-stop private transfers to/from Seattle-Tacoma International Airport (SEA). Real-time flight tracking with zero delay penalties.
-                  </p>
-
-                  {/* Smart Quick-Route Chips */}
-                  <div className="mb-6 space-y-2">
-                    <span className="text-[11px] uppercase tracking-wider font-bold text-white/50 block font-montserrat">
-                      ⚡ Quick-Select Route:
-                    </span>
-                    <div className="flex flex-wrap gap-1.5">
-                      <button
-                        type="button"
-                        onClick={() => handleSmartSelect(
-                          'Sea-Tac Airport Express Transfer',
-                          'Point to Point',
-                          'Sea-Tac International Airport (SEA)',
-                          'Downtown Seattle Hotel',
-                          '2',
-                          '3'
-                        )}
-                        className="px-2.5 py-1 rounded bg-white/5 hover:bg-[#F60102] hover:text-white text-white/80 border border-white/10 text-xs font-montserrat transition-colors cursor-pointer text-left"
-                      >
-                        SEA ➔ Downtown ($65)
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleSmartSelect(
-                          'Airport to Cruise Pier Express',
-                          'Cruise Port Shuttle',
-                          'Sea-Tac International Airport (SEA)',
-                          'Seattle Cruise Terminal (Pier 66 / Pier 91)',
-                          '2',
-                          '2'
-                        )}
-                        className="px-2.5 py-1 rounded bg-white/5 hover:bg-[#F60102] hover:text-white text-white/80 border border-white/10 text-xs font-montserrat transition-colors cursor-pointer text-left"
-                      >
-                        SEA ➔ Pier 66/91 ($30/pax)
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleSmartSelect(
-                          'Sea-Tac Airport to Eastside Transfer',
-                          'Point to Point',
-                          'Sea-Tac International Airport (SEA)',
-                          'Bellevue Downtown',
-                          '2',
-                          '4'
-                        )}
-                        className="px-2.5 py-1 rounded bg-white/5 hover:bg-[#F60102] hover:text-white text-white/80 border border-white/10 text-xs font-montserrat transition-colors cursor-pointer text-left"
-                      >
-                        SEA ➔ Bellevue ($75)
-                      </button>
-                    </div>
-                  </div>
-
-                  <ul className="space-y-2 mb-6 text-xs text-white/80 font-montserrat">
-                    <li className="flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-[#F60102]" />
-                      Real-Time SEA Flight Radar Tracking
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-[#F60102]" />
-                      Curbside Meet &amp; Greet with Luggage Assistance
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-[#F60102]" />
-                      Mercedes Sprinter &amp; Cadillac Escalade Fleet
-                    </li>
-                  </ul>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => handleSmartSelect(
-                    'Sea-Tac Airport Express Transfer',
-                    'Point to Point',
-                    'Seattle-Tacoma International Airport (SEA)',
-                    'Downtown Seattle Hotel / Residence',
-                    '3',
-                    '4'
-                  )}
-                  className="w-full inline-flex items-center justify-between text-sm font-semibold font-montserrat text-[#F60102] group-hover:text-white bg-white/5 group-hover:bg-[#F60102] py-3 px-4 rounded-lg transition-all duration-300 cursor-pointer border border-white/10"
-                >
-                  <span>Book Airport Transfer</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
-
-              {/* Box 2: Airport Crew Transfer */}
-              <div 
-                className={`relative bg-[#1a1a1a] hover:bg-[#202020] border rounded-xl p-6 md:p-8 flex flex-col justify-between transition-all duration-300 group shadow-lg hover:shadow-2xl hover:shadow-[#F60102]/15 ${
-                  activeServiceTab === 'crew' ? 'border-[#F60102]/70 ring-1 ring-[#F60102]/40' : 'border-white/10 hover:border-[#F60102]/50'
-                }`}
-              >
-                <div>
-                  {/* Top Status & Icon */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="w-14 h-14 rounded-full bg-[#F60102]/15 border border-[#F60102]/30 flex items-center justify-center group-hover:scale-110 group-hover:bg-[#F60102] transition-all duration-300">
-                      <Users className="w-7 h-7 text-[#F60102] group-hover:text-white transition-colors" />
-                    </div>
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-[11px] font-semibold font-montserrat">
-                      <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
-                      Airline Direct Billing
-                    </span>
-                  </div>
-
-                  <h3 className="font-playfair text-[22px] md:text-[24px] font-bold text-white mb-2 group-hover:text-[#F60102] transition-colors">
-                    Airport Crew Transfer
-                  </h3>
-                  <p className="font-montserrat text-white/70 text-sm leading-relaxed mb-5">
-                    Dedicated, prioritized transportation for airline pilots, flight attendants, and operations crews between Sea-Tac terminals and layover hotels.
-                  </p>
-
-                  {/* Smart Quick-Select Crew Categories */}
-                  <div className="mb-6 space-y-2">
-                    <span className="text-[11px] uppercase tracking-wider font-bold text-white/50 block font-montserrat">
-                      ⚡ Quick-Select Crew Dispatch:
-                    </span>
-                    <div className="flex flex-wrap gap-1.5">
-                      <button
-                        type="button"
-                        onClick={() => handleSmartSelect(
-                          'Airline Flight Deck / Pilot Crew Transfer',
-                          'Scheduled Crew Shuttle',
-                          'Sea-Tac Airport (SEA) - Gate / Flight Operations',
-                          'Airline Layover Partner Hotel',
-                          '2',
-                          '2'
-                        )}
-                        className="px-2.5 py-1 rounded bg-white/5 hover:bg-[#F60102] hover:text-white text-white/80 border border-white/10 text-xs font-montserrat transition-colors cursor-pointer text-left"
-                      >
-                        Pilots &amp; Flight Deck
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleSmartSelect(
-                          'Airline Cabin Attendant Crew Shuttle',
-                          'Scheduled Crew Shuttle',
-                          'Sea-Tac Airport (SEA) - Baggage Level Ops',
-                          'Sea-Tac Partner Hotel',
-                          '2',
-                          '6'
-                        )}
-                        className="px-2.5 py-1 rounded bg-white/5 hover:bg-[#F60102] hover:text-white text-white/80 border border-white/10 text-xs font-montserrat transition-colors cursor-pointer text-left"
-                      >
-                        Cabin Crew Shuttles
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleSmartSelect(
-                          'Airline Corporate Layover Transportation',
-                          'Contract Layover Shuttles',
-                          'Sea-Tac Terminal VIP Ground Curb',
-                          'Downtown Seattle Hotel',
-                          '4',
-                          '8'
-                        )}
-                        className="px-2.5 py-1 rounded bg-white/5 hover:bg-[#F60102] hover:text-white text-white/80 border border-white/10 text-xs font-montserrat transition-colors cursor-pointer text-left"
-                      >
-                        Contract Layover Shuttles
-                      </button>
-                    </div>
-                  </div>
-
-                  <ul className="space-y-2 mb-6 text-xs text-white/80 font-montserrat">
-                    <li className="flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-[#F60102]" />
-                      Guaranteed Under-10-Min Ramp &amp; Gate Response
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-[#F60102]" />
-                      Direct Corporate Invoicing &amp; Airline Vouchers
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-[#F60102]" />
-                      Extra Luggage Bays for Flight Bags &amp; Uniforms
-                    </li>
-                  </ul>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => handleSmartSelect(
-                    'Airport Airline Crew Transfer',
-                    'Scheduled Crew Shuttle',
-                    'Sea-Tac Airport (SEA) - Flight Ops / Terminal',
-                    'Airline Partner Layover Hotel',
-                    '3',
-                    '6'
-                  )}
-                  className="w-full inline-flex items-center justify-between text-sm font-semibold font-montserrat text-[#F60102] group-hover:text-white bg-white/5 group-hover:bg-[#F60102] py-3 px-4 rounded-lg transition-all duration-300 cursor-pointer border border-white/10"
-                >
-                  <span>Schedule Crew Transfer</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
-
-              {/* Box 3: Book Seattle Hotels */}
-              <div 
-                className={`relative bg-[#1a1a1a] hover:bg-[#202020] border rounded-xl p-6 md:p-8 flex flex-col justify-between transition-all duration-300 group shadow-lg hover:shadow-2xl hover:shadow-[#F60102]/15 ${
-                  activeServiceTab === 'hotel' ? 'border-[#F60102]/70 ring-1 ring-[#F60102]/40' : 'border-white/10 hover:border-[#F60102]/50'
-                }`}
-              >
-                <div>
-                  {/* Top Status & Icon */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="w-14 h-14 rounded-full bg-[#F60102]/15 border border-[#F60102]/30 flex items-center justify-center group-hover:scale-110 group-hover:bg-[#F60102] transition-all duration-300">
-                      <Hotel className="w-7 h-7 text-[#F60102] group-hover:text-white transition-colors" />
-                    </div>
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-[11px] font-semibold font-montserrat">
-                      <DollarSign className="w-3.5 h-3.5 text-amber-400" />
-                      $30/Person Flat Rate
-                    </span>
-                  </div>
-
-                  <h3 className="font-playfair text-[22px] md:text-[24px] font-bold text-white mb-2 group-hover:text-[#F60102] transition-colors">
-                    Book Seattle Hotels
-                  </h3>
-                  <p className="font-montserrat text-white/70 text-sm leading-relaxed mb-5">
-                    Express hotel-to-cruise terminal connections from Sea-Tac &amp; downtown partner hotels directly to Pier 66 and Pier 91 cruise berths.
-                  </p>
-
-                  {/* Smart Quick-Select Hotels */}
-                  <div className="mb-6 space-y-2">
-                    <span className="text-[11px] uppercase tracking-wider font-bold text-white/50 block font-montserrat">
-                      ⚡ Quick-Select Partner Hotel:
-                    </span>
-                    <div className="flex flex-wrap gap-1.5">
-                      <button
-                        type="button"
-                        onClick={() => handleSmartSelect(
-                          'Hotel to Cruise Pier Shuttle',
-                          'Cruise Port Shuttle ($30/person)',
-                          'Hilton Seattle Airport & Conference Center',
-                          'Seattle Cruise Terminal (Pier 66 / Pier 91)',
-                          '2',
-                          '2'
-                        )}
-                        className="px-2.5 py-1 rounded bg-white/5 hover:bg-[#F60102] hover:text-white text-white/80 border border-white/10 text-xs font-montserrat transition-colors cursor-pointer text-left"
-                      >
-                        Hilton Sea-Tac
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleSmartSelect(
-                          'Hotel to Cruise Pier Shuttle',
-                          'Cruise Port Shuttle ($30/person)',
-                          'Seattle Marriott Waterfront',
-                          'Seattle Cruise Terminal Pier 66',
-                          '1',
-                          '2'
-                        )}
-                        className="px-2.5 py-1 rounded bg-white/5 hover:bg-[#F60102] hover:text-white text-white/80 border border-white/10 text-xs font-montserrat transition-colors cursor-pointer text-left"
-                      >
-                        Marriott Waterfront
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleSmartSelect(
-                          'Hotel to Cruise Pier Shuttle',
-                          'Cruise Port Shuttle ($30/person)',
-                          'The Fairmont Olympic Hotel Seattle',
-                          'Seattle Cruise Terminal (Pier 66 / Pier 91)',
-                          '2',
-                          '4'
-                        )}
-                        className="px-2.5 py-1 rounded bg-white/5 hover:bg-[#F60102] hover:text-white text-white/80 border border-white/10 text-xs font-montserrat transition-colors cursor-pointer text-left"
-                      >
-                        Fairmont Olympic
-                      </button>
-                    </div>
-                  </div>
-
-                  <ul className="space-y-2 mb-6 text-xs text-white/80 font-montserrat">
-                    <li className="flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-[#F60102]" />
-                      Direct Pier 66 &amp; Pier 91 Baggage Drops
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-[#F60102]" />
-                      $30 Per Person Shared or $120 Private Van
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-[#F60102]" />
-                      Doorstep Hotel Lobby Pickup Guarantee
-                    </li>
-                  </ul>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => handleSmartSelect(
-                    'Cruise Shuttle (Hotel to Pier 66 / Pier 91)',
-                    'Cruise Port Shuttle ($30/person)',
-                    'Sea-Tac / Downtown Seattle Partner Hotel',
-                    'Seattle Cruise Terminal (Pier 66 or Pier 91)',
-                    '2',
-                    '2'
-                  )}
-                  className="w-full inline-flex items-center justify-between text-sm font-semibold font-montserrat text-[#F60102] group-hover:text-white bg-white/5 group-hover:bg-[#F60102] py-3 px-4 rounded-lg transition-all duration-300 cursor-pointer border border-white/10"
-                >
-                  <span>Book Hotel Shuttle ($30)</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
-            </div>
-
-            {/* Smart 24/7 Live Hotline Dispatch Terminal */}
-            <div className="mt-12 md:mt-16 bg-[#181818] border border-white/10 rounded-2xl p-6 md:p-8 max-w-4xl mx-auto shadow-2xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-[#F60102]/10 rounded-full blur-3xl pointer-events-none" />
-
-              {/* Status Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-3 pb-6 border-b border-white/10 text-xs font-montserrat text-white/70">
-                <div className="flex items-center gap-2.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
-                  <span className="text-white font-semibold">24/7 LIVE DISPATCH OPERATIONAL</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="flex items-center gap-1.5 text-white/80">
-                    <Clock className="w-3.5 h-3.5 text-[#F60102]" />
-                    Seattle Time: <strong className="text-white">{seattleTime || 'Live PT'}</strong>
-                  </span>
-                  <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 font-semibold text-[11px]">
-                    <Zap className="w-3 h-3" /> Avg. Wait &lt; 30s
-                  </span>
-                </div>
-              </div>
-
-              {/* Action Buttons Row */}
-              <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="text-center sm:text-left">
-                  <h4 className="font-playfair text-xl md:text-2xl font-bold text-white">
-                    Need Immediate Pickup or Flight Assistance?
-                  </h4>
-                  <p className="text-white/60 text-xs md:text-sm font-montserrat mt-1">
-                    Connect directly with a live Seattle Express Shuttle dispatcher standing by 24 hours a day.
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap items-center justify-center gap-3 shrink-0 w-full sm:w-auto">
-                  {/* Primary Hotline Button */}
-                  <a
-                    href="tel:+12065046000"
-                    className="inline-flex items-center justify-center gap-3 px-6 md:px-8 py-3.5 bg-[#F60102] hover:bg-[#d60102] text-white font-montserrat font-bold text-sm md:text-base tracking-wider uppercase rounded-lg shadow-xl shadow-[#F60102]/30 hover:shadow-[#F60102]/50 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
-                    aria-label="Call Hotline Now"
-                  >
-                    <PhoneCall className="w-5 h-5 animate-pulse" />
-                    <span>Call Hotline: (206) 504-6000</span>
-                  </a>
-
-                  {/* SMS Button */}
-                  <a
-                    href="sms:+12065046000"
-                    className="inline-flex items-center justify-center gap-2 px-4 py-3.5 bg-white/5 hover:bg-white/10 text-white border border-white/15 rounded-lg text-sm font-montserrat font-semibold transition-colors cursor-pointer"
-                    title="Send SMS text to dispatch"
-                  >
-                    <MessageSquare className="w-4 h-4 text-[#F60102]" />
-                    <span>SMS Dispatch</span>
-                  </a>
-
-                  {/* Copy Button */}
-                  <button
-                    type="button"
-                    onClick={handleCopyHotline}
-                    className="inline-flex items-center justify-center gap-2 px-4 py-3.5 bg-white/5 hover:bg-white/10 text-white border border-white/15 rounded-lg text-sm font-montserrat font-semibold transition-colors cursor-pointer"
-                    title="Copy hotline number"
-                  >
-                    {copiedHotline ? (
-                      <>
-                        <Check className="w-4 h-4 text-emerald-400" />
-                        <span className="text-emerald-400">Copied!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-4 h-4 text-white/70" />
-                        <span>Copy</span>
-                      </>
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* -------------------------------------------------------------------
-            SECTION 4: MASONRY FLEET GALLERY (Fast-decoding compressed assets)
-        ------------------------------------------------------------------- */}
-        <section className="w-full bg-[#101010] py-[40px] md:py-[80px] px-[20px]">
-          <div className="max-w-[1140px] mx-auto">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-[5px] md:gap-[10px] items-start">
-              {MASONRY_COLUMNS.map((columnItems, colIdx) => (
-                <div key={colIdx} className="flex flex-col gap-[5px] md:gap-[10px]">
-                  {columnItems.map((item) => {
-                    const globalIdx = GALLERY_ITEMS.findIndex((g) => g.id === item.id);
-                    return (
-                      <button
-                        key={item.id}
-                        type="button"
-                        onClick={() => {
-                          setIsZoomed(false);
-                          setLightboxIndex(globalIdx);
-                        }}
-                        className="group relative w-full overflow-hidden block cursor-pointer focus:outline-2 focus:outline-[#F60102]"
-                        aria-label={`Open ${item.title} in lightbox`}
-                      >
-                        <img
-                          src={item.src}
-                          alt={item.title}
-                          width={item.width}
-                          height={item.height}
-                          loading="lazy"
-                          decoding="async"
-                          onError={(e) => {
-                            if (e.currentTarget.src !== item.fallbackSrc) {
-                              e.currentTarget.src = item.fallbackSrc;
-                            }
-                          }}
-                          className="w-full h-auto block transition-transform duration-300 ease-out group-hover:scale-[1.03]"
-                        />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/45 transition-colors duration-300" />
-                      </button>
-                    );
-                  })}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* 9. FINAL CALL TO ACTION */}
+        <FinalCTA onBookClick={scrollToQuoteCard} />
       </main>
 
-      {/* =====================================================================
-          FOOTER — Seattle Express Shuttle
-      ===================================================================== */}
-      <footer>
-        {/* Top Footer Container (#282A27) */}
-        <div className="w-full bg-[#282A27] py-[40px] md:py-[60px] px-[20px]">
-          <div className="max-w-[1140px] mx-auto flex flex-col items-center justify-center gap-[20px] md:gap-[36px]">
-            {/* Footer Seattle Express Shuttle Logo */}
-            <a href="#top" aria-label="Seattle Express Shuttle">
-              <SeattleExpressLogo size="footer" />
-            </a>
-
-            {/* Headings */}
-            <div className="flex flex-col items-center justify-center text-center gap-[13px]">
-              <h2 className="font-montserrat text-[15px] md:text-[17px] font-medium text-white">
-                For immediate response please text or call <a href="tel:+12065046000" className="underline hover:text-[#F60102]">+1 (206) 504-6000</a>
-              </h2>
-              <h2 className="font-montserrat text-[15px] md:text-[17px] font-medium text-white">
-                <b className="font-bold">Please Note:</b> Deposit Confirms Reservation
-              </h2>
-            </div>
-
-            {/* Inline Contact List */}
-            <ul className="flex flex-wrap items-center justify-center gap-x-[28px] gap-y-[12px] text-center">
-              <li>
-                <a
-                  href="tel:+12065046000"
-                  className="inline-flex items-center gap-[8px] font-poppins text-[14px] md:text-[16px] text-white hover:text-[#F60102] transition-colors"
-                >
-                  <svg
-                    aria-hidden="true"
-                    className="w-[16px] h-[16px] fill-[#F60102] shrink-0"
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M497.39 361.8l-112-48a24 24 0 0 0-28 6.9l-49.6 60.6A370.66 370.66 0 0 1 130.6 204.11l60.6-49.6a23.94 23.94 0 0 0 6.9-28l-48-112A24.16 24.16 0 0 0 122.6.61l-104 24A24 24 0 0 0 0 48c0 256.5 207.9 464 464 464a24 24 0 0 0 23.4-18.6l24-104a24.29 24.29 0 0 0-14.01-27.6z" />
-                  </svg>
-                  <span>+1 (206) 504-6000</span>
-                </a>
-              </li>
-
-              <li>
-                <a
-                  href="mailto:info@seattleexpressshuttle.com"
-                  className="inline-flex items-center gap-[8px] font-poppins text-[14px] md:text-[16px] text-white hover:text-[#F60102] transition-colors"
-                >
-                  <svg
-                    aria-hidden="true"
-                    className="w-[16px] h-[16px] fill-[#F60102] shrink-0"
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z" />
-                  </svg>
-                  <span>info@seattleexpressshuttle.com</span>
-                </a>
-              </li>
-
-              <li className="inline-flex items-center gap-[8px] font-poppins text-[14px] md:text-[16px] text-white/90">
-                <svg
-                  aria-hidden="true"
-                  className="w-[16px] h-[16px] fill-[#F60102] shrink-0"
-                  viewBox="0 0 384 512"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z" />
-                </svg>
-                <span>3507 S 188th St, SeaTac, WA 98188</span>
-              </li>
-            </ul>
-
-            {/* Social Icons */}
-            <div className="flex items-center justify-center gap-[12px]">
-              <a
-                href="https://seattleexpressshuttle.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Seattle Express Shuttle Official Website"
-                className="w-[40px] h-[40px] rounded-full bg-[#1e73be] hover:opacity-90 flex items-center justify-center text-white transition-opacity"
-              >
-                <svg className="w-[18px] h-[18px] fill-current" viewBox="0 0 512 512">
-                  <path d="M352 256c0 22.2-1.2 43.6-3.3 64H163.3c-2.2-20.4-3.3-41.8-3.3-64s1.2-43.6 3.3-64h185.4c2.2 20.4 3.3 41.8 3.3 64zm28.8-64h76.7C434.6 138 376.6 91.2 304.8 74.4c29.1 31 51.6 72.3 76 117.6zm-17.7 64c0-21.7-1.1-42.9-3.2-64H150.1c-2.1 21.1-3.2 42.3-3.2 64s1.1 42.9 3.2 64h209.8c2.1-21.1 3.2-42.3 3.2-64zM256 0C114.6 0 0 114.6 0 256s114.6 256 256 256 256-114.6 256-256S397.4 0 256 0z" />
-                </svg>
-              </a>
-
-              <a
-                href="tel:+12065046000"
-                aria-label="Call Seattle Express Shuttle"
-                className="w-[40px] h-[40px] rounded-full bg-[#F60102] hover:opacity-90 flex items-center justify-center text-white transition-opacity"
-              >
-                <svg className="w-[18px] h-[18px] fill-current" viewBox="0 0 512 512">
-                  <path d="M497.39 361.8l-112-48a24 24 0 0 0-28 6.9l-49.6 60.6A370.66 370.66 0 0 1 130.6 204.11l60.6-49.6a23.94 23.94 0 0 0 6.9-28l-48-112A24.16 24.16 0 0 0 122.6.61l-104 24A24 24 0 0 0 0 48c0 256.5 207.9 464 464 464a24 24 0 0 0 23.4-18.6l24-104a24.29 24.29 0 0 0-14.01-27.6z" />
-                </svg>
-              </a>
-
-              <a
-                href="https://wa.me/12065046000"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp Seattle Express Shuttle"
-                className="w-[40px] h-[40px] rounded-full bg-[#25D366] hover:opacity-90 flex items-center justify-center text-white transition-opacity"
-              >
-                <svg className="w-[18px] h-[18px] fill-current" viewBox="0 0 448 512">
-                  <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" />
-                </svg>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Copyright Container */}
-        <div className="w-full bg-[#101010] py-[20px] px-[20px]">
-          <div className="max-w-[1140px] mx-auto flex flex-col md:flex-row items-center justify-between gap-[10px] text-center md:text-left">
-            <h2 className="font-montserrat text-[12px] md:text-[14px] font-normal text-white">
-              Copyright © 2026 Seattle Express Shuttle – All Rights Reserved.
-            </h2>
-            <h2 className="font-montserrat text-[12px] md:text-[14px] font-normal text-white/70">
-              Sea-Tac Airport Shuttles · Pier 66 &amp; Pier 91 Cruise Transfers · Charters
-            </h2>
-          </div>
-        </div>
-      </footer>
+      {/* 10. FOOTER — Official Logo, Address, Phone, Email & Cruise Pier Details */}
+      <Footer />
 
       {/* =====================================================================
-          FIXED FLOATING ACTION BUTTONS
+          FLOATING CONTACT ACTION BUTTONS (Direct Call, SMS & WhatsApp)
       ===================================================================== */}
-      <a
-        href="tel:+12065046000"
-        aria-label="Call Seattle Express Shuttle at +1 (206) 504-6000"
-        className="fixed left-[12px] md:left-[20px] bottom-[20px] md:bottom-[30px] z-40 w-[50px] h-[50px] rounded-full bg-[#F60102] hover:bg-white text-white hover:text-[#F60102] flex items-center justify-center shadow-lg transition-transform duration-150 hover:scale-110"
-      >
-        <svg className="w-[25px] h-[25px] fill-current" viewBox="0 0 512 512">
-          <path d="M497.39 361.8l-112-48a24 24 0 0 0-28 6.9l-49.6 60.6A370.66 370.66 0 0 1 130.6 204.11l60.6-49.6a23.94 23.94 0 0 0 6.9-28l-48-112A24.16 24.16 0 0 0 122.6.61l-104 24A24 24 0 0 0 0 48c0 256.5 207.9 464 464 464a24 24 0 0 0 23.4-18.6l24-104a24.29 24.29 0 0 0-14.01-27.6z" />
-        </svg>
-      </a>
-
-      <a
-        href="https://wa.me/12065046000"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="WhatsApp Seattle Express Shuttle"
-        className="fixed right-[12px] md:right-[20px] bottom-[20px] md:bottom-[30px] z-40 w-[50px] h-[50px] rounded-full bg-[#F60102] hover:bg-white text-white hover:text-[#F60102] flex items-center justify-center shadow-lg transition-transform duration-150 hover:scale-110"
-      >
-        <svg className="w-[25px] h-[25px] fill-current" viewBox="0 0 448 512">
-          <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" />
-        </svg>
-      </a>
-
-      {/* =====================================================================
-          LIGHTBOX SLIDESHOW MODAL
-      ===================================================================== */}
-      {lightboxIndex !== null && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          className="fixed inset-0 z-50 bg-black/95 flex flex-col justify-between select-none"
+      <aside aria-label="Quick Contact Actions" className="fixed right-4 bottom-5 z-40 flex flex-col gap-2.5">
+        {/* WhatsApp Quick Button */}
+        <a
+          href="https://wa.me/12065046000"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="WhatsApp Seattle Express Shuttle"
+          className="w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:scale-108 transition-all cursor-pointer"
+          title="WhatsApp: +1 (206) 504-6000"
         >
-          {/* Top Bar */}
-          <div className="flex items-center justify-between px-6 py-4 text-white/80 text-sm font-montserrat">
-            <div>
-              {lightboxIndex + 1} / {GALLERY_ITEMS.length}
-            </div>
-            <div className="flex items-center gap-4">
-              <button
-                type="button"
-                onClick={() => setIsZoomed((z) => !z)}
-                className="p-2 hover:text-white transition-colors cursor-pointer"
-                aria-label="Toggle zoom"
-              >
-                {isZoomed ? <ZoomOut className="w-5 h-5" /> : <ZoomIn className="w-5 h-5" />}
-              </button>
-              <button
-                type="button"
-                onClick={() => setLightboxIndex(null)}
-                className="p-2 hover:text-white transition-colors cursor-pointer"
-                aria-label="Close lightbox"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-          </div>
+          <svg className="w-5 h-5 fill-current" viewBox="0 0 448 512">
+            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" />
+          </svg>
+        </a>
 
-          {/* Center Image & Prev/Next Arrows */}
-          <div className="relative flex-1 flex items-center justify-center px-12 overflow-hidden">
-            <button
-              type="button"
-              onClick={handlePrevImage}
-              className="absolute left-3 md:left-6 z-10 p-3 rounded-full bg-black/50 hover:bg-[#F60102] text-white transition-colors cursor-pointer"
-              aria-label="Previous image"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
+        {/* SMS Quick Button */}
+        <a
+          href="sms:+12065046000"
+          aria-label="Text Seattle Dispatch"
+          className="w-12 h-12 rounded-full bg-white text-[#35434A] border border-[#C6AD83] flex items-center justify-center shadow-lg hover:bg-[#FAF8F4] hover:scale-108 transition-all cursor-pointer"
+          title="SMS Text Dispatch: (206) 504-6000"
+        >
+          <MessageSquare className="w-5 h-5 text-[#A88B61]" />
+        </a>
 
-            <img
-              src={GALLERY_ITEMS[lightboxIndex].hdSrc}
-              alt={GALLERY_ITEMS[lightboxIndex].title}
-              onError={(e) => {
-                const fallback = GALLERY_ITEMS[lightboxIndex].fallbackSrc;
-                if (e.currentTarget.src !== fallback) {
-                  e.currentTarget.src = fallback;
-                }
-              }}
-              className={`max-h-[80vh] max-w-[88vw] object-contain transition-transform duration-200 ${
-                isZoomed ? 'scale-125' : 'scale-100'
-              }`}
-            />
+        {/* Phone Call Quick Button */}
+        <a
+          href="tel:+12065046000"
+          aria-label="Call 24/7 Seattle Dispatch Hotline"
+          className="w-12 h-12 rounded-full bg-[#F60102] text-white border border-white/40 flex items-center justify-center shadow-lg hover:bg-[#d40102] hover:scale-108 transition-all cursor-pointer"
+          title="Call Hotline: (206) 504-6000"
+        >
+          <Phone className="w-5 h-5 text-white fill-current" />
+        </a>
+      </aside>
 
-            <button
-              type="button"
-              onClick={handleNextImage}
-              className="absolute right-3 md:right-6 z-10 p-3 rounded-full bg-black/50 hover:bg-[#F60102] text-white transition-colors cursor-pointer"
-              aria-label="Next image"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
-          </div>
-
-          {/* Bottom Caption */}
-          <div className="text-center py-3 text-xs text-white/60 font-montserrat">
-            Seattle Express Shuttle — Luxury &amp; Charter Fleet
-          </div>
-        </div>
-      )}
+      {/* LIGHTBOX MODAL */}
+      <LightboxModal
+        items={FLEET_GALLERY}
+        currentIndex={lightboxIndex}
+        onClose={() => setLightboxIndex(null)}
+        onNext={() => {
+          if (lightboxIndex !== null) {
+            setLightboxIndex((lightboxIndex + 1) % FLEET_GALLERY.length);
+          }
+        }}
+        onPrev={() => {
+          if (lightboxIndex !== null) {
+            setLightboxIndex((lightboxIndex - 1 + FLEET_GALLERY.length) % FLEET_GALLERY.length);
+          }
+        }}
+      />
     </div>
   );
 }

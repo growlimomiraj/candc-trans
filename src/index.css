@@ -2,40 +2,65 @@
 
 @layer base {
   :root {
-    --e-global-color-primary: #FF0000;
-    --e-global-color-secondary: #000000;
-    --e-global-color-text: #FFFFFF;
-    --e-global-color-accent: #FF0000;
-    --font-playfair: 'Playfair Display', serif;
-    --font-poppins: 'Poppins', sans-serif;
+    --bg-primary: #F5F2EC;
+    --bg-secondary: #EAE4D9;
+    --color-white: #FFFFFF;
+    --color-champagne: #C6AD83;
+    --color-champagne-light: #E7DAC4;
+    --color-bronze: #A88B61;
+    --color-slate: #35434A;
+    --color-slate-dark: #273238;
+    --color-text: #343434;
+    --color-muted: #77736D;
+
+    --font-cormorant: 'Cormorant Garamond', Georgia, serif;
+    --font-playfair: 'Playfair Display', Georgia, serif;
+    --font-manrope: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-montserrat: 'Montserrat', sans-serif;
+    --font-poppins: 'Poppins', sans-serif;
     --font-orbitron: 'Orbitron', sans-serif;
   }
 
   body {
-    font-family: var(--font-poppins);
-    background-color: #101010;
-    color: #FFFFFF;
+    font-family: var(--font-manrope);
+    background-color: #F5F2EC;
+    color: #343434;
     overflow-x: hidden;
   }
 }
 
-.font-playfair {
-  font-family: 'Playfair Display', serif;
+.font-cormorant {
+  font-family: 'Cormorant Garamond', Georgia, serif;
 }
 
-.font-poppins {
-  font-family: 'Poppins', sans-serif;
+.font-playfair {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.font-manrope {
+  font-family: 'Manrope', sans-serif;
+}
+
+.font-inter {
+  font-family: 'Inter', sans-serif;
 }
 
 .font-montserrat {
   font-family: 'Montserrat', sans-serif;
 }
 
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+}
+
 .font-orbitron {
   font-family: 'Orbitron', sans-serif;
 }
 
+/* ============================================================================
+   KEN BURNS HERO BACKGROUND SLIDESHOW
+============================================================================ */
 @keyframes kenBurnsZoomIn {
   0% {
     transform: scale3d(1, 1, 1) translate3d(0, 0, 0);
@@ -71,72 +96,187 @@
   animation: kenBurnsZoomIn 7000ms linear forwards;
 }
 
-/* Custom radio button matching red dot on white card */
-.bbc-radio {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
-  border: 2px solid #9CA3AF;
-  border-radius: 50%;
-  background-color: #FFFFFF;
-  display: inline-grid;
-  place-content: center;
-  cursor: pointer;
-  vertical-align: middle;
-}
-
-.bbc-radio::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  transform: scale(0);
-  transition: 120ms transform ease-in-out;
-  background-color: #FF0000;
-}
-
-.bbc-radio:checked {
-  border-color: #FF0000;
-}
-
-.bbc-radio:checked::before {
-  transform: scale(1);
-}
-
-/* Form input fields matching exact card screenshot */
+/* ============================================================================
+   HERO INSTANT ONLINE QUOTE FORM FIELDS (Exact matching reference screenshot)
+============================================================================ */
 .bbc-input {
-  background-color: #F8F9FA;
-  border: 1px solid #D1D5DB;
-  color: #111111;
-  font-family: 'Poppins', sans-serif;
-  font-size: 14px;
-  border-radius: 4px;
-  padding: 10px 14px;
   width: 100%;
-  transition: outline 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.bbc-input::placeholder {
-  color: #9CA3AF;
-  font-size: 14px;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+  color: #343434;
+  background-color: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 4px;
+  font-family: 'Manrope', sans-serif;
+  transition: all 0.2s ease;
+  outline: none;
 }
 
 .bbc-input:focus {
   background-color: #FFFFFF;
-  outline: 2px solid #FF0000;
-  border-color: transparent;
+  border-color: #35434A;
+  box-shadow: 0 0 0 2px rgba(53, 67, 74, 0.12);
 }
 
-/* Custom styled select with chevron */
-select.bbc-input {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23374151'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 16px 16px;
-  padding-right: 36px;
+.bbc-input::placeholder {
+  color: #94A3B8;
+  font-size: 0.75rem;
+}
+
+.bbc-select {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+  color: #343434;
+  background-color: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 4px;
+  font-family: 'Manrope', sans-serif;
+  transition: all 0.2s ease;
+  outline: none;
   cursor: pointer;
+}
+
+.bbc-select:focus {
+  background-color: #FFFFFF;
+  border-color: #35434A;
+  box-shadow: 0 0 0 2px rgba(53, 67, 74, 0.12);
+}
+
+.bbc-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #35434A;
+  margin-bottom: 0.25rem;
+  font-family: 'Manrope', sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.bbc-radio {
+  accent-color: #E50914;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+/* Red Instant Quote Submit CTA */
+.btn-red-quote {
+  background-color: #F60102;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  letter-spacing: 0.02em;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(246, 1, 2, 0.35);
+  cursor: pointer;
+}
+
+.btn-red-quote:hover {
+  background-color: #D40102;
+  box-shadow: 0 6px 18px rgba(246, 1, 2, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-red-quote:active {
+  transform: translateY(0);
+}
+
+/* Red Hotline Button for Navigation */
+.btn-red-hotline {
+  background-color: #F60102;
+  color: #FFFFFF;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(246, 1, 2, 0.3);
+  cursor: pointer;
+}
+
+.btn-red-hotline:hover {
+  background-color: #D40102;
+  box-shadow: 0 6px 18px rgba(246, 1, 2, 0.45);
+  transform: translateY(-1px);
+}
+
+/* ============================================================================
+   WARM LUXURY ACCENTS & BUTTONS
+============================================================================ */
+.btn-champagne {
+  background-color: #C6AD83;
+  color: #FFFFFF;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(198, 173, 131, 0.35);
+}
+
+.btn-champagne:hover {
+  background-color: #B69A6E;
+  box-shadow: 0 6px 20px rgba(198, 173, 131, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-slate {
+  background-color: #35434A;
+  color: #FFFFFF;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(53, 67, 74, 0.25);
+}
+
+.btn-slate:hover {
+  background-color: #273238;
+  box-shadow: 0 6px 20px rgba(53, 67, 74, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-outline-slate {
+  border: 1px solid #35434A;
+  color: #35434A;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.25s ease;
+}
+
+.btn-outline-slate:hover {
+  background-color: #35434A;
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+
+/* Smooth fade animation for vehicle switcher */
+@keyframes fadeInKey {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeInKey 0.3s ease-out forwards;
+}
+
+/* Hide scrollbar while preserving scroll functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

@@ -1,130 +1,190 @@
 import React from 'react';
-import { ArrowRight, Phone, Mail, MapPin } from 'lucide-react';
-import { AnticorLogo } from './Logo.tsx';
+import { Phone, Mail, MapPin, Clock, ArrowUp, ExternalLink, Anchor, Plane } from 'lucide-react';
 
-interface FooterProps {
-  onBookNowClick?: () => void;
-}
+export const Footer: React.FC = () => {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-export const Footer: React.FC<FooterProps> = ({ onBookNowClick }) => {
   return (
-    <footer id="contact" className="pt-8 pb-14 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Full-width Closing Section with Rounded Corners */}
-        <div className="relative rounded-3xl md:rounded-[36px] overflow-hidden border border-gray-100 shadow-[0_12px_40px_-10px_rgba(9,45,92,0.12)] bg-[#F8FBFE]">
-          <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
-            
-            {/* Left Side: Cinematic Road with Dark Navy Overlay (7 cols) */}
-            <div className="lg:col-span-7 relative min-h-[320px] sm:min-h-[360px] flex flex-col justify-center p-8 sm:p-12 lg:p-14 overflow-hidden">
-              
-              {/* Background Road Image with AI quality */}
+    <footer className="bg-[#273238] text-[#EAE4D9] font-manrope text-sm border-t border-[#C6AD83]/30">
+      {/* Main Footer Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12">
+          
+          {/* Brand & Logo Column (5 Cols) */}
+          <div className="lg:col-span-5 space-y-5">
+            <a href="#top" className="inline-block">
               <img
-                src="/assets/ai/ai_cta_road.png"
+                src="/logo.png"
+                alt="Seattle Express Shuttle"
+                width={260}
+                height={70}
+                className="h-12 sm:h-14 w-auto object-contain bg-white/95 p-1.5 rounded-sm shadow-sm"
                 onError={(e) => {
-                  const target = e.currentTarget;
-                  if (target.src !== window.location.origin + '/assets/hd_clean_cta_road.png') {
-                    target.src = '/assets/hd_clean_cta_road.png';
+                  if (e.currentTarget.src !== window.location.origin + '/seattle-express-shuttle-logo.webp') {
+                    e.currentTarget.src = '/seattle-express-shuttle-logo.webp';
                   }
                 }}
-                alt="Winding mountain road surrounded by greenery"
-                className="absolute inset-0 w-full h-full object-cover object-center"
               />
+            </a>
 
-              {/* Dark Navy Overlay matching reference (#092D5C at 80% opacity) */}
-              <div className="absolute inset-0 bg-[#092D5C]/80 mix-blend-multiply" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#092D5C] via-[#092D5C]/85 to-transparent" />
-
-              {/* Content on Left */}
-              <div className="relative z-10 max-w-md">
-                <h2 className="text-2xl sm:text-3xl lg:text-[38px] font-extrabold text-white tracking-tight leading-tight mb-3">
-                  Ready for Your Next Journey?
-                </h2>
-                
-                <p className="text-slate-200 text-sm sm:text-[15px] font-normal mb-7 leading-relaxed">
-                  Book your C&C executive chauffeur or AeroRide fixed-price transfer with confidence.
-                </p>
-
-                <button
-                  onClick={onBookNowClick}
-                  className="bg-[#FF7100] hover:bg-[#E66500] text-white font-bold text-sm sm:text-[15px] px-7 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 inline-flex items-center gap-2 cursor-pointer group"
-                >
-                  <span>Book Now</span>
-                  <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
-
+            <div className="space-y-1">
+              <h3 className="font-cormorant font-bold text-2xl text-white tracking-wide">
+                Seattle Express Shuttle
+              </h3>
+              <p className="text-xs font-manrope font-semibold text-[#C6AD83] tracking-widest uppercase">
+                Sea-Tac Airport &amp; Pier 66 / Pier 91 Cruise Transfers
+              </p>
             </div>
 
-            {/* Right Side: White Background with 3 Contact Rows (5 cols) */}
-            <div className="lg:col-span-5 bg-[#F8FBFE] p-8 sm:p-10 lg:p-12 flex flex-col justify-center space-y-6">
-              
-              {/* Row 1: Phone */}
-              <div className="flex items-center gap-4 group">
-                <div className="w-12 h-12 rounded-full bg-[#FFE6D3] flex items-center justify-center flex-shrink-0 text-[#FF7100] group-hover:bg-[#FF7100] group-hover:text-white transition-colors duration-200 shadow-2xs">
-                  <Phone className="w-5 h-5 stroke-[2]" />
-                </div>
-                <div>
-                  <a
-                    href="tel:+18005551234"
-                    className="block text-[16px] font-extrabold text-[#092D5C] hover:text-[#FF7100] transition-colors"
-                  >
-                    +1 (800) 555-1234
-                  </a>
-                  <span className="text-[12.5px] font-medium text-[#64748B]">
-                    Call 24/7 Dispatch
-                  </span>
-                </div>
-              </div>
+            <p className="text-[#C5BEB3] text-sm leading-relaxed max-w-sm">
+              With over 20+ years of dependable transportation experience across the Pacific Northwest.
+              Specializing in $30/person cruise shuttles from Sea-Tac hotels to Pier 66 &amp; Pier 91,
+              Sea-Tac airport transfers, and private executive chauffeur charters.
+            </p>
 
-              {/* Row 2: Email */}
-              <div className="flex items-center gap-4 group">
-                <div className="w-12 h-12 rounded-full bg-[#FFE6D3] flex items-center justify-center flex-shrink-0 text-[#FF7100] group-hover:bg-[#FF7100] group-hover:text-white transition-colors duration-200 shadow-2xs">
-                  <Mail className="w-5 h-5 stroke-[2]" />
-                </div>
-                <div>
-                  <a
-                    href="mailto:dispatch@cctransportation.com"
-                    className="block text-[16px] font-extrabold text-[#092D5C] hover:text-[#FF7100] transition-colors"
-                  >
-                    dispatch@cctransportation.com
-                  </a>
-                  <span className="text-[12.5px] font-medium text-[#64748B]">
-                    Executive Inquiries
-                  </span>
-                </div>
-              </div>
-
-              {/* Row 3: Service Areas */}
-              <div className="flex items-center gap-4 group">
-                <div className="w-12 h-12 rounded-full bg-[#FFE6D3] flex items-center justify-center flex-shrink-0 text-[#FF7100] group-hover:bg-[#FF7100] group-hover:text-white transition-colors duration-200 shadow-2xs">
-                  <MapPin className="w-5 h-5 stroke-[2]" />
-                </div>
-                <div>
-                  <span className="block text-[16px] font-extrabold text-[#092D5C]">
-                    Airport & City Transfers
-                  </span>
-                  <span className="text-[12.5px] font-medium text-[#64748B]">
-                    Executive Chauffeur Service
-                  </span>
-                </div>
-              </div>
-
+            {/* Cruise Terminals Badge */}
+            <div className="pt-1 flex flex-col gap-1 text-xs text-[#C6AD83]">
+              <span className="flex items-center gap-1.5">
+                <Anchor className="w-3.5 h-3.5" />
+                <span>Pier 66: 2225 Alaskan Way, Seattle, WA 98121</span>
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Anchor className="w-3.5 h-3.5" />
+                <span>Pier 91: 2001 W Garfield St, Seattle, WA 98119</span>
+              </span>
             </div>
-
           </div>
+
+          {/* Services Column (3 Cols) */}
+          <div className="lg:col-span-3 space-y-4">
+            <h4 className="font-cormorant font-bold text-xl text-white tracking-wide border-b border-white/10 pb-2">
+              Chauffeured Services
+            </h4>
+            <ul className="space-y-2 text-xs text-[#C5BEB3]">
+              <li>
+                <a href="#services" className="hover:text-[#C6AD83] transition-colors flex items-center gap-1.5">
+                  <Plane className="w-3.5 h-3.5 text-[#C6AD83]" />
+                  <span>Sea-Tac Airport Transportation</span>
+                </a>
+              </li>
+              <li>
+                <a href="#services" className="hover:text-[#C6AD83] transition-colors flex items-center gap-1.5">
+                  <Anchor className="w-3.5 h-3.5 text-[#C6AD83]" />
+                  <span>Cruise Transfers (Pier 66 &amp; 91)</span>
+                </a>
+              </li>
+              <li>
+                <a href="#services" className="hover:text-[#C6AD83] transition-colors">Corporate &amp; Executive Travel</a>
+              </li>
+              <li>
+                <a href="#services" className="hover:text-[#C6AD83] transition-colors">Weddings &amp; Special Events</a>
+              </li>
+              <li>
+                <a href="#services" className="hover:text-[#C6AD83] transition-colors">Woodinville Wine Country Tours</a>
+              </li>
+              <li>
+                <a href="#services" className="hover:text-[#C6AD83] transition-colors">Group &amp; Minibus (Up to 14 Pax)</a>
+              </li>
+              <li>
+                <a href="#services" className="hover:text-[#C6AD83] transition-colors">Private Personal Trips &amp; Charters</a>
+              </li>
+              <li>
+                <a href="#services" className="hover:text-[#C6AD83] transition-colors">Airline Crew Layover Shuttles</a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact & Dispatch Column (4 Cols) */}
+          <div className="lg:col-span-4 space-y-4">
+            <h4 className="font-cormorant font-bold text-xl text-white tracking-wide border-b border-white/10 pb-2">
+              Dispatch &amp; Contact
+            </h4>
+            
+            <div className="space-y-3.5 text-xs text-[#C5BEB3]">
+              <div className="flex items-start gap-3">
+                <MapPin className="w-4 h-4 text-[#C6AD83] shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-white block text-xs">Headquarters:</strong>
+                  <span>3507 S 188th St, SeaTac, WA 98188</span>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Phone className="w-4 h-4 text-[#C6AD83] shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-white block text-xs">24/7 Phone &amp; SMS:</strong>
+                  <a href="tel:+12065046000" className="text-white hover:text-[#C6AD83] font-bold text-sm transition-colors block">
+                    +1 (206) 504-6000
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Mail className="w-4 h-4 text-[#C6AD83] shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-white block text-xs">Direct Email:</strong>
+                  <a href="mailto:info@seattleexpressshuttle.com" className="hover:text-[#C6AD83] transition-colors">
+                    info@seattleexpressshuttle.com
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Clock className="w-4 h-4 text-[#C6AD83] shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-white block text-xs">Operating Hours:</strong>
+                  <span>24 Hours a Day · 7 Days a Week</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Quick Action Buttons */}
+            <div className="pt-2 flex flex-wrap gap-2">
+              <a
+                href="sms:+12065046000"
+                className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-sm bg-white/5 hover:bg-white/10 border border-[#C6AD83]/30 text-xs font-semibold text-white tracking-wider uppercase transition-colors"
+              >
+                <span>SMS Dispatch</span>
+                <ExternalLink className="w-3 h-3 text-[#C6AD83]" />
+              </a>
+
+              <a
+                href="https://wa.me/12065046000"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-sm bg-white/5 hover:bg-white/10 border border-[#C6AD83]/30 text-xs font-semibold text-white tracking-wider uppercase transition-colors"
+              >
+                <span>WhatsApp</span>
+                <ExternalLink className="w-3 h-3 text-[#C6AD83]" />
+              </a>
+            </div>
+          </div>
+
         </div>
+      </div>
 
-        {/* Bottom Sub-footer */}
-        <div className="mt-8 pt-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between text-xs text-[#64748B] gap-3">
-          <div className="flex items-center gap-2">
-            <AnticorLogo className="h-6" subtitleClass="hidden" />
-          </div>
+      {/* Bottom Copyright & Back to Top Bar */}
+      <div className="bg-[#1F272B] border-t border-white/5 py-6 px-4 sm:px-8">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#A39E94]">
           <div>
-            © {new Date().getFullYear()} C&C Transportation Service LLC. All rights reserved. Executive Chauffeur • AeroRide.
+            <span>Copyright © 2026 Seattle Express Shuttle – All Rights Reserved.</span>
+          </div>
+
+          <div className="flex items-center gap-4 sm:gap-6">
+            <span>Sea-Tac Airport Shuttles · Pier 66 &amp; Pier 91 Cruise Transfers · Charters</span>
+            <span>•</span>
+            <button
+              type="button"
+              onClick={scrollToTop}
+              className="inline-flex items-center gap-1.5 text-[#C6AD83] hover:text-white transition-colors cursor-pointer"
+            >
+              <span>Back to Top</span>
+              <ArrowUp className="w-3.5 h-3.5" />
+            </button>
           </div>
         </div>
-
       </div>
     </footer>
   );
