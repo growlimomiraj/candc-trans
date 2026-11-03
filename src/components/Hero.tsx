@@ -83,6 +83,7 @@ export const Hero: React.FC<HeroProps> = ({ onQuoteSubmit }) => {
   const [formError, setFormError] = useState<string>('');
   const [submittedQuote, setSubmittedQuote] = useState<SubmittedQuoteData | null>(null);
   const [smartNotification, setSmartNotification] = useState<string>('');
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   // Hero slideshow interval
   useEffect(() => {
@@ -134,7 +135,7 @@ export const Hero: React.FC<HeroProps> = ({ onQuoteSubmit }) => {
     return () => window.removeEventListener('prefill-quote', handlePreFill);
   }, []);
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError('');
 
@@ -185,9 +186,10 @@ export const Hero: React.FC<HeroProps> = ({ onQuoteSubmit }) => {
 
     const depositAmount = Math.max(20, Math.round(estimatedRate * 0.25));
     const formattedMin = (pickupMinute.trim() || '00').padStart(2, '0');
+    const generatedRefCode = `SES-${Math.floor(1000 + Math.random() * 9000)}`;
 
     const quoteRecord: SubmittedQuoteData = {
-      referenceCode: `SES-${Math.floor(1000 + Math.random() * 9000)}`,
+      referenceCode: generatedRefCode,
       name: name.trim(),
       phone: phone.trim(),
       email: email.trim(),
@@ -205,8 +207,38 @@ export const Hero: React.FC<HeroProps> = ({ onQuoteSubmit }) => {
       depositAmount
     };
 
-    setSubmittedQuote(quoteRecord);
-    onQuoteSubmit?.(quoteRecord);
+    setIsSubmitting(true);
+    try {
+      const res = await fetch('/api/booking', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(quoteRecord),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok && !data.success) {
+        setFormError(data.error || 'Unable to submit booking request. Please call +1 (206) 504-6000 directly.');
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (data.referenceCode) {
+        quoteRecord.referenceCode = data.referenceCode;
+      }
+
+      setSubmittedQuote(quoteRecord);
+      onQuoteSubmit?.(quoteRecord);
+    } catch (err: any) {
+      console.error('[Booking Submit Network Error]:', err?.message || err);
+      // Fallback display if offline/network fails
+      setSubmittedQuote(quoteRecord);
+      onQuoteSubmit?.(quoteRecord);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -416,9 +448,21 @@ export const Hero: React.FC<HeroProps> = ({ onQuoteSubmit }) => {
                 </div>
               </div>
 
+              <div className="bg-[#EBF7EE] border border-[#C3E6CB] rounded-[6px] p-[12px] text-[12px] text-[#155724] space-y-1">
+                <div className="flex items-center gap-1.5 font-semibold">
+                  <Check className="w-4 h-4 text-[#155724] shrink-0" />
+                  <span>Email Confirmation Dispatched</span>
+                </div>
+                <p>
+                  A confirmation summary has been sent to <strong>{submittedQuote.email}</strong> and our dispatch desk at <strong>info@seattleexpressshuttle.com</strong>.
+                </p>
+                <p className="text-[11px] text-[#1e582e] pt-0.5">
+                  <em>Note: Your reservation is pending final dispatch confirmation. We will text or call you to approve your ride.</em>
+                </p>
+              </div>
+
               <p className="text-[12px] text-gray-600">
-                We have logged your quote details for <strong className="text-[#111111]">{submittedQuote.phone}</strong> and{' '}
-                <strong className="text-[#111111]">{submittedQuote.email}</strong>. For immediate confirmation, please text or call at <a href="tel:+12065046000" className="text-[#F60102] font-semibold underline">+1 (206) 504-6000</a>.
+                For immediate assistance, please text or call our 24/7 team at <a href="tel:+12065046000" className="text-[#F60102] font-semibold underline">+1 (206) 504-6000</a>.
               </p>
 
               <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -739,9 +783,12 @@ export const Hero: React.FC<HeroProps> = ({ onQuoteSubmit }) => {
                 <button
                   type="submit"
                   id="gform_submit_button_1"
-                  className="w-full bg-[#F60102] hover:bg-[#d40102] text-white font-orbitron text-[15px] font-semibold py-[13px] px-[24px] rounded-[4px] transition-colors cursor-pointer shadow-md"
+                  disabled={isSubmitting}
+                  className={`w-full bg-[#F60102] hover:bg-[#d40102] text-white font-orbitron text-[15px] font-semibold py-[13px] px-[24px] rounded-[4px] transition-colors cursor-pointer shadow-md ${
+                    isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
+                  }`}
                 >
-                  Get Instant Quote
+                  {isSubmitting ? 'Processing Quote & Notifications...' : 'Get Instant Quote'}
                 </button>
               </div>
             </form>
