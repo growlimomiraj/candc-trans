@@ -152,8 +152,6 @@ export const Footer: React.FC = () => {
 
               <a
                 href="https://wa.me/12065046000"
-                target="_blank"
-                rel="noopener noreferrer"
                 className="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-sm bg-white/5 hover:bg-white/10 border border-[#C6AD83]/30 text-xs font-semibold text-white tracking-wider uppercase transition-colors"
               >
                 <span>WhatsApp</span>

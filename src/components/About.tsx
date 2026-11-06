@@ -111,8 +111,6 @@ export const About: React.FC = () => {
                     </span>
                     <a
                       href="https://maps.google.com/?q=3507+S+188th+St,+SeaTac,+WA+98188"
-                      target="_blank"
-                      rel="noopener noreferrer"
                       className="text-[#A88B61] hover:text-[#35434A] font-semibold text-[11px] inline-flex items-center gap-1 transition-colors"
                     >
                       <span>Open in Google Maps</span>

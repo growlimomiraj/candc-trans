@@ -46,8 +46,13 @@ export const FinalCTA: React.FC<FinalCTAProps> = ({ onBookClick }) => {
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
           <a
-            href="#booking"
-            onClick={onBookClick}
+            href="#quote-card"
+            onClick={(e) => {
+              if (onBookClick) {
+                e.preventDefault();
+                onBookClick();
+              }
+            }}
             className="w-full sm:w-auto btn-champagne py-4 px-9 rounded-sm text-center text-sm font-semibold tracking-wider inline-flex items-center justify-center gap-2 shadow-lg"
           >
             <span>RESERVE YOUR JOURNEY</span>

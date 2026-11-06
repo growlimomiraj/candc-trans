@@ -284,8 +284,6 @@ export const Hero: React.FC<HeroProps> = ({ onQuoteSubmit }) => {
           {/* Google Reviews Badge */}
           <a
             href="https://www.google.com/maps/search/?api=1&query=Seattle+Express+Shuttle"
-            target="_blank"
-            rel="noopener noreferrer"
             className="w-full md:w-[85%] bg-[#FFFFFF36] border border-[#FFFFFF54] rounded-[3px] px-[8px] py-[5px] flex flex-wrap items-center justify-center gap-[8px] md:gap-[10px] hover:bg-[#FFFFFF48] transition-colors"
           >
             <span className="font-montserrat text-[12px] md:text-[20px] font-normal text-white leading-[22px]">
@@ -390,7 +388,8 @@ export const Hero: React.FC<HeroProps> = ({ onQuoteSubmit }) => {
         {/* ===================================================================
             RIGHT COLUMN: INSTANT ONLINE QUOTE BOX (WHITE CARD)
         =================================================================== */}
-        <div id="quote-card" className="w-full lg:w-[50%] bg-white text-[#111111] border border-gray-200 shadow-2xl rounded-[12px] p-[20px] md:p-[35px] transition-all duration-300">
+        <div id="quote-card" className="w-full lg:w-[50%] bg-white text-[#111111] border border-gray-200 shadow-2xl rounded-[12px] p-[20px] md:p-[35px] transition-all duration-300 relative">
+          <span id="booking" className="sr-only" />
           {smartNotification && (
             <div className="mb-4 p-3 bg-red-50 border border-[#F60102]/30 rounded-lg flex items-center justify-between text-xs font-montserrat text-[#111111] animate-fadeIn">
               <div className="flex items-center gap-2">

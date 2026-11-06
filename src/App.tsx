@@ -54,6 +54,18 @@ const FLEET_GALLERY: GalleryItem[] = [
 export default function App() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
+  // Guarantee that all links open in the same tab (no new tabs)
+  React.useEffect(() => {
+    const handleGlobalLinkClick = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement)?.closest('a');
+      if (target && target.getAttribute('target') === '_blank') {
+        target.removeAttribute('target');
+      }
+    };
+    document.addEventListener('click', handleGlobalLinkClick, true);
+    return () => document.removeEventListener('click', handleGlobalLinkClick, true);
+  }, []);
+
   const scrollToQuoteCard = () => {
     const el = document.getElementById('quote-card');
     if (el) {
@@ -153,8 +165,6 @@ export default function App() {
         {/* WhatsApp Quick Button */}
         <a
           href="https://wa.me/12065046000"
-          target="_blank"
-          rel="noopener noreferrer"
           aria-label="WhatsApp Seattle Express Shuttle"
           className="w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-lg hover:scale-108 transition-all cursor-pointer"
           title="WhatsApp: +1 (206) 504-6000"

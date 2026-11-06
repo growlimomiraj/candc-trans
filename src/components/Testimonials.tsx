@@ -70,8 +70,6 @@ export const Testimonials: React.FC = () => {
             <span>Over 378+ authentic Google and client reviews</span>
             <a
               href="https://www.google.com/maps/search/?api=1&query=Seattle+Express+Shuttle"
-              target="_blank"
-              rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-[#A88B61] hover:underline font-semibold text-xs ml-1"
             >
               <span>View on Google</span>
