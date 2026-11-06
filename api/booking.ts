@@ -126,20 +126,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const resendApiKey = process.env.RESEND_API_KEY;
     const businessEmail = process.env.BUSINESS_NOTIFICATION_EMAIL || 'info@seattleexpressshuttle.com';
-    // By default on Resend free tier or testing, onboarding@resend.dev can send to verified email.
-    // Once seattleexpressshuttle.com is verified, set BOOKING_SENDER_EMAIL="Seattle Express Shuttle <info@seattleexpressshuttle.com>"
-    const senderEmail = process.env.BOOKING_SENDER_EMAIL || 'Seattle Express Shuttle <onboarding@resend.dev>';
+    const senderEmail = process.env.BOOKING_SENDER_EMAIL || 'Seattle Express Shuttle <info@seattleexpressshuttle.com>';
 
-    // If API key is not yet provided, safely log in development mode
     if (!resendApiKey) {
-      console.warn(
-        `[Booking API Warning] RESEND_API_KEY is not defined. Simulated booking received for Ref: ${referenceCode}. Configure RESEND_API_KEY in Vercel environment variables.`
+      console.error(
+        `[Booking API Error] RESEND_API_KEY is not configured in Vercel environment variables. Booking Ref: ${referenceCode}.`
       );
-      return res.status(200).json({
-        success: true,
+      return res.status(500).json({
+        success: false,
+        error:
+          'Email dispatch service is currently awaiting API credentials configuration. Please contact dispatch directly at +1 (206) 504-6000.',
         referenceCode,
-        mode: 'preview_simulated',
-        message: 'Booking request logged successfully. Set RESEND_API_KEY in Vercel to dispatch live customer & business emails.',
       });
     }
 
@@ -377,10 +374,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     `;
 
     // 4. Send Emails via Resend
-    // A) Send to Business Dispatch
+    // A) Send to Business Dispatch (both official info@seattleexpressshuttle.com and owner inbox)
+    const dispatchRecipients = Array.from(new Set([businessEmail, 'khalidmiraj413@gmail.com']));
+
     const businessSendPromise = resend.emails.send({
       from: senderEmail,
-      to: businessEmail,
+      to: dispatchRecipients,
       subject: `🚨 New Booking Request: ${referenceCode} – ${name} (${serviceType})`,
       html: businessHtml,
       replyTo: email,
