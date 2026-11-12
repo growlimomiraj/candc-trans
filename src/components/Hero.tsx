@@ -84,6 +84,8 @@ export const Hero: React.FC<HeroProps> = ({ onQuoteSubmit }) => {
   const [submittedQuote, setSubmittedQuote] = useState<SubmittedQuoteData | null>(null);
   const [smartNotification, setSmartNotification] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [honeypot, setHoneypot] = useState<string>('');
+  const [formStartTime, setFormStartTime] = useState<number>(() => Date.now());
 
   // Hero slideshow interval
   useEffect(() => {
@@ -156,6 +158,12 @@ export const Hero: React.FC<HeroProps> = ({ onQuoteSubmit }) => {
       return;
     }
 
+    const digitsOnly = phone.replace(/\D/g, '');
+    if (digitsOnly.length < 10) {
+      setFormError('Please enter a valid 10-digit phone number with area code (e.g. 206-504-6000).');
+      return;
+    }
+
     const paxNum = Math.max(1, parseInt(passengers, 10) || 2);
     const hrsNum = Math.max(2, parseInt(bookingHours, 10) || 2);
     const isWeekend = ['Friday', 'Saturday', 'Sunday'].includes(dayOfWeek);
@@ -209,12 +217,18 @@ export const Hero: React.FC<HeroProps> = ({ onQuoteSubmit }) => {
 
     setIsSubmitting(true);
     try {
+      const payload = {
+        ...quoteRecord,
+        company_website_url: honeypot,
+        formDuration: Date.now() - formStartTime,
+      };
+
       const res = await fetch('/api/booking', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(quoteRecord),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json().catch(() => ({}));
@@ -484,6 +498,32 @@ export const Hero: React.FC<HeroProps> = ({ onQuoteSubmit }) => {
             </div>
           ) : (
             <form onSubmit={handleFormSubmit} className="space-y-[15px]" noValidate>
+              {/* Anti-Bot Invisible Honeypot Trap (Automated Spambot Filter) */}
+              <div
+                style={{
+                  position: 'absolute',
+                  opacity: 0,
+                  zIndex: -1,
+                  pointerEvents: 'none',
+                  width: 0,
+                  height: 0,
+                  overflow: 'hidden',
+                  margin: 0,
+                  padding: 0,
+                }}
+                aria-hidden="true"
+              >
+                <label htmlFor="company_website_url">Website</label>
+                <input
+                  id="company_website_url"
+                  type="text"
+                  name="company_website_url"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
+              </div>
               {/* Row 1: Name & Phone */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-[14px]">
                 <div>

@@ -4,6 +4,29 @@ import { Resend } from 'resend';
 // Simple in-memory debounce cache to prevent rapid duplicate submissions
 const recentSubmissions = new Map<string, number>();
 
+// In-memory IP rate limiter: max 4 submissions per IP per 10 minutes
+const ipRateLimit = new Map<string, { count: number; resetAt: number }>();
+
+// Blocklist of disposable and burner email domains heavily used by spambots
+const SPAM_EMAIL_DOMAINS = new Set([
+  'tempmail.com', 'temp-mail.org', '10minutemail.com', 'mailinator.com',
+  'guerrillamail.com', 'trashmail.com', 'dispostable.com', 'yopmail.com',
+  'sharklasers.com', 'throwawaymail.com', 'fakeinbox.com', 'maildrop.cc',
+  'mohmal.com', 'crazymailing.com', 'burnermail.io', 'mytemp.email',
+  'emailfake.com', 'tempail.com', 'generator.email', 'dropmail.me',
+  'inboxkitten.com', 'tempinbox.com', 'tempmailo.com', 'getairmail.com',
+  'maildrop.me', 'fakemailgenerator.com', 'emailondeck.com', 'armyspy.com',
+  'cuvox.de', 'dayrep.com', 'einrot.com', 'fleckens.hu', 'gustr.com',
+  'jourrapide.com', 'rhyta.com', 'superrito.com', 'teleworm.us'
+]);
+
+// Spam patterns (URLs, advertising, SEO spam, crypto)
+const SPAM_PATTERNS = [
+  /https?:\/\//i,
+  /www\.[a-z0-9\-]+\.[a-z]{2,}/i,
+  /\b(telegram|t\.me|whatsapp:|crypto|bitcoin|usdt|casino|viagra|cialis|backlinks|guest post|seo rank|seo service|ranking on google|traffic to your site|marketing agency|lead generation service|porn|sex)\b/i,
+];
+
 interface BookingRequest {
   referenceCode: string;
   name: string;
@@ -28,6 +51,9 @@ interface BookingRequest {
   flightOrCruiseDetails?: string;
   specialRequests?: string;
   selectedVehicle?: string;
+  // Anti-bot fields
+  company_website_url?: string;
+  formDuration?: number;
 }
 
 function escapeHtml(str: string = ''): string {
@@ -60,6 +86,38 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const data: BookingRequest = req.body || {};
 
+    // Determine client IP for rate limiting
+    const forwarded = req.headers['x-forwarded-for'];
+    const clientIp = typeof forwarded === 'string'
+      ? forwarded.split(',')[0].trim()
+      : (req.headers['x-real-ip'] as string) || req.socket?.remoteAddress || 'unknown';
+
+    const now = Date.now();
+
+    // =======================================================================
+    // LAYER 1: IP RATE LIMITING (Max 4 requests per 10 minutes per IP)
+    // =======================================================================
+    const ipRecord = ipRateLimit.get(clientIp);
+    if (ipRecord && now < ipRecord.resetAt) {
+      if (ipRecord.count >= 4) {
+        console.warn(`[Anti-Spam] IP Rate Limit Exceeded for IP: ${clientIp}`);
+        return res.status(429).json({
+          success: false,
+          error: 'Too many booking requests from this connection. For immediate assistance, please text or call dispatch directly at +1 (206) 504-6000.',
+        });
+      }
+      ipRecord.count += 1;
+    } else {
+      ipRateLimit.set(clientIp, { count: 1, resetAt: now + 10 * 60 * 1000 });
+    }
+
+    // Periodically prune IP cache
+    if (ipRateLimit.size > 500) {
+      for (const [ip, record] of ipRateLimit.entries()) {
+        if (now > record.resetAt) ipRateLimit.delete(ip);
+      }
+    }
+
     // 1. Validation
     const {
       name,
@@ -85,8 +143,37 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       flightOrCruiseDetails = 'None provided',
       specialRequests = 'None',
       selectedVehicle = serviceType,
+      company_website_url,
+      formDuration,
     } = data;
 
+    // =======================================================================
+    // LAYER 2: SILENT HONEYPOT TRAP (Catches automated DOM form fillers)
+    // Real humans will never see or fill this hidden input.
+    // =======================================================================
+    if (company_website_url && String(company_website_url).trim().length > 0) {
+      console.warn(`[Anti-Spam Silent Trap] Honeypot field filled by bot from IP: ${clientIp}`);
+      // Return 200 OK so the bot assumes it succeeded, but DO NOT dispatch email
+      return res.status(200).json({
+        success: true,
+        referenceCode,
+        message: 'Booking request logged successfully.',
+      });
+    }
+
+    // =======================================================================
+    // LAYER 3: SUBMISSION TIMING TRAP (Humans take >2.5s; bots take <1s)
+    // =======================================================================
+    if (typeof formDuration === 'number' && formDuration < 2000) {
+      console.warn(`[Anti-Spam Silent Trap] Form submitted too quickly (${formDuration}ms) by bot from IP: ${clientIp}`);
+      return res.status(200).json({
+        success: true,
+        referenceCode,
+        message: 'Booking request logged successfully.',
+      });
+    }
+
+    // Basic required fields check
     if (!name?.trim() || !email?.trim() || !phone?.trim() || !pickupLocation?.trim() || !dropoffLocation?.trim() || !date?.trim()) {
       return res.status(400).json({
         success: false,
@@ -103,9 +190,75 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    // 2. Prevent duplicate submissions within 30 seconds
+    const emailDomain = (email.split('@')[1] || '').toLowerCase().trim();
+
+    // =======================================================================
+    // LAYER 4: DISPOSABLE & SPAM EMAIL DOMAINS FILTER
+    // =======================================================================
+    if (
+      SPAM_EMAIL_DOMAINS.has(emailDomain) ||
+      emailDomain.endsWith('.ru') ||
+      emailDomain.endsWith('.cn') ||
+      emailDomain.endsWith('.top')
+    ) {
+      console.warn(`[Anti-Spam Silent Trap] Disposable/Spam email domain blocked: ${emailDomain}`);
+      return res.status(200).json({
+        success: true,
+        referenceCode,
+        message: 'Booking request logged successfully.',
+      });
+    }
+
+    // =======================================================================
+    // LAYER 5: PHONE NUMBER QUALITY VALIDATION
+    // =======================================================================
+    const digitsOnly = phone.replace(/\D/g, '');
+    if (digitsOnly.length < 10 || digitsOnly.length > 15) {
+      return res.status(400).json({
+        success: false,
+        error: 'Please enter a valid 10-digit telephone number with area code.',
+      });
+    }
+
+    // Reject obvious fake phone numbers (e.g. 0000000000, 1111111111, 1234567890)
+    const isRepeating = /^(\d)\1+$/.test(digitsOnly);
+    const isSequence = '0123456789012345'.includes(digitsOnly) || '9876543210987654'.includes(digitsOnly);
+    if (isRepeating || isSequence) {
+      console.warn(`[Anti-Spam Silent Trap] Fake phone number detected: ${digitsOnly}`);
+      return res.status(200).json({
+        success: true,
+        referenceCode,
+        message: 'Booking request logged successfully.',
+      });
+    }
+
+    // =======================================================================
+    // LAYER 6: SPAM KEYWORDS & URL DETECTION (Crypto, SEO, Link spam)
+    // =======================================================================
+    const contentToCheck = `${name} ${pickupLocation} ${dropoffLocation} ${specialRequests || ''}`.toLowerCase();
+    if (SPAM_PATTERNS.some((p) => p.test(contentToCheck))) {
+      console.warn(`[Anti-Spam Silent Trap] Spam links or promotional keywords detected in fields from IP: ${clientIp}`);
+      return res.status(200).json({
+        success: true,
+        referenceCode,
+        message: 'Booking request logged successfully.',
+      });
+    }
+
+    // =======================================================================
+    // LAYER 7: GIBBERISH BOT NAME DETECTION (e.g. "asdfghjklqw" or "XyZ1239847")
+    // =======================================================================
+    if (/^[^aeiouy\s]{9,}$/i.test(name.trim()) || /^[a-z0-9]{22,}$/i.test(name.trim())) {
+      console.warn(`[Anti-Spam Silent Trap] Gibberish bot name detected: ${name}`);
+      return res.status(200).json({
+        success: true,
+        referenceCode,
+        message: 'Booking request logged successfully.',
+      });
+    }
+
+    // Duplicate submission debounce within 30 seconds
     const submissionKey = `${email.toLowerCase()}_${date}_${pickupLocation}`.slice(0, 80);
-    const now = Date.now();
     const lastSubmitted = recentSubmissions.get(submissionKey);
     if (lastSubmitted && now - lastSubmitted < 30000) {
       return res.status(429).json({
@@ -289,7 +442,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             Thank you for choosing <strong>Seattle Express Shuttle</strong>. We have received your booking request for your upcoming trip. Our dispatch team is reviewing your route and vehicle availability.
           </p>
 
-          <!-- Important Pending Approval Banner (Explicitly required) -->
+          <!-- Important Pending Approval Banner -->
           <div style="background-color: #FFFBEB; border-left: 4px solid #F59E0B; padding: 14px 18px; border-radius: 4px; margin-bottom: 24px;">
             <strong style="color: #B45309; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px;">
               ⏳ Reservation Status: Pending Approval
@@ -414,7 +567,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const isDomainRestriction = errMsg.includes('verify a domain') || errMsg.includes('not verified');
       if (isDomainRestriction) {
         try {
-          // Send to verified account owner so the business never loses the booking lead
           const fallbackRes = await resend.emails.send({
             from: 'Seattle Express Shuttle <onboarding@resend.dev>',
             to: 'khalidmiraj413@gmail.com',
@@ -431,7 +583,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.status(200).json({
           success: true,
           referenceCode,
-          notice: 'Booking received and routed to dispatch. To email customers directly, please verify seattleexpressshuttle.com on Resend.',
+          notice: 'Booking received and routed to dispatch.',
           notifications: {
             businessDispatched: businessSuccess,
             customerDispatched: false,
@@ -465,4 +617,3 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
   }
 }
-
